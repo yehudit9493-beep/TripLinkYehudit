@@ -1,0 +1,108 @@
+<div dir="rtl">
+
+    <div class="page-header">
+        <h1>🥾 מסלולי טיול</h1>
+        <p>גלה את המסלולים הטובים ביותר ברחבי הארץ</p>
+    </div>
+
+    <div class="filters-row">
+        <div class="filters-group">
+            <div class="filter-wrapper">
+                <span class="search-icon">🔍</span>
+                <input (keyup)="applyFilter($event)" placeholder="חפש לפי שם, אורך, עונה..." #input>
+            </div>
+
+            <div class="custom-select-wrapper">
+                <mat-select [formControl]="selectedAreas" multiple placeholder="סנן לפי אזורים">
+                    <mat-select-trigger>
+                        {{selectedAreas.value?.[0] || 'סנן לפי אזורים'}}
+                        @if ((selectedAreas.value?.length || 0) > 1) {
+                        <span class="example-additional-selection">
+                            (+{{(selectedAreas.value?.length || 0) - 1}} {{selectedAreas.value?.length === 2 ? 'other' :
+                            'others'}})
+                        </span>
+                        }
+                    </mat-select-trigger>
+                    @for (area of areaList; track area) {
+                    <mat-option [value]="area">{{area}}</mat-option>
+                    }
+                </mat-select>
+            </div>
+        </div>
+
+        <button class="add-trail-btn" (click)="onAddTrail()">הוסף מסלול חדש</button>
+    </div>
+
+    <div class="trails-table-wrapper">
+        <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)">
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>שם המסלול</th>
+                <td mat-cell *matCellDef="let e"><strong>{{e.name}}</strong></td>
+            </ng-container>
+
+            <ng-container matColumnDef="region">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>אזור</th>
+                <td mat-cell *matCellDef="let e">
+                    <span class="region-badge" [class.golan]="getRegionName(e.regionId) === 'רמת הגולן ועמק החולה'"
+                        [class.upper-galil]="getRegionName(e.regionId) === 'גליל עליון'"
+                        [class.lower-galil]="getRegionName(e.regionId) === 'גליל תחתון ועמקים'"
+                        [class.carmel]="getRegionName(e.regionId) === 'כרמל ורמות מנשה'"
+                        [class.coast]="getRegionName(e.regionId) === 'מישור החוף והשרון'"
+                        [class.shomron]="getRegionName(e.regionId) === 'הרי שומרון, הרי יהודה ושפלת יהודה'"
+                        [class.jerusalem]="getRegionName(e.regionId) === 'ירושלים'"
+                        [class.judean-desert]="getRegionName(e.regionId) === 'מדבר יהודה וים המלח'"
+                        [class.negev]="getRegionName(e.regionId) === 'הנגב'"
+                        [class.eilat]="getRegionName(e.regionId) === 'אילת והערבה'">
+                        {{getRegionName(e.regionId)}}
+                    </span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="RouteLengthInKM">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>אורך (ק"מ)</th>
+                <td mat-cell *matCellDef="let e">{{e.RouteLengthInKM}} ק"מ</td>
+            </ng-container>
+
+            <ng-container matColumnDef="RouteDuration">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>משך</th>
+                <td mat-cell *matCellDef="let e">
+                    <span class="duration-cell">🕐 {{e.RouteDuration}}</span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="rating">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>דירוג ממוצע</th>
+                <td mat-cell *matCellDef="let e">
+                    <div class="stars-cell">
+                        @for (star of getStarsArray(getAverageRating(e.id)); track $index) {
+                        <span class="star-sm" [class.full]="star === 'full'">★</span>
+                        }
+                    </div>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let e">
+                    <button class="details-btn" (click)="handleShowMore(e)">הצג עוד ←</button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            <tr class="no-data-row" *matNoDataRow>
+                <td colspan="4">😕 לא נמצאו תוצאות עבור "{{input.value}}"</td>
+            </tr>
+
+        </table>
+    </div>
+
+    <app-trail-sidebar [trail]="selectedTrail" (closed)="closeSidebar()">
+    </app-trail-sidebar>
+
+    @if (isAddTrailOpen) {
+    <app-add-trail (closed)="isAddTrailOpen = false" (updated)="onTrailAdded()"></app-add-trail>
+    }
+</div>

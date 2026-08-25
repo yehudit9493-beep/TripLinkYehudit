@@ -1,0 +1,40 @@
+
+
+<nav class="navbar">
+  <div class="navbar-container">
+
+
+    <a routerLink="/home-page" class="logo-wrapper">
+      <div class="logo-icon">
+        <div class="link-chain"></div>
+      </div>
+      <div class="logo-brand">
+        <span class="trip">Trip</span><span class="link">Link</span>
+      </div>
+    </a>
+
+
+    @if (loggedInUser) {
+    <div class="user-info">
+      <span class="user-greeting">👋 {{message }}, <strong>{{ loggedInUser.firstName }}</strong></span>
+      <span class="hebrew-date">{{ hebrewDate }}</span>
+      <button routerLink="/editUser" class="btn-update">עריכת פרופיל</button>
+    </div>
+    }
+
+
+    <div class="navbar-actions">
+      <button class="favorites-btn" (click)="toggleFavorites()">
+        ❤️
+        @if (favoritesCount > 0) {
+        <span class="favorites-count">{{ favoritesCount }}</span>
+        }
+      </button>
+    </div>
+
+  </div>
+
+  @if (showFavorites) {
+  <app-favorites-panel (closed)="showFavorites = false">
+  </app-favorites-panel>}
+</nav>

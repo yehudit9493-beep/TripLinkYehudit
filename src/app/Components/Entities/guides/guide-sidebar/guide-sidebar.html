@@ -1,0 +1,120 @@
+@if (guide) {
+<div class="overlay" (click)="close()"></div>
+
+@if (!showEdit) {
+<div class="sidebar open">
+    <div class="sidebar-header">
+        <button class="close-btn" (click)="close()">✕</button>
+        <div class="header-title-row">
+            <h2 class="sidebar-title">{{guide.name}}</h2>
+            <button class="favorite-btn" (click)="toggleFavorite(guide)" [class.active]="isFavorite(guide)"
+                title="הוסף למועדפים">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                    [attr.fill]="isFavorite(guide) ? '#e74c3c' : 'none'"
+                    [attr.stroke]="isFavorite(guide) ? '#e74c3c' : '#aaa'" stroke-width="1.2" viewBox="0 0 16 16">
+                    <path
+                        d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" />
+                </svg>
+            </button>
+        </div>
+        <div class="badges-wrapper">
+            @for (regionId of guide.trainingRegionsId; track regionId) {
+            <span class="region-badge" [class.golan]="regionId === 1" [class.upper-galil]="regionId === 2"
+                [class.lower-galil]="regionId === 3" [class.carmel]="regionId === 4" [class.coast]="regionId === 5"
+                [class.shomron]="regionId === 6" [class.jerusalem]="regionId === 7"
+                [class.judean-desert]="regionId === 8" [class.negev]="regionId === 9" [class.eilat]="regionId === 10">
+                {{getRegionName(regionId)}},
+            </span>
+            }
+        </div>
+    </div>
+
+    <button class="btn-availability" routerLink="/availability">
+        📅 צפה בזמינות
+    </button>
+
+    <div class="sidebar-body">
+        <div class="detail-section">
+            <h3>התמחות</h3>
+            <p>{{guide.specialization}}</p>
+        </div>
+        <br>
+
+        <br>
+        <div class="detail-card">
+            <span class="detail-label">ניסיון</span>
+            <span class="detail-value">{{guide.yearsOfExperience}} שנים</span>
+        </div>
+        <br>
+
+        <div class="detail-grid">
+            <div class="detail-card">
+                <span class="detail-label">טלפון</span>
+                <span class="detail-value">{{guide.phoneNumber}}</span>
+            </div>
+
+            <div class="detail-card">
+                <span class="detail-label">אימייל</span>
+                <span class="detail-value">{{guide.email}}</span>
+            </div>
+        </div>
+        <br>
+
+
+        <div class="detail-grid">
+            <div class="detail-card">
+                <span class="detail-label">סטטוס</span>
+                <span class="detail-value" [class.easy]="guide.status" [class.hard]="!guide.status">{{ guide.status ?
+                    'פעיל' : 'לא פעיל' }}</span>
+            </div>
+
+            <div class="detail-card">
+                <span class="detail-label">שייכות דתית</span>
+                <span class="detail-value">{{ guide.ReligiousAffiliation }}</span>
+            </div>
+        </div>
+        <br>
+
+        <div class="detail-card">
+            <span class="detail-label">דירוג ממוצע</span>
+            <button class="stars-btn" (click)="goToRatings()" title="לחץ לצפייה בכל הדירוגים">
+                @for (star of getStarsArray(getAverageRating()); track $index) {
+                <span class="star" [class.full]="star === 'full'">★</span>
+                }
+                <span class="rating-count">({{ getAverageRating() | number:'1.1-1' }})</span>
+            </button>
+        </div>
+
+        @if (!alreadyRated()) {
+        <div class="rating-form">
+            <h4>דרגי את המדריכה</h4>
+            <div class="rating-stars-input">
+                @for (star of [1,2,3,4,5]; track star) {
+                <span class="star-input" [class.selected]="star <= userRating" (click)="setUserRating(star)">★</span>
+                }
+            </div>
+            <textarea class="rating-comment" [(ngModel)]="userComment" placeholder="הוסיפי הערה או המלצה..."
+                rows="3"></textarea>
+            @if (ratingError) {
+            <p class="rating-error">{{ ratingError }}</p>
+            }
+            <button class="btn-submit-rating" (click)="submitRating()">שמור דירוג</button>
+        </div>
+        } @else {
+        <p class="already-rated">✓ כבר דירגת מדריכה זו</p>
+        }
+
+        <div class="action-buttons">
+            <button class="btn-edit" (click)="showEdit = true">✏️ עריכה</button>
+            <button class="btn-delete" (click)="deleteGuide()">🗑️ מחיקה</button>
+        </div>
+    </div>
+</div>
+}
+
+@if (showEdit) {
+<app-edit-guide [guide]="guide" (closed)="showEdit = false" (updated)="onUpdated($event)">
+</app-edit-guide>
+}
+
+}

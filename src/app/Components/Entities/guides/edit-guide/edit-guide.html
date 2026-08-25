@@ -1,0 +1,79 @@
+<div class="sidebar" dir="rtl">
+  <div class="sidebar-header">
+    <button class="close-btn" (click)="closed.emit()">✕</button>
+    <h2>עריכת מדריכה</h2>
+  </div>
+
+  <div class="sidebar-body">
+    <form [formGroup]="editGuideForm" (ngSubmit)="onSubmit()">
+
+      <div class="form-field">
+        <label>שם המדריכה</label>
+        <input formControlName="name" />
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label>אזורי הכשרה</label>
+          <mat-select formControlName="trainingRegionsId" multiple>
+            @for (area of areaList; track area.id) {
+            <mat-option [value]="area.id">{{area.name}}</mat-option>
+            }
+          </mat-select>
+        </div>
+        <div class="form-field">
+          <label>מספר רישיון</label>
+          <input formControlName="licenseNumber" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label>טלפון</label>
+          <input formControlName="phoneNumber" />
+        </div>
+        <div class="form-field">
+          <label>אימייל</label>
+          <input formControlName="email" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label>התמחות</label>
+          <input formControlName="specialization" />
+        </div>
+        <div class="form-field">
+          <label>שנות ניסיון</label>
+          <input type="number" formControlName="yearsOfExperience" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label>סטטוס</label>
+          <mat-select formControlName="status">
+            <mat-option [value]="true">פעיל</mat-option>
+            <mat-option [value]="false">לא פעיל</mat-option>
+          </mat-select>
+        </div>
+
+        <div class="form-field">
+          <label>שייכות דתית</label>
+          <mat-select formControlName="ReligiousAffiliation">
+            <mat-option value="ליטאי">ליטאי</mat-option>
+            <mat-option value="חסידי">חסידי</mat-option>
+            <mat-option value="ספרדי">ספרדי</mat-option>
+            <mat-option value="אשכנזי">אשכנזי</mat-option>
+          </mat-select>
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <button type="button" class="btn-cancel" (click)="closed.emit()">ביטול</button>
+        <button type="submit" class="btn-save" [disabled]="editGuideForm.invalid">שמור שינויים</button>
+      </div>
+
+    </form>
+  </div>
+</div>

@@ -1,0 +1,164 @@
+@if(trail){
+    <div class="overlay" (click)="close()"></div>
+
+    @if (!showEdit) {
+    <div class="sidebar open">
+
+        <div class="sidebar-header">
+            <button class="close-btn" (click)="close()">✕</button>
+
+            <div class="header-title-row">
+                <h2>{{trail.name}}</h2>
+
+                <button class="favorite-btn" (click)="toggleFavorite(trail)" [class.active]="isFavorite(trail)"
+                    title="הוסף למועדפים">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                        [attr.fill]="isFavorite(trail) ? '#e74c3c' : 'none'"
+                        [attr.stroke]="isFavorite(trail) ? '#e74c3c' : '#aaa'" stroke-width="1.2" viewBox="0 0 16 16">
+                        <path
+                            d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" />
+                    </svg>
+                </button>
+            </div>
+
+            <span class="region-badge" [class.golan]="trail.regionId === 1" [class.upper-galil]="trail.regionId === 2"
+                [class.lower-galil]="trail.regionId === 3" [class.carmel]="trail.regionId === 4"
+                [class.coast]="trail.regionId === 5" [class.shomron]="trail.regionId === 6"
+                [class.jerusalem]="trail.regionId === 7" [class.judean-desert]="trail.regionId === 8"
+                [class.negev]="trail.regionId === 9" [class.eilat]="trail.regionId === 10">
+                {{getRegionName(trail.regionId)}}
+            </span>
+        </div>
+
+        <div class="sidebar-body">
+
+            @if (trail.images && trail.images.length > 0) {
+            <div class="carousel-container">
+                <div id="trailCarousel" class="carousel slide" data-ride="carousel">
+                    <!-- Indicators -->
+                    <ol class="carousel-indicators">
+                        @for (image of trail.images; track $index; let i = $index) {
+                        <li [class.active]="currentImageIndex === i" (click)="goToImage(i)" class="carousel-indicator">
+                        </li>
+                        }
+                    </ol>
+
+                    <!-- Slides -->
+                    <div class="carousel-inner">
+                        @for (image of trail.images; track $index; let i = $index) {
+                        <div class="carousel-item" [class.active]="currentImageIndex === i">
+                            <img [src]="image" [alt]="trail.name + ' - תמונה ' + (i + 1)" class="carousel-image">
+                        </div>
+                        }
+                    </div>
+
+                    <!-- Controls -->
+                    <button class="carousel-control-prev" (click)="prevImage()" type="button">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" (click)="nextImage()" type="button">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </button>
+                </div>
+            </div>
+            }
+
+
+            <div class="detail-section">
+                <h3>תיאור</h3>
+                <p>{{trail.describshain}}</p>
+            </div>
+
+            <div class="detail-section">
+                <h3>דרכי הגעה</h3>
+                <p>{{trail.directions}}</p>
+            </div>
+
+            <div class="detail-grid">
+
+                <div class="detail-card">
+                    <span class="detail-label">רמת קושי</span>
+                    <span class="badge" [class.easy]="trail.DifficultyLevel === 'קל'"
+                        [class.medium]="trail.DifficultyLevel === 'בינוני'"
+                        [class.hard]="trail.DifficultyLevel === 'קשה'">
+                        {{trail.DifficultyLevel}}
+                    </span>
+                </div>
+
+                <div class="detail-card">
+                    <span class="detail-label">סוג מסלול</span>
+                    <span class="badge" [class.wet]="trail.WetDryTrack === 'רטוב'"
+                        [class.dry]="trail.WetDryTrack === 'יבש'">
+                        {{trail.WetDryTrack === 'רטוב' ? '💧 רטוב' : '☀️ יבש'}}
+                    </span>
+                </div>
+
+                <div class="detail-card">
+                    <span class="detail-label">גיל מינימום</span>
+                    <span class="detail-value">{{trail.minimumAge}}+</span>
+                </div>
+
+                <div class="detail-card">
+                    <span class="detail-label">גיל מקסימום</span>
+                    <span class="detail-value">עד {{trail.MaximumAge}}</span>
+                </div>
+
+                <div class="detail-card">
+                    <span class="detail-label">עונה</span>
+                    <span class="detail-value">{{trail.season}}</span>
+                </div>
+
+                <div class="detail-card">
+                    <span class="detail-label">אורך</span>
+                    <span class="detail-value">{{trail.RouteLengthInKM}} ק"מ</span>
+                </div>
+
+                <div class="detail-card">
+                    <span class="detail-label">דירוג ממוצע</span>
+                    <button class="stars-btn" (click)="goToRatings()" title="לחץ לצפייה בכל הדירוגים">
+                        @for (star of getStarsArray(getAverageRating()); track $index) {
+                        <span class="star" [class.full]="star === 'full'">★</span>
+                        }
+                        <span class="rating-count">({{ getAverageRating() | number:'1.1-1' }})</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        @if (!alreadyRated()) {
+        <div class="rating-form">
+            <h4>דרגי את המסלול</h4>
+
+            <div class="rating-stars-input">
+                @for (star of [1,2,3,4,5]; track star) {
+                <span class="star-input" [class.selected]="star <= userRating" (click)="setUserRating(star)">★</span>
+                }
+            </div>
+
+            <textarea class="rating-comment" [(ngModel)]="userComment" placeholder="הוסיפי הערה או המלצה..."
+                rows="3"></textarea>
+
+            @if (ratingError) {
+            <p class="rating-error">{{ ratingError }}</p>
+            }
+
+            <button class="btn-submit-rating" (click)="submitRating()">שמור דירוג</button>
+        </div>
+        } @else {
+        <p class="already-rated">✓ כבר דירגת מסלול זה</p>
+        }
+        <div class="action-buttons">
+            <button class="btn-edit" (click)="showEdit = true">✏️ עריכה</button>
+            <button class="btn-delete" (click)="deleteTrail()">🗑️ מחיקה</button>
+        </div>
+    </div>
+    }
+
+    @if (showEdit) {
+    <app-edit-trail [trail]="trail" (closed)="showEdit = false" (updated)="onUpdated($event)">
+    </app-edit-trail>
+    }
+}

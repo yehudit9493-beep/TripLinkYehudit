@@ -1,0 +1,105 @@
+<div class="sidebar" dir="rtl">
+  <div class="sidebar-header">
+    <button class="close-btn" (click)="closed.emit()">✕</button>
+    <h2>עריכת מקום לינה</h2>
+  </div>
+
+  <div class="sidebar-body">
+    <form [formGroup]="editAccommodationForm" (ngSubmit)="onSubmit()">
+
+      <div class="form-field">
+        <label>שם המקום</label>
+        <input formControlName="name" />
+      </div>
+
+      <div class="form-field">
+        <label>אזור</label>
+        <select formControlName="regionId">
+          @for (area of areaList; track area.id) {
+          <option [value]="area.id">{{area.name}}</option>
+          }
+        </select>
+      </div>
+
+      <div class="form-field">
+        <label>כתובת</label>
+        <input formControlName="address" />
+      </div>
+
+      <div class="form-field">
+        <label>עיר</label>
+
+        @if (cities().length > 0) {
+        <div class="selected-city">
+          {{ editAccommodationForm.get('city')?.value || 'לא נבחרה עיר' }}
+        </div>
+
+        <div class="city-autocomplete-container">
+          <input type="text" placeholder="חפש עיר..." [value]="citySearchText()" (input)="onCitySearchChange($event)"
+            class="form-control" autocomplete="off" />
+
+          @if (citySearchText()) {
+          <div class="city-dropdown-list">
+            @for (city of filteredCities(); track city) {
+            <button type="button" class="city-option" (click)="selectCity(city)">
+              {{ city }}
+            </button>
+            }
+          </div>
+          }
+        </div>
+        } @else {
+        <input type="text" disabled placeholder="טוען ערים..." />
+        }
+      </div>
+
+      <div class="form-field">
+        <label>תיאור</label>
+        <textarea formControlName="description" rows="3"></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label>מספר חדרים</label>
+          <input type="number" formControlName="numberOfRooms" />
+        </div>
+
+        <div class="form-field">
+          <label>מספר מיטות</label>
+          <input type="number" formControlName="numberOfBeds" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label>מחיר ללילה (₪)</label>
+          <input type="number" formControlName="pricePerNight" />
+        </div>
+
+        <div class="form-field">
+          <label>טלפון</label>
+          <input formControlName="phoneNumber" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field checkbox-field">
+          <label>
+            <input type="checkbox" formControlName="Auditorium" />
+            יש אודיטוריום
+          </label>
+        </div>
+        <div class="form-field">
+          <label>כשרות</label>
+          <input formControlName="Kashrut" placeholder="לדוגמה: כשר, לא כשר" />
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <button type="button" class="btn-cancel" (click)="closed.emit()">ביטול</button>
+        <button type="submit" class="btn-save" [disabled]="editAccommodationForm.invalid">שמור שינויים</button>
+      </div>
+
+    </form>
+  </div>
+</div>

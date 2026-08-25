@@ -1,0 +1,290 @@
+div[dir="rtl"] {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  padding: 2rem 1.5rem;
+  direction: rtl;
+}
+
+.page-header {
+  text-align: right;
+  margin-bottom: 1.5rem;
+
+  h1 {
+    font-size: 26px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0;
+  }
+
+  p {
+    font-size: 14px;
+    color: #888;
+    margin-top: 4px;
+  }
+}
+
+.filters-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1.25rem;
+  width: fit-content;
+}
+
+.filter-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .search-icon {
+    font-size: 16px;
+    line-height: 1;
+  }
+
+  input {
+    width: 280px;
+    height: 40px;
+    padding: 0 14px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    outline: none;
+    direction: rtl;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+
+    &:focus {
+      border-color: #378ADD;
+    }
+  }
+}
+
+.custom-select-wrapper {
+  width: 220px;
+  height: 40px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: #bbb;
+  }
+
+  &:focus-within {
+    border-color: #378ADD;
+  }
+
+  mat-select {
+    width: 100%;
+    font-size: 14px;
+    color: #1a1a1a;
+
+    .mat-mdc-select-trigger {
+      height: 40px;
+      display: flex;
+      align-items: center;
+    }
+
+    .mat-mdc-select-placeholder {
+      color: #888;
+      font-size: 14px;
+    }
+
+    .mat-mdc-select-arrow {
+      color: #aaa;
+    }
+  }
+}
+
+.trails-table-wrapper {
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 14px;
+  overflow: hidden;
+
+  table {
+    width: 100%;
+    direction: rtl;
+  }
+
+  th.mat-header-cell {
+    font-size: 13px;
+    font-weight: 700;
+    color: #555;
+    background: #fafafa;
+    border-bottom: 1px solid #e8e8e8;
+    padding: 12px 16px;
+    text-align: right;
+  }
+
+  td.mat-cell {
+    font-size: 14px;
+    color: #1a1a1a;
+    padding: 14px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: right;
+  }
+
+  tr.mat-row:last-child td.mat-cell {
+    border-bottom: none;
+  }
+
+  tr.mat-row:hover {
+    background: #f9f9f9;
+    transition: background 0.15s;
+  }
+}
+
+.region-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+
+  &.golan {
+    background: #E8F5E9;
+    color: #1B5E20;
+  }
+
+  &.upper-galil {
+    background: #E1F5EE;
+    color: #085041;
+  }
+
+  &.lower-galil {
+    background: #F1F8E9;
+    color: #33691E;
+  }
+
+  &.carmel {
+    background: #E8F5E9;
+    color: #2E7D32;
+  }
+
+  &.coast {
+    background: #E3F2FD;
+    color: #0D47A1;
+  }
+
+  &.shomron {
+    background: #FFF8E1;
+    color: #F57F17;
+  }
+
+  &.jerusalem {
+    background: #FFF3E0;
+    color: #E65100;
+  }
+
+  &.judean-desert {
+    background: #FBE9E7;
+    color: #BF360C;
+  }
+
+  &.negev {
+    background: #FAEEDA;
+    color: #633806;
+  }
+
+  &.eilat {
+    background: #E0F7FA;
+    color: #006064;
+  }
+}
+
+.duration-cell {
+  font-size: 13px;
+  color: #555;
+}
+
+.no-data-row td {
+  text-align: center;
+  padding: 2rem;
+  color: #aaa;
+  font-size: 14px;
+}
+
+.details-btn {
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 500;
+  border: none;
+  border-radius: 20px;
+  background: #E6F1FB;
+  color: #0C447C;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+
+  &:hover {
+    background: #378ADD;
+    color: #fff;
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+.example-additional-selection {
+  opacity: 0.75;
+  font-size: 0.75em;
+  line-height: 1;
+}
+
+.filters-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 1.25rem;
+  width: 100%; // עכשיו צריך להיות מלא כדי שה-space-between יעבוד
+}
+
+.filters-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.add-trail-btn {
+  height: 40px;
+  padding: 0 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  background: #378ADD;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background: #2c6fb3;
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+.stars-cell {
+  display: flex;
+  gap: 1px;
+}
+
+.star-sm {
+  font-size: 14px;
+  color: #ddd;
+
+  &.full {
+    color: #f5a623;
+  }
+}

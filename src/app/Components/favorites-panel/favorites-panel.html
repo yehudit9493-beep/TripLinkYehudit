@@ -1,0 +1,30 @@
+<div class="favorites-panel">
+  <div class="panel-header">
+    <h3>המועדפים שלי ❤️</h3>
+    <button class="close-btn" (click)="closed.emit()">✕</button>
+  </div>
+
+  <div class="panel-body">
+
+    @if (favorites.length === 0) {
+      <div class="empty-state">
+        <span>😕</span>
+        <p>אין פריטים במועדפים עדיין</p>
+      </div>
+    }
+
+    @for (item of favorites; track item.data.id) {
+      <div class="favorite-item">
+        <div class="item-icon">{{ getTypeIcon(item.type) }}</div>
+        
+        <div class="item-info" (click)="onItemClick(item)">
+          <span class="item-name">{{ getName(item) }}</span>
+          <span class="item-type">{{ getTypeLabel(item.type) }}</span>
+        </div>
+        
+        <button class="remove-btn" (click)="removeFavorite(item)" title="הסר מהמועדפים">✕</button>
+      </div>
+    }
+
+  </div>
+</div>

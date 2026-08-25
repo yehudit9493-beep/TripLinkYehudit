@@ -1,0 +1,104 @@
+<div class="sidebar" dir="rtl">
+    <div class="sidebar-header">
+        <button class="close-btn" (click)="closed.emit()">✕</button>
+        <h2>הוספת אטרקציה</h2>
+    </div>
+
+    <div class="sidebar-body">
+        <form [formGroup]="addAttractionForm" (ngSubmit)="onSubmit()">
+
+            <div class="form-field">
+                <label>שם האטרקציה</label>
+                <input formControlName="name" />
+            </div>
+
+            <div class="form-row">
+                <div class="form-field">
+                    <label>אזור</label>
+                    <select formControlName="regionId">
+                        @for (area of areaList; track area.id) {
+                        <option [value]="area.id">{{area.name}}</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="form-field">
+                <label class="form-label fw-bold">תמונות</label>
+
+                @if (previewUrls.length > 0) {
+                <div class="new-images">
+                    <div class="images-title">תמונות חדשות ({{ previewUrls.length }})</div>
+                    <div class="images-container">
+                        @for (preview of previewUrls; track $index; let i = $index) {
+                        <div class="image-item new">
+                            <img [src]="preview" alt="preview">
+                            <button type="button" class="btn-remove" (click)="removeNewImage(i)"
+                                [disabled]="isSaving">×</button>
+                        </div>
+                        }
+                    </div>
+                </div>
+                }
+
+                <div class="input-wrapper">
+                    <input #fileInput type="file" class="form-control" accept="image/*" multiple
+                        (change)="onImagesSelected($event)">
+                    <small class="text-muted">בחר תמונות לאטרקציה</small>
+                </div>
+            </div>
+
+            <div class="form-field">
+                <label>סוג</label>
+                <input formControlName="type" />
+            </div>
+
+            <div class="form-field">
+                <label>כתובת</label>
+                <input formControlName="address" />
+            </div>
+
+            <div class="form-row">
+                <div class="form-field">
+                    <label>שעות פתיחה</label>
+                    <input formControlName="openingHours" />
+                </div>
+                <div class="form-field">
+                    <label>כניסה</label>
+                    <input type="number" formControlName="entryFee" />
+                </div>
+            </div>
+
+            <div class="form-field">
+                <label>טלפון</label>
+                <input formControlName="phoneNumber" />
+            </div>
+
+            <div class="form-field">
+                <label>תיאור</label>
+                <textarea formControlName="description" rows="3"></textarea>
+            </div>
+
+            <div class="form-field">
+                <label class="checkbox-label">
+                    <input type="checkbox" formControlName="suitableForKids" />
+                    מתאים לילדים
+                </label>
+            </div>
+
+            <div class="form-field">
+                <label class="checkbox-label">
+                    <input type="checkbox" formControlName="SabbathKeeper" />
+                    שומר שבת
+                </label>
+            </div>
+
+            <div class="action-buttons">
+                <button type="button" class="btn-cancel" (click)="closed.emit()">ביטול</button>
+                <button type="submit" class="btn-save" [disabled]="addAttractionForm.invalid || isSaving">
+                    {{ isSaving ? 'שומר...' : 'הוסף לאטרקציות' }}
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>

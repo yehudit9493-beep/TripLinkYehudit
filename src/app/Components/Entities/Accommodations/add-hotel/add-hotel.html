@@ -1,0 +1,58 @@
+<div class="sidebar" dir="rtl">
+    <div class="sidebar-header">
+        <button class="close-btn" (click)="closed.emit()">✕</button>
+        <h2>הוספת מקום לינה</h2>
+    </div>
+
+    <div class="sidebar-body">
+        <form [formGroup]="addAccommodationForm" (ngSubmit)="onSubmit()">
+
+            <div class="form-field">
+                <label>שם המקום</label>
+                <input formControlName="name" />
+            </div>
+
+            <div class="form-field">
+                <label>אזור</label>
+                <select formControlName="regionId">
+                    @for (area of areaList; track area.id) {
+                    <option [value]="area.id">{{area.name}}</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-field">
+                <label>כתובת</label>
+                <input formControlName="address" />
+            </div>
+
+            <div class="form-field">
+                <label>תיאור</label>
+                <textarea formControlName="description" rows="3"></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-field">
+                    <label>מספר חדרים</label>
+                    <input type="number" formControlName="numberOfRooms" />
+                </div>
+                <div class="form-field">
+                    <label>מחיר ללילה (₪)</label>
+                    <input type="number" formControlName="pricePerNight" />
+                </div>
+            </div>
+
+            <div class="form-field">
+                <label>טלפון</label>
+                <input formControlName="phoneNumber" />
+            </div>
+
+            <div class="action-buttons">
+                <button type="button" class="btn-cancel" (click)="closed.emit()">ביטול</button>
+                <button type="submit" class="btn-save" [disabled]="addAccommodationForm.invalid">הוסף למקומות
+                    לינה</button>
+            </div>
+
+        </form>
+    </div>
+</div>

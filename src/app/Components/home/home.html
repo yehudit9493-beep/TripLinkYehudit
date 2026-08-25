@@ -1,0 +1,298 @@
+
+<section class="hero-section">
+
+  <!-- שכבה כהה -->
+  <div class="hero-overlay"></div>
+
+
+  <!-- תוכן -->
+  <div class="hero-content">
+
+    <div class="hero-badge">
+
+      <i class="bi bi-compass"></i>
+
+      עולם הטיולים שלך במקום אחד
+
+    </div>
+
+
+    <div class="hero-logo">
+
+      <div class="hero-logo-icon">
+        <div class="hero-link-chain"></div>
+      </div>
+
+      <div class="hero-logo-text">
+        <span>Trip</span><strong>Link</strong>
+      </div>
+
+    </div>
+
+    <h2>
+
+      מחברים בין אנשים
+
+      <br>
+
+      <span>לטיולים בלתי נשכחים</span>
+
+    </h2>
+
+
+    <p>
+
+      הפלטפורמה החכמה לניהול טיולים,
+      מסלולים, מדריכות וקהילה —
+      פשוט, מהיר ומדויק.
+
+    </p>
+
+
+    <div class="hero-buttons">
+
+      <button routerLink="/entry" class="main-btn">
+
+        <i class="bi bi-box-arrow-in-left"></i>
+
+        כניסה לאתר
+
+      </button>
+
+
+      <button (click)="openLoginOptions()" class="secondary-btn">
+
+        <i class="bi bi-person-plus"></i>
+
+        הצטרפות ל-TripLink
+
+      </button>
+
+    </div>
+
+
+    <div class="scroll-hint">
+
+      <span>גלי עוד</span>
+
+      <i class="bi bi-chevron-down"></i>
+
+    </div>
+
+  </div>
+
+
+
+</section>
+
+<!-- =====================================================
+     FORUM SECTION
+===================================================== -->
+
+<section class="forum-section" dir="rtl">
+
+  <div class="forum-section-title">
+
+    <span class="forum-label">
+      מהקהילה שלנו
+    </span>
+
+    <h2>
+      הודעות נבחרות
+      <strong>מהפורום</strong>
+    </h2>
+
+    <p>
+      רעיונות, המלצות וחוויות
+      מהקהילה של TripLink
+    </p>
+
+  </div>
+
+
+  @if (currentForumMessage) {
+
+  <div class="forum-featured-card">
+
+    <!-- אייקון -->
+
+    <div class="forum-message-icon">
+      <i class="bi bi-chat-quote-fill"></i>
+    </div>
+
+
+    <!-- תוכן ההודעה -->
+
+    <div class="forum-message-content">
+
+      <div class="forum-message-top">
+
+        <div class="forum-user">
+
+          <div class="forum-avatar">
+            {{ currentForumMessage.userName[0].toUpperCase() }}
+          </div>
+
+          <div>
+
+            <strong>
+              {{ currentForumMessage.userName }}
+            </strong>
+
+            <small>
+              {{ currentForumMessage.date | date:'dd/MM/yyyy' }}
+            </small>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      @if (currentForumMessage.title) {
+
+      <h3>
+        {{ currentForumMessage.title }}
+      </h3>
+
+      }
+
+
+      <p class="forum-message-text">
+
+        {{ currentForumMessage.content }}
+
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- נקודות -->
+
+  <div class="forum-dots">
+
+    @for (
+    msg of forumMessages;
+    track msg.idMessage;
+    let i = $index
+    ) {
+
+    <button type="button" [class.active]="i === currentForumMessageIndex" (click)="goToForumMessage(i)"
+      aria-label="עבור להודעה">
+
+    </button>
+
+    }
+
+  </div>
+
+  }
+  @else {
+
+  <div class="forum-empty">
+
+    <i class="bi bi-chat"></i>
+
+    <p>
+      עדיין אין הודעות להצגה
+    </p>
+
+  </div>
+
+  }
+
+</section>
+
+
+<section class="intro-section">
+
+  <div class="section-title">
+
+    <span>הכול במקום אחד</span>
+
+    <h2>
+      הדרך החכמה
+      <strong>לתכנן ולנהל טיולים</strong>
+    </h2>
+
+    <p>
+      TripLink נוצר כדי להפוך את העבודה היומיומית
+      לפשוטה, מסודרת ונעימה יותר.
+    </p>
+
+  </div>
+
+
+  <div class="features-container">
+
+    <div class="feature-card">
+
+      <div class="feature-icon">
+        <i class="bi bi-map"></i>
+      </div>
+
+      <h3>
+        ניהול מסלולים
+      </h3>
+
+      <p>
+        ניהול מסלולים, אזורים ואטרקציות
+        בצורה נוחה ומסודרת.
+      </p>
+
+      <span class="feature-number">
+        01
+      </span>
+
+    </div>
+
+
+    <div class="feature-card">
+
+      <div class="feature-icon">
+        <i class="bi bi-people"></i>
+      </div>
+
+      <h3>
+        קהילת מדריכות
+      </h3>
+
+      <p>
+        שתפי רעיונות, המלצות וחוויות
+        עם מדריכות ומרכזות נוספות.
+      </p>
+
+      <span class="feature-number">
+        02
+      </span>
+
+    </div>
+
+
+    <div class="feature-card">
+
+      <div class="feature-icon">
+        <i class="bi bi-lightning-charge"></i>
+      </div>
+
+      <h3>
+        פשוט ומהיר
+      </h3>
+
+      <p>
+        ממשק ברור ונוח שמאפשר לך
+        למצוא את מה שאת צריכה במהירות.
+      </p>
+
+      <span class="feature-number">
+        03
+      </span>
+
+    </div>
+
+  </div>
+
+</section>

@@ -1,0 +1,24 @@
+<div class="add-message-page" dir="rtl">
+    <div class="add-message-container">
+
+        <h2>✏️ כתוב הודעה חדשה</h2>
+
+        <div class="form-field">
+            <label>כותרת ההודעה</label>
+            <input type="text" [(ngModel)]="newMessage.title" placeholder="נושא ההודעה..." name="title" />
+        </div>
+
+        <div class="form-field">
+            <label>תוכן ההודעה</label>
+            <textarea [(ngModel)]="newMessage.content" placeholder="שתף את החוויה שלך..." rows="5"></textarea>
+        </div>
+
+        <div class="form-actions">
+            <button class="btn-cancel" (click)="cancelMessage()">ביטול</button>
+            <button class="btn-submit" (click)="addMessage()" [disabled]="!newMessage.content || !newMessage.userName">
+                פרסם הודעה
+            </button>
+        </div>
+
+    </div>
+</div>

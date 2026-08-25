@@ -1,0 +1,26 @@
+<div class="ratings-page">
+
+    <button class="back-btn" (click)="goBack()">→ חזרה</button>
+
+    <h2 class="page-title">דירוגים עבור: {{ entityName }}</h2>
+
+    @if (ratings.length === 0) {
+    <p class="empty-msg">אין דירוגים עדיין</p>
+    }
+
+    @for (rating of ratings; track $index) {
+    <div class="rating-card">
+        <div class="rating-header">
+            <span class="rater-name">{{ rating.raterName }}</span>
+            <span class="rating-date">{{ rating.date | date:'dd/MM/yyyy' }}</span>
+        </div>
+        <div class="stars">
+            @for (star of getStarsArray(rating.stars); track $index) {
+            <span class="star" [class.full]="star === 'full'">★</span>
+            }
+        </div>
+        <p class="rating-comment">{{ rating.comment }}</p>
+    </div>
+    }
+
+</div>

@@ -1,0 +1,64 @@
+
+<div class="home-page" dir="rtl">
+
+  <!-- שורה עליונה: כרטיסיות + פורומים -->
+  <div class="top-layout">
+
+    <!-- ימין: כרטיסיות בגודל אחיד -->
+    <div class="bento-grid">
+      <div class="bento-card tall" (click)="navigateTo('/trails')">
+        <div class="card-emoji">🥾</div>
+        <h3>מסלולים</h3>
+        <p>גלו את המסלולים הטובים ביותר</p>
+      </div>
+      <div class="bento-card attractions" (click)="navigateTo('/attractions')">
+        <div class="card-emoji">🏛️</div>
+        <h3>אטרקציות</h3>
+        <p>אטרקציות לא לפספס</p>
+      </div>
+      <div class="bento-card accommodation" (click)="navigateTo('/hotels')">
+        <div class="card-emoji">🏨</div>
+        <h3>מקומות לינה</h3>
+        <p>לינה נוחה ובמחיר משתלם</p>
+      </div>
+      <div class="bento-card wide" (click)="navigateTo('/guide')">
+        <div class="card-emoji">🧭</div>
+        <h3>מדריכות</h3>
+        <p>מדריכות טיולים מנוסות ומקצועיות</p>
+      </div>
+    </div>
+
+    <!-- שמאל: פורומים -->
+    <div class="forums-section">
+      <h2>פורומים</h2>
+      <ul>
+        <li>
+          <a routerLink="/forum/1" class="hk-btn btn-fill-left">
+            <span>💬 חוויות והמלצות</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/forum/3" class="hk-btn btn-fill-right">
+            <span>⚠️ פורום בטיחות</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/forum/2" class="hk-btn btn-fill-bottom">
+            <span>❓ שאלות ותשובות</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- שורה תחתונה: מפה -->
+  <div class="map-section">
+    <h2>מפת ארץ ישראל</h2>
+    <div class="map-placeholder">
+      🗺️
+      <p>המפה תופיע כאן</p>
+    </div>
+  </div>
+
+</div>

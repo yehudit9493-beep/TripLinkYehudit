@@ -1,0 +1,314 @@
+
+:host {
+    display: block;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #e8f4fd 0%, #f0f7ff 100%);
+}
+
+.home-page {
+    padding: 32px;
+    min-height: 100vh;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+// ==================
+// שורה עליונה
+// ==================
+.top-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 32px;
+    align-items: start;
+}
+
+// ==================
+// כרטיסיות
+// ==================
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.bento-card {
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
+    min-height: 280px;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.15);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 0;
+    }
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+
+        &::before {
+            opacity: 1;
+        }
+    }
+
+    .card-emoji {
+        font-size: 2.2rem;
+        margin-bottom: 12px;
+        z-index: 1;
+        position: relative;
+    }
+
+    h3 {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #0d1b2e;
+        margin: 0 0 4px;
+        z-index: 1;
+        position: relative;
+        text-shadow: none;
+    }
+
+    p {
+        font-size: 0.92rem;
+        color: rgba(13, 27, 46, 0.7);
+        margin: 0;
+        z-index: 1;
+        position: relative;
+    }
+
+    &.tall {
+        // מסלולים — ורוד
+        background: linear-gradient(160deg, #4db8ff 0%, #a8deff 100%);
+    }
+
+    &.attractions {
+        // אטרקציות — כתום
+        background: linear-gradient(135deg, #4db8ff 0%, #a8deff 100%);
+    }
+
+    &.accommodation {
+        // לינה — תכלת-ירוק
+        background: linear-gradient(135deg, #4db8ff 0%, #a8deff 100%);
+    }
+
+    &.wide {
+        // מדריכות — תכלת כחול
+        background: linear-gradient(135deg, #4db8ff 0%, #a8deff 100%);
+    }
+
+}
+
+// ==================
+// פורומים
+// ==================
+.forums-section {
+    background: white;
+    padding: 28px 24px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-radius: 12px;
+
+    h2 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #1a1a2e;
+        margin: 0;
+        text-align: center;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+}
+
+.hk-btn {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 13px 20px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.88rem;
+    overflow: hidden;
+    transition: color 0.25s ease;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.btn-fill-left {
+    border: 2px solid #0990d4;
+    color: #0990d4;
+    background: transparent;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 100%;
+        background: #0990d4;
+        transition: width 0.25s ease;
+        z-index: 0;
+    }
+
+    span {
+        position: relative;
+        z-index: 1;
+    }
+
+    &:hover {
+        color: #fff;
+
+        &::before {
+            width: 100%;
+        }
+    }
+}
+
+.btn-fill-right {
+    border: 2px solid #0990d4;
+    color: #0990d4;
+    background: transparent;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 0;
+        height: 100%;
+        background: #0990d4;
+        transition: width 0.25s ease;
+        z-index: 0;
+    }
+
+    span {
+        position: relative;
+        z-index: 1;
+    }
+
+    &:hover {
+        color: #fff;
+
+        &::before {
+            width: 100%;
+        }
+    }
+}
+
+.btn-fill-bottom {
+    border: 2px solid #0990d4;
+    color: #0990d4;
+    background: transparent;
+
+    &::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 0;
+        background: #0990d4;
+        transition: height 0.25s ease;
+        z-index: 0;
+    }
+
+    span {
+        position: relative;
+        z-index: 1;
+    }
+
+    &:hover {
+        color: #fff;
+
+        &::before {
+            height: 100%;
+        }
+    }
+}
+
+// ==================
+// מפה
+// ==================
+.map-section {
+    background: white;
+    padding: 28px 24px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    border-radius: 12px;
+
+    h2 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #1a1a2e;
+        margin: 0;
+        text-align: center;
+    }
+}
+
+.map-placeholder {
+    background: linear-gradient(135deg, #e8f4fd 0%, #d0eafa 100%);
+    border: 2px dashed rgba(9, 144, 212, 0.3);
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: #6c757d;
+
+    p {
+        font-size: 0.9rem;
+        margin-top: 12px;
+    }
+}
+
+// ==================
+// רספונסיבי
+// ==================
+@media (max-width: 1024px) {
+    .top-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .bento-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .home-page {
+        padding: 16px;
+    }
+
+    .bento-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

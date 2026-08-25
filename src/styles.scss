@@ -1,0 +1,217 @@
+// Include theming for Angular Material with `mat.theme()`.
+// This Sass mixin will define CSS variables that are used for styling Angular Material
+// components according to the Material 3 design spec.
+// Learn more about theming and how to use it for your application's
+// custom components at https://material.angular.dev/guide/theming
+@use '@angular/material' as mat;
+
+
+html {
+    height: 100%;
+    @include mat.theme((color: (primary: mat.$azure-palette,
+                tertiary: mat.$blue-palette,
+            ),
+            typography: Roboto,
+            density: 0,
+        ));
+}
+
+body {
+    // Default the application to a light color theme. This can be changed to
+    // `dark` to enable the dark color theme, or to `light dark` to defer to the
+    // user's system settings.
+    color-scheme: light;
+
+    // Set a default background, font and text colors for the application using
+    // Angular Material's system-level CSS variables. Learn more about these
+    // variables at https://material.angular.dev/guide/system-variables
+    background-color: var(--mat-sys-surface);
+    color: var(--mat-sys-on-surface);
+    font: var(--mat-sys-body-medium);
+
+    // Reset the user agent margin.
+    margin: 0;
+    height: 100%;
+}
+
+/* You can add global styles to this file, and also import other style files */
+body.home-bg {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),
+        url('/img.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 400px;
+    height: 100%;
+    background: #fff;
+    z-index: 101;
+    border-right: 1px solid #e8e8e8;
+    overflow-y: auto;
+    direction: rtl;
+}
+
+.sidebar-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+    position: relative;
+
+    h2 {
+        font-size: 20px;
+        font-weight: 600;
+        margin: 0;
+        text-align: right;
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        background: none;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+        color: #aaa;
+
+        &:hover {
+            color: #333;
+        }
+    }
+}
+
+.sidebar-body {
+    padding: 1.5rem;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 1rem;
+
+    mat-select {
+        width: 100%;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 8px 12px;
+        font-size: 14px;
+        background: white;
+    }
+
+    label {
+        font-size: 12px;
+        color: #aaa;
+        font-weight: 500;
+        text-align: right;
+    }
+
+    input,
+    textarea,
+    select {
+        padding: 10px 12px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 14px;
+        outline: none;
+        transition: border 0.2s;
+        font-family: inherit;
+        text-align: right;
+        direction: rtl;
+        background: #fafafa;
+
+        &:focus {
+            border-color: #378ADD;
+            background: white;
+        }
+    }
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 1.5rem;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 1.5rem;
+
+    .btn-cancel {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background: white;
+        color: #666;
+        cursor: pointer;
+        font-size: 14px;
+
+        &:hover {
+            background: #f5f5f5;
+        }
+    }
+
+    .btn-save {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        background: #378ADD;
+        color: white;
+        cursor: pointer;
+        font-size: 14px;
+
+        &:hover {
+            background: #2a6aad;
+        }
+
+        &:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+    }
+}
+
+.checkbox-group {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 8px 0;
+
+    .checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 14px;
+        cursor: pointer;
+        color: #333;
+
+        input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: #378ADD;
+        }
+    }
+}
+
+.sidebar {
+    z-index: 1100 !important;
+    position: fixed;
+}
+
+.overlay {
+    z-index: 1050 !important;
+    position: fixed;
+}
+

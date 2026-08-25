@@ -1,0 +1,112 @@
+<!-- <button routerLink="/home">חזור</button> -->
+<button routerLink="/" class="btn btn-outline-dark btn-sm">חזור</button>
+
+<h1>טופס הרשמה לרכזת טיולים</h1>
+
+<form [formGroup]="CoordinatorForm">
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">שם פרטי</label>
+        <div class="input-wrapper">
+            <input type="text" formControlName="FirsName" class="form-control" placeholder="הכנס שם פרטי">
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">שם משפחה</label>
+        <div class="input-wrapper">
+            <input type="text" formControlName="LastName" class="form-control" placeholder="הכנס שם משפחה">
+        </div>
+    </div>
+
+    <mat-form-field>
+        <mat-label>תפקיד</mat-label>
+        <mat-select formControlName="Title">
+            <mat-option value="one">מנהלת</mat-option>
+            <mat-option value="two">סגנית</mat-option>
+            <mat-option value="one">מרכזת</mat-option>
+            <mat-option value="two">מורה</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">טלפון </label>
+        <div class="input-wrapper">
+            <input type="text" formControlName="Phon" class="form-control" placeholder="הכנס מספר טלפון ">
+        </div>
+    </div>
+
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">אימייל </label>
+        <div class="input-wrapper">
+            <input type="text" formControlName="Email" class="form-control" placeholder="הכנס כתובת אימייל ">
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">שם משתמש </label>
+        <div class="input-wrapper">
+            <input type="text" formControlName="UserName" class="form-control" placeholder="הכנס שם משתמש">
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">סיסמה </label>
+        <div class="input-wrapper">
+            <input type="text" formControlName="Password" class="form-control" placeholder="הכנס סיסמה ">
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">שם מוסד </label>
+        <div class="input-wrapper">
+            <input type="text" formControlName="InstitutionName" class="form-control" placeholder="הכנס שם מוסד">
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">עיר </label>
+        <div class="input-wrapper">
+            <input type="text" formControlName="InstitutionCity" class="form-control" placeholder="הכנס עיר ">
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">טלפון מזכירות </label>
+        <div class="input-wrapper">
+            <input type="text" formControlName="InstitutionPhon" class="form-control" placeholder="הכנס טלפון מזכירות">
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">שם מנהל </label>
+        <div class="input-wrapper">
+            <input type="text" formControlName="PrincipalName" class="form-control" placeholder="הכנס שם מנהל">
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">סוג מוסד</label>
+        <div class="input-wrapper">
+            <input type="text" formControlName="InstitutionType" class="form-control" placeholder="הכנס סוג מוסד ">
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">שכבת גיל</label>
+        <div class="input-wrapper">
+            <input type="text" formControlName="AgeGroup" class="form-control" placeholder="הכנס שכבת גיל">
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">מגדר</label>
+        <div class="input-wrapper">
+            <input type="text" formControlName="Gender" class="form-control" placeholder="הכנס מגדר">
+        </div>
+    </div>
+
+    <button type="button" [disabled]="!CoordinatorForm.valid">לשליחת הטופס</button>
+
+</form>

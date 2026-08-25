@@ -1,0 +1,167 @@
+@if (attraction) {
+<div class="overlay" (click)="close()"></div>
+
+@if (!showEdit) {
+<div class="sidebar open">
+    <div class="sidebar-header">
+        <button class="close-btn" (click)="close()">✕</button>
+        <div class="header-title-row">
+            <h2>{{attraction.attractionName}}</h2>
+            <button class="favorite-btn" (click)="toggleFavorite(attraction)" [class.active]="isFavorite(attraction)"
+                title="הוסף למועדפים">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                    [attr.fill]="isFavorite(attraction) ? '#e74c3c' : 'none'"
+                    [attr.stroke]="isFavorite(attraction) ? '#e74c3c' : '#aaa'" stroke-width="1.2" viewBox="0 0 16 16">
+                    <path
+                        d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" />
+                </svg>
+            </button>
+        </div>
+        <span class="region-badge" [class.golan]="attraction.areaId === 1" [class.upper-galil]="attraction.areaId === 2"
+            [class.lower-galil]="attraction.areaId === 3" [class.carmel]="attraction.areaId === 4"
+            [class.coast]="attraction.areaId === 5" [class.shomron]="attraction.areaId === 6"
+            [class.jerusalem]="attraction.areaId === 7" [class.judean-desert]="attraction.areaId === 8"
+            [class.negev]="attraction.areaId === 9" [class.eilat]="attraction.areaId === 10">
+            {{getRegionName(attraction.areaId)}}
+        </span>
+    </div>
+
+    <div class="sidebar-body">
+
+        @if (attraction.images && attraction.images.length > 0) {
+        <div class="carousel-container">
+            <div id="attractionCarousel" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    @for (image of attraction.images; track $index; let i = $index) {
+                    <li [class.active]="currentImageIndex === i" (click)="goToImage(i)" class="carousel-indicator">
+                    </li>
+                    }
+                </ol>
+
+                <div class="carousel-inner">
+                    @for (image of attraction.images; track $index; let i = $index) {
+                    <div class="carousel-item" [class.active]="currentImageIndex === i">
+                        <img [src]="image" [alt]="attraction.attractionName + ' - תמונה ' + (i + 1)"
+                            class="carousel-image">
+                    </div>
+                    }
+                </div>
+
+                <button class="carousel-control-prev" (click)="prevImage()" type="button">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                </button>
+                <button class="carousel-control-next" (click)="nextImage()" type="button">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+        }
+        <div class="detail-section">
+            <h3>תיאור</h3>
+            <p>{{attraction.description}}</p>
+        </div>
+
+        <div class="detail-grid">
+            <div class="detail-card">
+                <div class="detail-label">כתובת</div>
+                <div class="detail-value">{{attraction.address}}</div>
+            </div>
+
+            <div class="detail-card">
+                <div class="detail-label">עיר</div>
+                <div class="detail-value">{{attraction.city}}</div>
+            </div>
+        </div>
+
+
+        <br>
+
+        <div class="detail-grid">
+            <div class="detail-card">
+                <div class="detail-label">שעות פתיחה</div>
+                <div class="detail-value">{{attraction.openingHours}}</div>
+            </div>
+
+            <div class="detail-card">
+                <span class="detail-label">טלפון</span>
+                <span class="detail-value">{{attraction.phoneNumber}}</span>
+            </div>
+        </div>
+        <br>
+
+        <div class="detail-grid">
+            <div class="detail-card">
+                <span class="detail-label">שומר שבת</span>
+                <span class="badge" [class.easy]="attraction.sabbathKeeper" [class.hard]="!attraction.sabbathKeeper">
+                    <span class="detail-value">{{attraction.sabbathKeeper ? '✔ כן' : '✘ לא'}}</span>
+                </span>
+            </div>
+
+            <div class="detail-card">
+                <span class="detail-label">מתאים לילדים</span>
+                <span class="badge" [class.easy]="attraction.suitableForKids"
+                    [class.hard]="!attraction.suitableForKids">
+                    <span class="detail-value">{{attraction.suitableForKids ? '✔ כן' : '✘ לא'}}</span>
+                </span>
+            </div>
+        </div>
+        <br>
+
+        <div class="detail-grid">
+            <div class="detail-card">
+                <span class="detail-label">מחיר כניסה</span>
+                <span class="detail-value">{{attraction.entryFee}} ₪</span>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="detail-card">
+            <span class="detail-label">דירוג ממוצע</span>
+            <button class="stars-btn" (click)="goToRatings()" title="לחץ לצפייה בכל הדירוגים">
+                @for (star of getStarsArray(getAverageRating()); track $index) {
+                <span class="star" [class.full]="star === 'full'">★</span>
+                }
+                <span class="rating-count">({{ getAverageRating() | number:'1.1-1' }})</span>
+            </button>
+        </div>
+
+
+        @if (!alreadyRated()) {
+        <div class="rating-form">
+            <h4>דרגי את האטרקציה</h4>
+
+            <div class="rating-stars-input">
+                @for (star of [1,2,3,4,5]; track star) {
+                <span class="star-input" [class.selected]="star <= userRating" (click)="setUserRating(star)">★</span>
+                }
+            </div>
+
+            <textarea class="rating-comment" [(ngModel)]="userComment" placeholder="הוסיפי הערה או המלצה..."
+                rows="3"></textarea>
+
+            @if (ratingError) {
+            <p class="rating-error">{{ ratingError }}</p>
+            }
+
+            <button class="btn-submit-rating" (click)="submitRating()">שמור דירוג</button>
+        </div>
+        } @else {
+        <p class="already-rated">✓ כבר דירגת אטרקציה זו</p>
+        }
+
+
+        <div class="action-buttons">
+            <button class="btn-edit" (click)="showEdit = true">✏️ עריכה</button>
+            <button class="btn-delete" (click)="deleteAttraction()">🗑️ מחיקה</button>
+        </div>
+    </div>
+</div>
+}
+
+@if (showEdit) {
+<app-edit-attractions [attraction]="attraction" (closed)="showEdit = false" (updated)="onUpdated($event)">
+</app-edit-attractions>
+}
+
+}

@@ -1,0 +1,81 @@
+<button routerLink="/" class="btn btn-outline-dark btn-sm">חזור</button>
+
+
+<h1>טופס הרשמה למדריכת טיולים</h1>
+
+<form [formGroup]="GuideForm">
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">שם פרטי</label>
+        <div class="input-wrapper">
+            <input type="text" formControlName="FirsName" class="form-control" placeholder="הכנס שם פרטי">
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">שם משפחה</label>
+        <div class="input-wrapper">
+            <input type="text" formControlName="LastName" class="form-control" placeholder="הכנס שם משפחה">
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">תעודת זהות </label>
+        <div class="input-wrapper">
+            <input type="text" formControlName="Id" class="form-control" placeholder="הכנס תעודת זהות">
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">מוצא </label>
+        <div class="input-wrapper">
+            <input type="text" formControlName="PCountryOfOriginhon" class="form-control" placeholder="הכנס מוצא">
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">אזורי הכשרה </label>
+        <div class="input-wrapper">
+            <input type="text" formControlName="ReligiousAffiliation" class="form-control"
+                placeholder="הכנס אזורי הכשרה">
+        </div>
+    </div>
+
+    <!-- <div class="mb-3">
+        <label class="form-label fw-bold">סטטוס </label>
+        <div class="input-wrapper">
+            <input type="text" formControlName="Status" class="form-control">
+        </div>
+    </div> -->
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">שם משתמש</label>
+        <div class="input-wrapper">
+            <input type="text" formControlName="UserName" class="form-control" placeholder="הכנס שם משתמש">
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">סיסמה</label>
+        <div class="input-wrapper">
+            <input type="text" formControlName="Password" class="form-control" placeholder="הכנס סיסמה">
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">קורות חיים</label>
+        <div class="input-wrapper">
+            <input type="file" class="form-control" (change)="onCvSelected($event)">
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">תעודות הכשרה</label>
+        <div class="input-wrapper">
+            <input type="file" class="form-control" multiple (change)="onCertificatesSelected($event)">
+        </div>
+    </div>
+
+    <button type="button" [disabled]="!GuideForm.valid">שלח טופס</button>
+
+</form>

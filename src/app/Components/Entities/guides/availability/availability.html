@@ -1,0 +1,207 @@
+<div class="calendar-container">
+
+    <div class="back-button-section">
+        <button routerLink="/guide" class="btn-back-to-coach">
+            ← חזרה לפרטי המדריכה
+        </button>
+    </div>
+
+    <!-- סטטוס סינון -->
+    <div class="filter-status" *ngIf="getFilterStatus()">
+        {{ getFilterStatus() }}
+    </div>
+
+    <!-- סינון -->
+    <div class="filter-section">
+        <h3>סינון זמינות</h3>
+
+        <div class="filter-options">
+            <label>
+                <input type="radio" name="filterType" value="none" (change)="onFilterTypeChange('none')"
+                    [checked]="filterType === 'none'">
+                כל הימים
+            </label>
+
+            <label>
+                <input type="radio" name="filterType" value="single" (change)="onFilterTypeChange('single')"
+                    [checked]="filterType === 'single'">
+                תאריך יחיד
+            </label>
+
+            <label>
+                <input type="radio" name="filterType" value="range" (change)="onFilterTypeChange('range')"
+                    [checked]="filterType === 'range'">
+                טווח תאריכים
+            </label>
+        </div>
+
+        <!-- סינון לתאריך יחיד -->
+        <div class="filter-input" *ngIf="filterType === 'single'">
+            <input type="date" [value]="formatDateForInput(singleDate)" (change)="onSingleDateChange($event)"
+                placeholder="בחר תאריך">
+        </div>
+
+        <!-- סינון לטווח תאריכים -->
+        <div class="filter-input" *ngIf="filterType === 'range'">
+            <div class="date-range">
+                <div>
+                    <label for="start-date">מתאריך:</label>
+                    <input id="start-date" type="date" [value]="formatDateForInput(startDate)"
+                        (change)="onStartDateChange($event)">
+                </div>
+
+                <div>
+                    <label for="end-date">עד תאריך:</label>
+                    <input id="end-date" type="date" [value]="formatDateForInput(endDate)"
+                        (change)="onEndDateChange($event)">
+                </div>
+            </div>
+            <button (click)="applyFilter()" class="btn-apply">החל סינון</button>
+        </div>
+    </div>
+
+    <!-- ניהול מצבי ימים -->
+    <div class="status-management-section">
+        <div class="status-management-header">
+            <h3>ניהול זמינות</h3>
+            <div class="status-counts">
+                <span class="count-preferred">🟢 {{ getStatusCounts().preferred }} מעודפים</span>
+                <span class="count-busy">🔴 {{ getStatusCounts().busy }} תפוסים</span>
+                <span class="count-neutral">⚪ {{ getStatusCounts().neutral }} ניטרליים</span>
+            </div>
+        </div>
+
+        <div class="status-controls">
+            <div class="status-buttons">
+                <button (click)="setCurrentStatus('preferred')" [class.active]="currentStatusToApply === 'preferred'"
+                    class="btn-status preferred-btn">
+                    🟢 מעדיף להדריך
+                </button>
+
+                <button (click)="setCurrentStatus('busy')" [class.active]="currentStatusToApply === 'busy'"
+                    class="btn-status busy-btn">
+                    🔴 תפוס
+                </button>
+
+                <button (click)="setCurrentStatus('neutral')" [class.active]="currentStatusToApply === 'neutral'"
+                    class="btn-status neutral-btn">
+                    ⚪ ניטרלי
+                </button>
+            </div>
+
+            <div class="action-buttons">
+                <button (click)="toggleEditMode()" [class.active]="editMode" class="btn-edit">
+                    {{ editMode ? '❌ ביטול' : '✏️ עריכה' }}
+                </button>
+
+                <button (click)="applyStatusToSelectedDays()" [disabled]="selectedDaysForStatus.size === 0 || !editMode"
+                    class="btn-apply-status">
+                    ✓ החל על {{ selectedDaysForStatus.size }} ימים
+                </button>
+
+                <button (click)="clearAllStatuses()" class="btn-clear-all">
+                    🗑️ נקה הכל
+                </button>
+            </div>
+        </div>
+
+        <div class="selected-info" *ngIf="editMode && selectedDaysForStatus.size > 0">
+            <p>✓ בחרת {{ selectedDaysForStatus.size }} ימים כ{{ currentStatusToApply === 'preferred' ? 'מעודפים' :
+                currentStatusToApply === 'busy' ? 'תפוסים' : 'ניטרליים' }}</p>
+        </div>
+    </div>
+
+    <!-- לוח השנה -->
+    <div class="calendar-header">
+        <button (click)="previousMonth()" class="btn-nav">←</button>
+        <h2>{{ getMonthYear() }}</h2>
+        <button (click)="nextMonth()" class="btn-nav">→</button>
+    </div>
+
+    <div class="calendar-grid">
+        <!-- כותרות ימות השבוע -->
+        <div class="weekdays">
+            <div class="weekday">ראשון</div>
+            <div class="weekday">שני</div>
+            <div class="weekday">שלישי</div>
+            <div class="weekday">רביעי</div>
+            <div class="weekday">חמישי</div>
+            <div class="weekday">שישי</div>
+            <div class="weekday">שבת</div>
+        </div>
+
+        <!-- ימות החודש -->
+        <div class="weeks">
+            <div class="week" *ngFor="let week of weeks">
+                <div class="day" *ngFor="let day of week.days" [class.other-month]="!day.isCurrentMonth"
+                    [class.holiday]="day.isJewishHoliday" [class.weekend]="day.isWeekend"
+                    [class.status-preferred]="day.status === 'preferred' && day.matchesFilter"
+                    [class.status-busy]="day.status === 'busy' && day.matchesFilter"
+                    [class.hidden-by-filter]="!day.matchesFilter" [class.selected-for-status]="isDaySelected(day)"
+                    [class.edit-mode]="editMode && day.isCurrentMonth"
+                    (click)="editMode && day.isCurrentMonth ? toggleDaySelection(day) : null" [title]="day.holidayName">
+
+                    <div class="day-number">{{ day.dayOfMonth }}</div>
+
+                    <!-- סימון חג -->
+                    <div class="holiday-badge" *ngIf="day.isJewishHoliday">
+                        <span class="holiday-name">{{ day.holidayName }}</span>
+                    </div>
+
+                    <!-- סימון שבת -->
+                    <div class="weekend-badge" *ngIf="day.isWeekend && !day.isJewishHoliday">
+                        <span>שבת</span>
+                    </div>
+
+                    <!-- סימון מצב: מעודף -->
+                    <div class="status-badge preferred" *ngIf="day.status === 'preferred' && day.matchesFilter">
+                        <span>✓ מעודף</span>
+                        <button class="btn-status-change" (click)="changeStatusForDay(day, 'neutral')"
+                            title="שנה לניטרלי">
+                            →
+                        </button>
+                    </div>
+
+                    <!-- סימון מצב: תפוס -->
+                    <div class="status-badge busy" *ngIf="day.status === 'busy' && day.matchesFilter">
+                        <span>✕ תפוס</span>
+                        <button class="btn-status-change" (click)="changeStatusForDay(day, 'neutral')"
+                            title="שנה לניטרלי">
+                            →
+                        </button>
+                    </div>
+
+                    <!-- הודעה כאשר לא מתאים לסינון -->
+                    <div class="filtered-out" *ngIf="!day.matchesFilter && day.isCurrentMonth">
+                        <span>לא בטווח</span>
+                    </div>
+
+                    <!-- אינדיקטור בחירה לעריכה -->
+                    <div class="selection-indicator" *ngIf="isDaySelected(day)">
+                        <span>✓</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- מפתח -->
+    <div class="legend">
+        <div class="legend-item">
+            <div class="legend-color holiday"></div>
+            <span>ימי חגים יהודיים</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color weekend"></div>
+            <span>שבת</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color status-preferred"></div>
+            <span>✓ מעודף להדריך</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color status-busy"></div>
+            <span>✕ תפוס</span>
+        </div>
+    </div>
+</div>

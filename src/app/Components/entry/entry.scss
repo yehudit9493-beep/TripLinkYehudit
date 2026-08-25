@@ -1,0 +1,34 @@
+.password-container {
+  position: relative;
+  width: 100%;
+
+  input.form-control {
+    width: 100%;
+    padding-left: 40px; /* משאיר מקום לאייקון בצד שמאל */
+    padding-right: 12px;
+  }
+
+  button.eye-btn {
+    position: absolute;
+    left: 10px; /* ממקם את העין בצד שמאל של התיבה */
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    z-index: 5; /* מבטיח שהכפתור יהיה מעל התיבה הלבנה */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    i {
+      font-size: 1.25rem; /* נותן גודל ברור לאייקון */
+      color: #6c757d;
+      
+      &:hover {
+        color: #467af3; /* הופך לוורוד שלך במעבר עכבר */
+      }
+    }
+  }
+}

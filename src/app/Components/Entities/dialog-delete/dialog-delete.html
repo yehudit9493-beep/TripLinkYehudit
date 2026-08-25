@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>אישור מחיקה</h2>
+<mat-dialog-content>
+    <p>האם אתה בטוח שברצונך למחוק את {{ data.itemName }}?</p>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="onCancel()">לא</button>
+    <button mat-button (click)="onConfirm()">כן</button>
+</mat-dialog-actions>

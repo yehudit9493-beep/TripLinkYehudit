@@ -1,0 +1,97 @@
+<div dir="rtl">
+  <div class="page-header">
+    <h1>🧭 מדריכות</h1>
+    <p>מדריכות מוסמכות ברחבי הארץ</p>
+  </div>
+
+  <div class="filters-row">
+    <div class="filters-group">
+      <div class="filter-wrapper">
+        <span class="search-icon">🔍</span>
+        <input (keyup)="applyFilter($event)" placeholder="סנן לפי שם, אזור..." #input>
+      </div>
+
+      <div class="custom-select-wrapper">
+        <mat-select [formControl]="selectedAreas" multiple placeholder="סנן לפי אזורים">
+          <mat-select-trigger>
+            {{selectedAreas.value?.[0] || 'סנן לפי אזורים'}}
+            @if ((selectedAreas.value?.length || 0) > 1) {
+            <span class="example-additional-selection">
+              (+{{(selectedAreas.value?.length || 0) - 1}} {{selectedAreas.value?.length === 2 ? 'other' :
+              'others'}})
+            </span>
+            }
+          </mat-select-trigger>
+          @for (area of areaList; track area) {
+          <mat-option [value]="area">{{area}}</mat-option>
+          }
+        </mat-select>
+      </div>
+    </div>
+
+    <button class="add-trail-btn" (click)="onAddGuide()">הוסף מדריכה חדשה</button>
+  </div>
+
+
+  <div class="trails-table-wrapper">
+    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)">
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>שם המדריכה</th>
+        <td mat-cell *matCellDef="let e"><strong>{{e.name}}</strong></td>
+      </ng-container>
+
+      <ng-container matColumnDef="trainingRegions">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>אזורי הכשרה</th>
+        <td mat-cell *matCellDef="let e">
+          <div class="badges-wrapper">
+            @for (regionId of e.trainingRegionsId; track regionId) {
+            <span class="region-badge" [class.golan]="regionId === 1" [class.upper-galil]="regionId === 2"
+              [class.lower-galil]="regionId === 3" [class.carmel]="regionId === 4" [class.coast]="regionId === 5"
+              [class.shomron]="regionId === 6" [class.jerusalem]="regionId === 7" [class.judean-desert]="regionId === 8"
+              [class.negev]="regionId === 9" [class.eilat]="regionId === 10">
+              {{getRegionName(regionId)}}
+            </span>
+            }
+          </div>
+        </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="yearsOfExperience">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ניסיון</th>
+        <td mat-cell *matCellDef="let e">{{e.yearsOfExperience}} שנים</td>
+
+        <ng-container matColumnDef="rating">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>דירוג</th>
+          <td mat-cell *matCellDef="let e">
+            <div class="stars-cell">
+              @for (star of getStarsArray(getAverageRating(e.id)); track $index) {
+              <span class="star-sm" [class.full]="star === 'full'">★</span>
+              }
+            </div>
+          </td>
+        </ng-container>
+
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let e">
+          <button class="details-btn" (click)="handleShowMore(e)">הצג עוד ←</button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      <tr class="no-data-row" *matNoDataRow>
+        <td colspan="5">😕 לא נמצאו תוצאות עבור "{{input.value}}"</td>
+      </tr>
+    </table>
+  </div>
+
+  <app-guide-sidebar [guide]="selectedGuide" (closed)="closeSidebar()"></app-guide-sidebar>
+
+  @if (isAddGuideOpen) {
+  <app-add-guide (closed)="isAddGuideOpen = false" (updated)="onGuideAdded()"></app-add-guide>
+  }

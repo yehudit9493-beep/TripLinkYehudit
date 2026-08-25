@@ -1,0 +1,1366 @@
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero-section {
+  position: relative;
+
+  min-height: 100vh;
+
+  background-image: url('/travel-hero.svg');
+  background-size: cover;
+  background-position: center;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  direction: rtl;
+}
+
+
+/* שכבת צבע מעל ה-SVG */
+.hero-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(135deg,
+      rgba(30, 58, 95, 0.55),
+      rgba(2, 30, 38, 0.35));
+
+  z-index: 1;
+}
+
+
+/* תוכן ה-Hero */
+.hero-content {
+  position: relative;
+
+  z-index: 2;
+
+  width: min(850px, 90%);
+
+  text-align: center;
+
+  color: white;
+
+  animation: heroAppear 1s ease-out both;
+}
+
+
+/* =========================================================
+   HERO LOGO
+========================================================= */
+
+.hero-logo {
+  direction: ltr;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 18px;
+
+  margin: 20px 0;
+
+  line-height: 1;
+
+  animation: logoAppear 1s ease-out both;
+}
+
+
+/* האייקון של הלוגו */
+
+.hero-logo-icon {
+  width: 78px;
+  height: 78px;
+
+  border-radius: 20px;
+
+  background:
+    linear-gradient(135deg,
+      #77fd68,
+      #00d2ff);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow:
+    0 15px 35px rgba(0, 210, 255, 0.25);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+
+/* השרשרת */
+
+.hero-link-chain {
+  width: 38px;
+  height: 18px;
+
+  border: 4px solid white;
+
+  border-radius: 10px;
+
+  position: relative;
+
+  transform: rotate(-20deg);
+}
+
+
+/* החוליה השנייה */
+
+.hero-link-chain::after {
+  content: '';
+
+  position: absolute;
+
+  width: 18px;
+  height: 18px;
+
+  border: 4px solid white;
+
+  border-radius: 50%;
+
+  top: -12px;
+  left: 8px;
+}
+
+
+/* הטקסט */
+
+.hero-logo-text {
+  font-size: clamp(60px, 8vw, 90px);
+
+  letter-spacing: -3px;
+
+  font-family: 'Segoe UI', sans-serif;
+}
+
+
+/* Trip */
+
+.hero-logo-text span {
+  color: white;
+
+  font-weight: 300;
+}
+
+
+/* Link */
+
+.hero-logo-text strong {
+  color: #77fd68;
+
+  font-weight: 800;
+
+  text-shadow:
+    0 0 25px rgba(119, 253, 104, 0.25);
+}
+
+
+/* אפקט Hover */
+
+.hero-logo:hover .hero-logo-icon {
+  transform:
+    rotate(-5deg) scale(1.08);
+
+  box-shadow:
+    0 20px 45px rgba(119, 253, 104, 0.35);
+}
+
+
+/* אנימציה */
+
+@keyframes logoAppear {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(-20px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0) scale(1);
+  }
+
+}
+
+/* =========================================================
+   HERO TITLE
+========================================================= */
+
+.hero-content h2 {
+  color: white;
+
+  font-size: clamp(32px, 5vw, 50px);
+
+  line-height: 1.25;
+
+  margin: 20px 0;
+
+  font-weight: 500;
+}
+
+
+.hero-content h2 span {
+  color: #00d2ff;
+
+  font-weight: 700;
+
+  text-shadow:
+    0 0 25px rgba(0, 210, 255, 0.2);
+}
+
+
+/* =========================================================
+   HERO DESCRIPTION
+========================================================= */
+
+.hero-content p {
+  color: rgba(255, 255, 255, 0.85);
+
+  font-size: 18px;
+
+  line-height: 1.8;
+
+  max-width: 650px;
+
+  margin: 0 auto 30px;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.hero-buttons {
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  gap: 15px;
+
+  margin-top: 10px;
+}
+
+
+.main-btn,
+.secondary-btn {
+  padding: 15px 28px;
+
+  border-radius: 14px;
+
+  font-size: 16px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    background 0.3s ease;
+}
+
+
+/* כפתור ראשי */
+.main-btn {
+  border: none;
+
+  background:
+    linear-gradient(135deg,
+      #77fd68,
+      #00d2ff);
+
+  color: #063743;
+
+  box-shadow:
+    0 10px 30px rgba(0, 210, 255, 0.2);
+}
+
+
+.main-btn:hover {
+  transform: translateY(-5px);
+
+  box-shadow:
+    0 15px 35px rgba(0, 210, 255, 0.3);
+}
+
+
+/* כפתור משני */
+.secondary-btn {
+  color: white;
+
+  background: rgba(255, 255, 255, 0.12);
+
+  border: 1px solid rgba(255, 255, 255, 0.35);
+
+  backdrop-filter: blur(15px);
+}
+
+
+.secondary-btn:hover {
+  transform: translateY(-5px);
+
+  background: rgba(255, 255, 255, 0.2);
+
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+
+
+/* =========================================================
+   FLOATING CARD ICON
+========================================================= */
+
+.floating-icon {
+  width: 44px;
+
+  height: 44px;
+
+  border-radius: 13px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background: rgba(119, 253, 104, 0.16);
+
+  color: #77fd68;
+
+  font-size: 20px;
+}
+
+
+/* =========================================================
+   AVATAR STACK
+========================================================= */
+
+.avatar-stack {
+  display: flex;
+
+  direction: ltr;
+}
+
+
+.avatar-stack div {
+  width: 34px;
+
+  height: 34px;
+
+  border-radius: 50%;
+
+  background: white;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin-left: -8px;
+
+  border: 2px solid rgba(255, 255, 255, 0.7);
+}
+
+
+/* =========================================================
+   SCROLL HINT
+========================================================= */
+
+.scroll-hint {
+  margin-top: 50px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 7px;
+
+  color: rgba(255, 255, 255, 0.65);
+
+  font-size: 12px;
+
+  animation: bounce 2s infinite;
+}
+
+
+/* =========================================================
+   INTRO SECTION
+========================================================= */
+
+.intro-section {
+  padding: 110px 7%;
+
+  background: #f5f9fc;
+
+  position: relative;
+
+  direction: rtl;
+}
+
+
+/* =========================================================
+   SECTION TITLE
+========================================================= */
+
+.section-title {
+  text-align: center;
+
+  max-width: 750px;
+
+  margin: 0 auto 60px;
+}
+
+
+.section-title>span {
+  color: #00aeca;
+
+  font-size: 14px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+
+.section-title h2 {
+  margin: 12px 0;
+
+  color: #1e3a5f;
+
+  font-size: clamp(30px, 5vw, 48px);
+
+  line-height: 1.25;
+
+  font-weight: 700;
+}
+
+
+.section-title h2 strong {
+  display: block;
+
+  color: #00aeca;
+}
+
+
+.section-title p {
+  color: #71808d;
+
+  line-height: 1.8;
+
+  font-size: 17px;
+}
+
+
+/* =========================================================
+   FEATURES
+========================================================= */
+
+.features-container {
+  max-width: 1200px;
+
+  margin: auto;
+
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 25px;
+}
+
+
+.feature-card {
+  position: relative;
+
+  padding: 40px 35px;
+
+  border-radius: 25px;
+
+  background: rgba(255, 255, 255, 0.95);
+
+  border: 1px solid rgba(30, 58, 95, 0.08);
+
+  box-shadow:
+    0 15px 50px rgba(30, 58, 95, 0.08);
+
+  overflow: hidden;
+
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+
+.feature-card:hover {
+  transform: translateY(-10px);
+
+  box-shadow:
+    0 25px 60px rgba(30, 58, 95, 0.15);
+}
+
+
+/* =========================================================
+   FEATURE ICON
+========================================================= */
+
+.feature-icon {
+  width: 65px;
+
+  height: 65px;
+
+  border-radius: 18px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  color: #00aeca;
+
+  background:
+    linear-gradient(135deg,
+      #e5fbff,
+      #f6ffff);
+
+  font-size: 27px;
+
+  margin-bottom: 25px;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+
+.feature-card:hover .feature-icon {
+  transform: scale(1.08) rotate(-3deg);
+
+  box-shadow:
+    0 10px 25px rgba(0, 210, 255, 0.15);
+}
+
+
+/* =========================================================
+   FEATURE TEXT
+========================================================= */
+
+.feature-card h3 {
+  color: #1e3a5f;
+
+  font-size: 21px;
+
+  margin-bottom: 12px;
+}
+
+
+.feature-card p {
+  color: #71808d;
+
+  line-height: 1.8;
+
+  margin: 0;
+}
+
+
+/* =========================================================
+   FEATURE NUMBER
+========================================================= */
+
+.feature-number {
+  position: absolute;
+
+  left: 20px;
+
+  bottom: -10px;
+
+  color: rgba(30, 58, 95, 0.05);
+
+  font-size: 70px;
+
+  font-weight: 900;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   FORUM SECTION
+========================================================= */
+
+.forum-section {
+  padding: 110px 7%;
+
+  background: #1e3a5f;
+
+  direction: rtl;
+}
+
+
+/* כותרת הפורום */
+.forum-section .section-title>span {
+  color: #77fd68;
+}
+
+
+.forum-section .section-title h2 {
+  color: white;
+}
+
+
+.forum-section .section-title h2 strong {
+  color: #00d2ff;
+}
+
+
+.forum-section .section-title p {
+  color: #cbd5e1;
+}
+
+
+/* =========================================================
+   FORUM CARDS
+========================================================= */
+
+.forum-container {
+  max-width: 1200px;
+
+  margin: auto;
+
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 25px;
+}
+
+
+.forum-card {
+  padding: 28px;
+
+  border-radius: 22px;
+
+  background: rgba(255, 255, 255, 0.08);
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  backdrop-filter: blur(15px);
+
+  color: white;
+
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+
+.forum-card:hover {
+  transform: translateY(-8px);
+
+  background: rgba(255, 255, 255, 0.12);
+
+  box-shadow:
+    0 20px 45px rgba(0, 0, 0, 0.18);
+}
+
+
+/* =========================================================
+   FORUM USER
+========================================================= */
+
+.forum-card-top {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin-bottom: 22px;
+}
+
+
+.forum-avatar {
+  width: 45px;
+
+  height: 45px;
+
+  border-radius: 50%;
+
+  background: white;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 22px;
+}
+
+
+.forum-card-top strong {
+  display: block;
+
+  font-size: 14px;
+
+  color: white;
+}
+
+
+.forum-card-top small {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #94a3b8;
+
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   FORUM CONTENT
+========================================================= */
+
+.forum-card h3 {
+  font-size: 20px;
+
+  margin-bottom: 12px;
+
+  color: white;
+}
+
+
+.forum-card p {
+  color: #cbd5e1;
+
+  line-height: 1.8;
+
+  font-size: 14px;
+
+  min-height: 70px;
+
+  margin-bottom: 0;
+}
+
+
+/* =========================================================
+   FORUM LINK
+========================================================= */
+
+.forum-link {
+  margin-top: 10px;
+
+  border: none;
+
+  background: transparent;
+
+  color: #77fd68;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.forum-link:hover {
+  color: #00d2ff;
+
+  transform: translateX(-4px);
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes heroAppear {
+  from {
+    opacity: 0;
+
+    transform: translateY(35px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0);
+  }
+}
+
+
+@keyframes floating {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+
+@keyframes bounce {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(8px);
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE - TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .features-container {
+    grid-template-columns: 1fr;
+  }
+
+
+  .forum-container {
+    grid-template-columns: 1fr;
+  }
+
+
+  .hero-section {
+    background-attachment: scroll;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE - MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .hero-section {
+    min-height: 100svh;
+  }
+
+
+  .hero-content {
+    width: 92%;
+  }
+
+
+  .hero-logo {
+    font-size: 55px;
+
+    letter-spacing: -2px;
+  }
+
+
+  .hero-content h2 {
+    font-size: 30px;
+
+    margin: 15px 0;
+  }
+
+
+  .hero-content p {
+    font-size: 15px;
+
+    line-height: 1.7;
+  }
+
+
+  .hero-buttons {
+    flex-direction: column;
+
+    max-width: 330px;
+
+    margin: 25px auto 0;
+  }
+
+
+  .main-btn,
+  .secondary-btn {
+    width: 100%;
+  }
+
+
+  .intro-section {
+    padding: 75px 20px;
+  }
+
+
+  .forum-section {
+    padding: 75px 20px;
+  }
+
+
+  .section-title {
+    margin-bottom: 40px;
+  }
+
+
+  .section-title h2 {
+    font-size: 32px;
+  }
+
+
+  .feature-card {
+    padding: 30px 25px;
+  }
+
+
+  .forum-card {
+    padding: 24px;
+  }
+
+  .hero-logo {
+    gap: 10px;
+  }
+
+  .hero-logo-icon {
+    width: 55px;
+    height: 55px;
+
+    border-radius: 15px;
+  }
+
+  .hero-link-chain {
+    width: 27px;
+    height: 13px;
+
+    border-width: 3px;
+  }
+
+  .hero-link-chain::after {
+    width: 13px;
+    height: 13px;
+
+    border-width: 3px;
+
+    top: -9px;
+    left: 6px;
+  }
+
+  .hero-logo-text {
+    font-size: 55px;
+
+    letter-spacing: -2px;
+  }
+}
+
+
+/* =========================================================
+   FORUM SECTION
+========================================================= */
+
+.forum-section {
+  position: relative;
+
+  padding: 110px 7% 130px;
+
+  background:
+    linear-gradient(180deg,
+      #f8fcfd 0%,
+      #eef9fb 100%);
+
+  overflow: hidden;
+}
+
+
+/* כותרת */
+
+.forum-section-title {
+  text-align: center;
+
+  max-width: 700px;
+
+  margin: 0 auto 50px;
+}
+
+
+.forum-label {
+  display: inline-block;
+
+  color: #1e3a5f;
+
+  font-size: 14px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+
+  margin-bottom: 10px;
+}
+
+
+.forum-section-title h2 {
+  margin: 0;
+
+  color: #1e3a5f;
+
+  font-size: clamp(30px, 5vw, 46px);
+
+  line-height: 1.3;
+}
+
+
+.forum-section-title h2 strong {
+  color: #00a8c6;
+}
+
+
+.forum-section-title p {
+  margin-top: 15px;
+
+  color: #71868d;
+
+  font-size: 17px;
+
+  line-height: 1.8;
+}
+
+
+/* =========================================================
+   FEATURED MESSAGE
+========================================================= */
+
+.forum-featured-card {
+  width: min(850px, 100%);
+
+  min-height: 220px;
+
+  margin: auto;
+
+  padding: 35px 40px;
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 25px;
+
+  background: rgba(255, 255, 255, 0.9);
+
+  border: 1px solid rgba(30, 58, 95, 0.10);
+
+  border-radius: 28px;
+
+  box-shadow:
+    0 20px 60px rgba(30, 58, 95, 0.10);
+
+  position: relative;
+
+  overflow: hidden;
+
+  animation: forumMessageAppear 0.5s ease;
+}
+
+
+/* פס קטן בצד */
+
+.forum-featured-card::before {
+  content: '';
+
+  position: absolute;
+
+  right: 0;
+
+  top: 0;
+
+  bottom: 0;
+
+  width: 5px;
+
+  background:
+    linear-gradient(180deg,
+      #77fd68,
+      #00d2ff);
+}
+
+
+/* =========================================================
+   ICON
+========================================================= */
+
+.forum-message-icon {
+  flex-shrink: 0;
+
+  width: 60px;
+  height: 60px;
+
+  border-radius: 18px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background:
+    linear-gradient(135deg,
+      #e5fbff,
+      #f3ffff);
+
+  color: #00a8c6;
+
+  font-size: 24px;
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.forum-message-content {
+  flex: 1;
+
+  min-width: 0;
+}
+
+
+.forum-message-top {
+  margin-bottom: 18px;
+}
+
+
+.forum-user {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+}
+
+
+.forum-avatar {
+  width: 42px;
+  height: 42px;
+
+  border-radius: 50%;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background:
+    linear-gradient(135deg,
+      #1e3a5f,
+      #00a8c6);
+
+  color: white;
+
+  font-weight: 700;
+}
+
+
+.forum-user strong {
+  display: block;
+
+  color: #1e3a5f;
+
+  font-size: 15px;
+}
+
+
+.forum-user small {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #94a3b8;
+
+  font-size: 12px;
+}
+
+
+.forum-message-content h3 {
+  margin: 0 0 10px;
+
+  color: #214653;
+
+  font-size: 22px;
+}
+
+
+.forum-message-text {
+  margin: 0;
+
+  color: #647982;
+
+  line-height: 1.8;
+
+  font-size: 16px;
+}
+
+
+/* =========================================================
+   DOTS
+========================================================= */
+
+.forum-dots {
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  gap: 8px;
+
+  margin-top: 25px;
+}
+
+
+.forum-dots button {
+  width: 8px;
+  height: 8px;
+
+  padding: 0;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: #cbdfe4;
+
+  cursor: pointer;
+
+  transition:
+    width 0.3s ease,
+    background 0.3s ease;
+}
+
+
+.forum-dots button.active {
+  width: 25px;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(90deg,
+      #77fd68,
+      #00d2ff);
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.forum-empty {
+  width: min(700px, 100%);
+
+  margin: auto;
+
+  padding: 50px;
+
+  text-align: center;
+
+  background: white;
+
+  border-radius: 25px;
+
+  color: #94a3b8;
+}
+
+
+.forum-empty i {
+  display: block;
+
+  margin-bottom: 15px;
+
+  font-size: 35px;
+
+  color: #00a8c6;
+}
+
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+@keyframes forumMessageAppear {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(12px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0) scale(1);
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .forum-section {
+    padding: 75px 20px 90px;
+  }
+
+
+  .forum-featured-card {
+    padding: 25px 20px;
+
+    flex-direction: column;
+
+    gap: 18px;
+  }
+
+
+  .forum-message-icon {
+    width: 50px;
+    height: 50px;
+
+    font-size: 20px;
+  }
+
+
+  .forum-message-content h3 {
+    font-size: 19px;
+  }
+
+
+  .forum-message-text {
+    font-size: 15px;
+  }
+
+}

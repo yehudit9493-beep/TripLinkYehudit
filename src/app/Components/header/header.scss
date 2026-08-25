@@ -1,0 +1,179 @@
+.navbar {
+  background: #1e3a5f;
+  padding: 0 2rem;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.15);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  direction: rtl;
+}
+
+.logo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.logo-icon {
+  width: 38px;
+  height: 38px;
+  background: linear-gradient(135deg, #77fd68, #00d2ff);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .link-chain {
+    width: 18px;
+    height: 9px;
+    border: 2px solid white;
+    border-radius: 5px;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 9px;
+      height: 9px;
+      border: 2px solid white;
+      border-radius: 50%;
+      top: -6px;
+      left: 3px;
+    }
+  }
+}
+
+.logo-brand {
+  font-size: 24px;
+  font-family: 'Segoe UI', sans-serif;
+  letter-spacing: -0.5px;
+
+  .trip {
+    font-weight: 300;
+    color: #cbd5e1;
+  }
+
+  .link {
+    font-weight: 700;
+    color: #77fd68;
+  }
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  direction: rtl;
+}
+
+.user-greeting {
+  color: #cbd5e1;
+  font-size: 15px;
+
+  strong {
+    font-weight: 600;
+    color: #fff;
+  }
+}
+
+.hebrew-date {
+  color: #94a3b8;
+  font-size: 13px;
+  border-right: 1px solid #2d5282;
+  padding-right: 14px;
+}
+
+.btn-update {
+  background: transparent;
+  color: #7dd3fc;
+  border: 1px solid #7dd3fc;
+  border-radius: 8px;
+  padding: 5px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #7dd3fc;
+    color: #1e3a5f;
+    font-weight: 600;
+  }
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+}
+
+.favorites-btn {
+  position: relative;
+  background: #2d5282;
+  border: 1px solid #3d6499;
+  border-radius: 10px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #3d6499;
+    transform: scale(1.05);
+  }
+}
+
+.favorites-count {
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  background: #e74c3c;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-wrapper {
+  transition: transform 0.3s ease;
+}
+
+
+.logo-wrapper:hover {
+  transform: translateY(-2px);
+}
+
+
+.logo-icon {
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+
+.logo-wrapper:hover .logo-icon {
+
+  transform: rotate(-5deg) scale(1.08);
+
+  box-shadow:
+    0 8px 25px rgba(119, 253, 104, 0.3);
+}

@@ -1,0 +1,100 @@
+<div dir="rtl">
+  <div class="page-header">
+    <h1>🏛️ אטרקציות</h1>
+    <p>אטרקציות מומלצות ברחבי הארץ</p>
+  </div>
+
+  <div class="filters-row">
+    <div class="filters-group">
+      <div class="filter-wrapper">
+        <span class="search-icon">🔍</span>
+        <input (keyup)="applyFilter($event)" placeholder="סנן לפי שם, אזור, סוג..." #input>
+      </div>
+
+      <div class="custom-select-wrapper">
+        <mat-select [formControl]="selectedAreas" multiple placeholder="סנן לפי אזורים">
+          <mat-select-trigger>
+            {{selectedAreas.value?.[0] || 'סנן לפי אזורים'}}
+            @if ((selectedAreas.value?.length || 0) > 1) {
+            <span class="example-additional-selection">
+              (+{{(selectedAreas.value?.length || 0) - 1}} {{selectedAreas.value?.length === 2 ? 'other' :
+              'others'}})
+            </span>
+            }
+          </mat-select-trigger>
+          @for (area of areaList; track area) {
+          <mat-option [value]="area">{{area}}</mat-option>
+          }
+        </mat-select>
+      </div>
+    </div>
+
+    <button class="add-trail-btn" (click)="onAddAttraftion()">הוסף אטרקציה חדשה</button>
+  </div>
+
+  <div class="trails-table-wrapper">
+    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)">
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>שם האטרקציה</th>
+        <td mat-cell *matCellDef="let e"><strong>{{e.attractionName}}</strong></td>
+      </ng-container>
+
+      <ng-container matColumnDef="region">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>אזור</th>
+        <td mat-cell *matCellDef="let e">
+          <span class="region-badge" [class.golan]="e.areaId === 1" [class.upper-galil]="e.areaId === 2"
+            [class.lower-galil]="e.areaId === 3" [class.carmel]="e.areaId === 4" [class.coast]="e.areaId === 5"
+            [class.shomron]="e.areaId === 6" [class.jerusalem]="e.areaId === 7" [class.judean-desert]="e.areaId === 8"
+            [class.negev]="e.areaId === 9" [class.eilat]="e.areaId === 10">
+            {{getRegionName(e.areaId)}}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="typeName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>סוג</th>
+        <td mat-cell *matCellDef="let e">
+          <span class="badge" [class.nature]="e.typeName === 'טבע'" [class.culture]="e.typeName === 'תרבות'"
+            [class.history]="e.typeName === 'היסטוריה'">
+            {{e.typeName}}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="entryFee">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>כניסה</th>
+        <td mat-cell *matCellDef="let e">{{e.entryFee}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="rating">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>דירוג ממוצע</th>
+        <td mat-cell *matCellDef="let e">
+          <div class="stars-cell">
+            @for (star of getStarsArray(getAverageRating(e.id)); track $index) {
+            <span class="star-sm" [class.full]="star === 'full'">★</span>
+            }
+          </div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let e">
+          <button class="details-btn" (click)="handleShowMore(e)">הצג עוד ←</button> <!-- **הוספה** -->
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr class="no-data-row" *matNoDataRow>
+        <td colspan="4">😕 לא נמצאו תוצאות עבור "{{input.value}}"</td>
+      </tr>
+    </table>
+  </div>
+
+  <app-attractishon-sidebar [attraction]="selectedAttraction" (closed)="closeSidebar()"></app-attractishon-sidebar>
+
+  @if (isAddAttractionOpen) {
+  <app-add-attraction (closed)="isAddAttractionOpen = false" (updated)="onAttraftionAdded()"></app-add-attraction>
+  }
+</div>

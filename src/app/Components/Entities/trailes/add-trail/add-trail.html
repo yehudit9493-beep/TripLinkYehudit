@@ -1,0 +1,139 @@
+<div class="sidebar" dir="rtl">
+    <div class="sidebar-header">
+        <button class="close-btn" (click)="closed.emit()">✕</button>
+        <h2>הוספת מסלול</h2>
+    </div>
+
+    <div class="sidebar-body">
+        <form [formGroup]="addTrailForm" (ngSubmit)="onSubmit()">
+
+            <div class="form-field">
+                <label>שם המסלול</label>
+                <input formControlName="name" />
+            </div>
+
+            <div class="form-field">
+                <label>תיאור</label>
+                <textarea formControlName="describshain" rows="3"></textarea>
+            </div>
+
+            <div class="form-field">
+                <label>אזור</label>
+                <select formControlName="regionId">
+                    <option value="">-- בחר אזור --</option>
+                    @for (area of areaList; track area.id) {
+                    <option [value]="area.id">{{area.name}}</option>
+                    }
+                </select>
+            </div>
+
+            <!-- <div class="form-field">
+                <label class="form-label fw-bold">תמונות</label> -->
+
+                <!-- 🔑 תמונות חדשות - preview -->
+                <!-- @if (previewUrls.length > 0) {
+                <div class="new-images">
+                    <div class="images-title">תמונות חדשות ({{ previewUrls.length }})</div>
+                    <div class="images-container">
+                        @for (preview of previewUrls; track $index; let i = $index) {
+                        <div class="image-item new">
+                            <img [src]="preview" alt="preview">
+                            <button type="button" class="btn-remove" (click)="removeNewImage(i)"
+                                [disabled]="isSaving">×</button>
+                        </div>
+                        }
+                    </div>
+                </div>
+                }
+
+                <div class="input-wrapper">
+                    <input #fileInput type="file" class="form-control" accept="image/*" multiple
+                        (change)="onImagesSelected($event)">
+                    <small class="text-muted">בחר תמונות למסלול</small>
+                </div>
+            </div> -->
+
+            <div class="form-field">
+                <label>דרכי הגעה</label>
+                <textarea formControlName="directions" rows="2"></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-field">
+                    <label>אורך (ק"מ)</label>
+                    <input type="number" formControlName="RouteLengthInKM" />
+                </div>
+                <div class="form-field">
+                    <label>משך</label>
+                    <input formControlName="RouteDuration" />
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-field">
+                    <label>רמת קושי</label>
+                    <select formControlName="DifficultyLevel">
+                        <option value="קל">קל</option>
+                        <option value="בינוני">בינוני</option>
+                        <option value="קשה">קשה</option>
+                    </select>
+                </div>
+                <div class="form-field">
+                    <label>סוג מסלול</label>
+                    <select formControlName="WetDryTrack">
+                        <option value="רטוב">רטוב</option>
+                        <option value="יבש">יבש</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-field">
+                    <label>גיל מינימום</label>
+                    <input type="number" formControlName="minimumAge" />
+                </div>
+                <div class="form-field">
+                    <label>גיל מקסימום</label>
+                    <input type="number" formControlName="MaximumAge" />
+                </div>
+            </div>
+
+            <div class="form-field">
+                <label>עונה</label>
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="אביב"
+                            [checked]="addTrailForm.get('season')?.value?.includes('אביב')"
+                            (change)="onSeasonChange($event)"> אביב
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="קיץ"
+                            [checked]="addTrailForm.get('season')?.value?.includes('קיץ')"
+                            (change)="onSeasonChange($event)"> קיץ
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="סתיו"
+                            [checked]="addTrailForm.get('season')?.value?.includes('סתיו')"
+                            (change)="onSeasonChange($event)"> סתיו
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="חורף"
+                            [checked]="addTrailForm.get('season')?.value?.includes('חורף')"
+                            (change)="onSeasonChange($event)"> חורף
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="כל השנה"
+                            [checked]="addTrailForm.get('season')?.value?.includes('כל השנה')"
+                            (change)="onSeasonChange($event)"> כל השנה
+                    </label>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button type="button" class="btn-cancel" (click)="closed.emit()">ביטול</button>
+                <button type="submit" class="btn-save" [disabled]="addTrailForm.invalid">הוסף למסלולים</button>
+            </div>
+
+        </form>
+    </div>
+</div>

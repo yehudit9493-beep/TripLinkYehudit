@@ -1,0 +1,119 @@
+<div class="forum-page" dir="rtl">
+
+    <div class="forum-header">
+        <h1>{{ forumTitle }}</h1>
+        <p class="forum-subtitle">{{ forumSubtitle }}</p>
+    </div>
+
+    <div class="forum-container">
+
+
+        @if (!canPost) {
+        <div class="new-message-prompt" (click)="goToAdd()">
+            <div class="prompt-avatar">👤</div>
+            <div class="prompt-text">
+                <p>מה תרצה לשתף?</p>
+            </div>
+            <button class="prompt-btn">✏️ כתוב הודעה</button>
+        </div>
+        }
+
+        <!-- רשימת הודעות -->
+        <div class="messages-list">
+            @for (msg of message; track msg.idMessage; let i = $index) {
+            <div class="message-card">
+
+                <div class="message-header">
+                    <div class="message-meta">
+                        <div class="avatar">{{ msg.userName[0].toUpperCase() }}</div>
+                        <div class="user-info">
+                            <span class="username">{{ msg.userName }}</span>
+                            <span class="date">{{ msg.date | date:'dd/MM/yyyy' }}</span>
+                        </div>
+                    </div>
+                    <button class="more-btn">⋮</button>
+                </div>
+
+                @if (msg.title) {
+                <div class="message-title">
+                    <h3>{{ msg.title }}</h3>
+                </div>
+                }
+
+                <div class="message-content">
+                    @if (showMoreIndex === i) {
+                    <p>{{ msg.content }}</p>
+                    } @else {
+                    <p>{{ msg.content | slice:0:150 }}
+                        @if (msg.content.length > 150) {
+                        <span class="show-more" (click)="toggleShowMore(i)">... הצג עוד</span>
+                        }
+                    </p>
+                    }
+                    @if (showMoreIndex === i && msg.content.length > 150) {
+                    <span class="show-less" (click)="toggleShowMore(i)">הצג פחות</span>
+                    }
+                </div>
+
+                <div class="message-actions">
+                    <button (click)="toggleReplyForm(i)" class="action-btn reply-btn">↩ הגב</button>
+                    <button (click)="addLike(msg.idMessage)" class="action-btn like-btn">
+                        👍 תודה ({{ getLikesCount(msg.idMessage) || 0 }})
+                    </button>
+                </div>
+
+                @if (replyIndex === i) {
+                <div class="reply-form">
+                    <h3>📝 הוסף תגובה</h3>
+
+                    <div class="form-field">
+                        <label for="reply-content-{{ i }}">תגובה</label>
+                        <textarea id="reply-content-{{ i }}" [(ngModel)]="newReply.content" placeholder="כתוב תגובה..."
+                            class="reply-textarea"></textarea>
+                    </div>
+
+                    <div class="reply-actions">
+                        <button (click)="toggleReplyForm(i)" class="btn-cancel">ביטול</button>
+                        <button (click)="addReply(msg.idMessage)" class="btn-submit"
+                            [disabled]="!newReply.content.trim()">שלח תגובה</button>
+                    </div>
+                </div>
+                }
+
+                @if (msg.replies && msg.replies.length > 0) {
+                <div class="replies-section">
+                    <h4>תגובות ({{ msg.replies.length }})</h4>
+
+                    @for (reply of msg.replies; track $index) {
+                    <div class="reply-item">
+                        <div class="reply-header">
+                            <span class="reply-author">{{ reply.userName }}</span>
+                            <span class="reply-date">{{ reply.date | date: 'dd/MM/yyyy HH:mm' }}</span>
+                        </div>
+                        <div class="reply-content-wrapper">
+                            @if (shouldShowMoreReply(reply.idMessage)) {
+                            <p class="reply-content">{{ reply.content }}</p>
+                            } @else {
+                            <p class="reply-content">{{ reply.content | slice:0:150 }}
+                                @if (reply.content.length > 150) {
+                                <span class="show-more" (click)="toggleShowMoreReply(reply.idMessage)">... הצג
+                                    עוד</span>
+                                }
+                            </p>
+                            }
+                            @if (shouldShowMoreReply(reply.idMessage) && reply.content.length > 150) {
+                            <span class="show-less" (click)="toggleShowMoreReply(reply.idMessage)">הצג פחות</span>
+                            }
+                        </div>
+                    </div>
+                    }
+                </div>
+                }
+
+            </div>
+            }
+
+        </div>
+
+    </div>
+</div>

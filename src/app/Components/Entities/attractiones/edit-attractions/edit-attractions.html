@@ -1,0 +1,150 @@
+<div class="sidebar" dir="rtl">
+  <div class="sidebar-header">
+    <button class="close-btn" (click)="closed.emit()">✕</button>
+    <h2>עריכת אטרקציה</h2>
+  </div>
+
+  <div class="sidebar-body">
+    <form [formGroup]="editAttractionForm" (ngSubmit)="onSubmit()">
+
+      <div class="form-field">
+        <label>שם האטרקציה</label>
+        <input formControlName="name" />
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label>אזור</label>
+          <select formControlName="regionId">
+            @for (area of areaList; track area.id) {
+            <option [value]="area.id">{{area.name}}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label class="form-label fw-bold">תמונות קיימות</label>
+        @if (existingImages.length > 0) {
+        <div class="existing-images">
+          <div class="images-container">
+            @for (image of existingImages; track $index; let i = $index) {
+            <div class="image-item existing">
+              <img [src]="image" alt="existing">
+              <button type="button" class="btn-remove" (click)="removeExistingImage(i)" [disabled]="isSaving">×</button>
+            </div>
+            }
+          </div>
+        </div>
+        } @else {
+        <p class="text-muted">אין תמונות</p>
+        }
+      </div>
+
+      <div class="form-field">
+        <label class="form-label fw-bold">הוסף תמונות חדשות</label>
+
+        @if (previewUrls.length > 0) {
+        <div class="new-images">
+          <div class="images-title">תמונות חדשות ({{ previewUrls.length }})</div>
+          <div class="images-container">
+            @for (preview of previewUrls; track $index; let i = $index) {
+            <div class="image-item new">
+              <img [src]="preview" alt="preview">
+              <button type="button" class="btn-remove" (click)="removeNewImage(i)" [disabled]="isSaving">×</button>
+            </div>
+            }
+          </div>
+        </div>
+        }
+
+        <div class="input-wrapper">
+          <input #fileInput type="file" class="form-control" accept="image/*" multiple
+            (change)="onImagesSelected($event)">
+          <small class="text-muted">בחר תמונות להוספה</small>
+        </div>
+      </div>
+
+
+      <div class="form-field">
+        <label>סוג</label>
+        <input formControlName="type" />
+      </div>
+
+      <div class="form-field">
+        <label>עיר</label>
+
+        @if (cities().length > 0) {
+        <div class="selected-city">
+          {{ editAttractionForm.get('city')?.value || 'לא נבחרה עיר' }}
+        </div>
+
+        <div class="city-autocomplete-container">
+          <input type="text" placeholder="חפש עיר..." [value]="citySearchText()" (input)="onCitySearchChange($event)"
+            class="form-control" autocomplete="off" />
+
+          @if (citySearchText()) {
+          <div class="city-dropdown-list">
+            @for (city of filteredCities(); track city) {
+            <button type="button" class="city-option" (click)="selectCity(city)">
+              {{ city }}
+            </button>
+            }
+          </div>
+          }
+        </div>
+        } @else {
+        <input type="text" disabled placeholder="טוען ערים..." />
+        }
+      </div>
+
+      <div class="form-field">
+        <label>כתובת</label>
+        <input formControlName="address" />
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label>שעות פתיחה</label>
+          <input formControlName="openingHours" />
+        </div>
+        <div class="form-field">
+          <label>כניסה</label>
+          <input type="number" formControlName="entryFee" />
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label>טלפון</label>
+        <input formControlName="phoneNumber" />
+      </div>
+
+      <div class="form-field">
+        <label>תיאור</label>
+        <textarea formControlName="description" rows="3"></textarea>
+      </div>
+
+      <div class="form-field">
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="suitableForKids" />
+          מתאים לילדים
+        </label>
+      </div>
+
+      <div class="form-field">
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="SabbathKeeper" />
+          שומר שבת
+        </label>
+      </div>
+
+      <div class="action-buttons">
+        <button type="button" class="btn-cancel" (click)="closed.emit()">ביטול</button>
+        <button type="submit" class="btn-save" [disabled]="editAttractionForm.invalid || isSaving">
+          {{ isSaving ? 'שומר...' : 'שמור שינויים' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
