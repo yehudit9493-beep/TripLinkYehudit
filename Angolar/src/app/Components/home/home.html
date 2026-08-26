@@ -112,8 +112,12 @@
 
   @if (currentForumMessage) {
 
-  <div class="forum-featured-card">
+  <div class="forum-card-wrapper">
 
+<div
+  class="forum-featured-card"
+  [class.slide-out]="isForumMessageChanging"
+>
     <!-- אייקון -->
 
     <div class="forum-message-icon">
@@ -152,22 +156,22 @@
 
       @if (currentForumMessage.title) {
 
-      <h3>
-        {{ currentForumMessage.title }}
-      </h3>
+        <h3>
+          {{ currentForumMessage.title }}
+        </h3>
 
       }
 
 
       <p class="forum-message-text">
-
         {{ currentForumMessage.content }}
-
       </p>
 
     </div>
 
   </div>
+
+</div>
 
 
   <!-- נקודות -->

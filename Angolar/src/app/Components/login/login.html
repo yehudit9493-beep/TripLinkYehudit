@@ -1,0 +1,78 @@
+
+<div class="registration-modal" dir="rtl">
+
+  <!-- חזרה -->
+  <button type="button" (click)="goBack()" class="modal-back-btn">
+
+    <i class="bi bi-arrow-right"></i>
+    <span>חזרה</span>
+
+  </button>
+
+
+  <!-- כותרת -->
+  <div class="modal-header">
+
+    <h2 mat-dialog-title>
+      איך תרצו
+      <strong>להצטרף?</strong>
+    </h2>
+
+  </div>
+
+
+  <!-- אפשרויות -->
+  <mat-dialog-content class="options-container">
+
+    <button type="button" class="option-card" (click)="navigate('loginToGuide')">
+
+      <div class="option-icon instructor-icon">
+        <i class="bi bi-person-badge"></i>
+      </div>
+
+      <div class="text-content">
+
+        <span class="title">
+          הרשמה כמדריכה
+        </span>
+
+        <span class="desc">
+          להוביל קבוצות ולגלות מסלולים חדשים
+        </span>
+
+      </div>
+
+      <div class="option-arrow">
+        <i class="bi bi-arrow-left"></i>
+      </div>
+
+    </button>
+
+
+    <button type="button" class="option-card" (click)="navigate('loginToCoordinator')">
+
+      <div class="option-icon coordinator-icon">
+        <i class="bi bi-clipboard-data"></i>
+      </div>
+
+      <div class="text-content">
+
+        <span class="title">
+          הרשמה כמרכזת
+        </span>
+
+        <span class="desc">
+          לנהל לוגיסטיקה וארגון של טיולים
+        </span>
+
+      </div>
+
+      <div class="option-arrow">
+        <i class="bi bi-arrow-left"></i>
+      </div>
+
+    </button>
+
+  </mat-dialog-content>
+
+</div>

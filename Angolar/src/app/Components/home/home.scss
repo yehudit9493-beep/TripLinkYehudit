@@ -1,5 +1,10 @@
 /* =========================================================
-   HERO
+   HOME PAGE - TRIPLINK
+========================================================= */
+
+
+/* =========================================================
+   HERO SECTION
 ========================================================= */
 
 .hero-section {
@@ -8,11 +13,15 @@
   min-height: 100vh;
 
   background-image: url('/travel-hero.svg');
+
   background-size: cover;
+
   background-position: center;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   overflow: hidden;
@@ -21,22 +30,26 @@
 }
 
 
-/* שכבת צבע מעל ה-SVG */
+/* שכבה כהה מעל התמונה */
+
 .hero-overlay {
   position: absolute;
 
   inset: 0;
 
   background:
-    linear-gradient(135deg,
-      rgba(30, 58, 95, 0.55),
-      rgba(2, 30, 38, 0.35));
+    linear-gradient(90deg,
+      rgba(2, 30, 38, 0.45),
+      rgba(2, 30, 38, 0.12));
 
   z-index: 1;
 }
 
 
-/* תוכן ה-Hero */
+/* =========================================================
+   HERO CONTENT
+========================================================= */
+
 .hero-content {
   position: relative;
 
@@ -47,8 +60,49 @@
   text-align: center;
 
   color: white;
+}
 
-  animation: heroAppear 1s ease-out both;
+
+/* =========================================================
+   BADGE
+========================================================= */
+
+.hero-badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  padding: 9px 18px;
+
+  margin-bottom: 5px;
+
+  border-radius: 30px;
+
+  background: rgba(255, 255, 255, 0.12);
+
+  border: 1px solid rgba(255, 255, 255, 0.25);
+
+  backdrop-filter: blur(12px);
+
+  color: rgba(255, 255, 255, 0.9);
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  animation:
+    heroAppear 0.8s ease-out both;
+}
+
+
+.hero-badge i {
+  color: #77fd68;
+
+  font-size: 16px;
 }
 
 
@@ -60,7 +114,9 @@
   direction: ltr;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   gap: 18px;
@@ -69,14 +125,16 @@
 
   line-height: 1;
 
-  animation: logoAppear 1s ease-out both;
+  animation:
+    logoAppear 1s ease-out both;
 }
 
 
-/* האייקון של הלוגו */
+/* אייקון הלוגו */
 
 .hero-logo-icon {
   width: 78px;
+
   height: 78px;
 
   border-radius: 20px;
@@ -87,7 +145,9 @@
       #00d2ff);
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   box-shadow:
@@ -103,6 +163,7 @@
 
 .hero-link-chain {
   width: 38px;
+
   height: 18px;
 
   border: 4px solid white;
@@ -123,6 +184,7 @@
   position: absolute;
 
   width: 18px;
+
   height: 18px;
 
   border: 4px solid white;
@@ -130,11 +192,12 @@
   border-radius: 50%;
 
   top: -12px;
+
   left: 8px;
 }
 
 
-/* הטקסט */
+/* טקסט הלוגו */
 
 .hero-logo-text {
   font-size: clamp(60px, 8vw, 90px);
@@ -166,7 +229,7 @@
 }
 
 
-/* אפקט Hover */
+/* Hover */
 
 .hero-logo:hover .hero-logo-icon {
   transform:
@@ -177,26 +240,6 @@
 }
 
 
-/* אנימציה */
-
-@keyframes logoAppear {
-
-  from {
-    opacity: 0;
-
-    transform:
-      translateY(-20px) scale(0.95);
-  }
-
-  to {
-    opacity: 1;
-
-    transform:
-      translateY(0) scale(1);
-  }
-
-}
-
 /* =========================================================
    HERO TITLE
 ========================================================= */
@@ -204,23 +247,21 @@
 .hero-content h2 {
   color: white;
 
-  font-size: clamp(32px, 5vw, 50px);
+  font-size: 50px;
 
   line-height: 1.25;
 
   margin: 20px 0;
 
-  font-weight: 500;
+  animation:
+    heroAppear 0.9s ease-out 0.15s both;
 }
 
 
 .hero-content h2 span {
-  color: #00d2ff;
+  color: #6de2eb;
 
   font-weight: 700;
-
-  text-shadow:
-    0 0 25px rgba(0, 210, 255, 0.2);
 }
 
 
@@ -229,7 +270,7 @@
 ========================================================= */
 
 .hero-content p {
-  color: rgba(255, 255, 255, 0.85);
+  color: white;
 
   font-size: 18px;
 
@@ -238,11 +279,14 @@
   max-width: 650px;
 
   margin: 0 auto 30px;
+
+  animation:
+    heroAppear 0.9s ease-out 0.25s both;
 }
 
 
 /* =========================================================
-   BUTTONS
+   HERO BUTTONS
 ========================================================= */
 
 .hero-buttons {
@@ -250,11 +294,10 @@
 
   justify-content: center;
 
-  align-items: center;
-
   gap: 15px;
 
-  margin-top: 10px;
+  animation:
+    heroAppear 0.9s ease-out 0.35s both;
 }
 
 
@@ -277,7 +320,8 @@
 }
 
 
-/* כפתור ראשי */
+/* כפתור כניסה */
+
 .main-btn {
   border: none;
 
@@ -301,7 +345,8 @@
 }
 
 
-/* כפתור משני */
+/* כפתור הרשמה */
+
 .secondary-btn {
   color: white;
 
@@ -318,65 +363,8 @@
 
   background: rgba(255, 255, 255, 0.2);
 
-  border-color: rgba(255, 255, 255, 0.55);
-}
-
-
-
-/* =========================================================
-   FLOATING CARD ICON
-========================================================= */
-
-.floating-icon {
-  width: 44px;
-
-  height: 44px;
-
-  border-radius: 13px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  background: rgba(119, 253, 104, 0.16);
-
-  color: #77fd68;
-
-  font-size: 20px;
-}
-
-
-/* =========================================================
-   AVATAR STACK
-========================================================= */
-
-.avatar-stack {
-  display: flex;
-
-  direction: ltr;
-}
-
-
-.avatar-stack div {
-  width: 34px;
-
-  height: 34px;
-
-  border-radius: 50%;
-
-  background: white;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  margin-left: -8px;
-
-  border: 2px solid rgba(255, 255, 255, 0.7);
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
 
@@ -399,7 +387,13 @@
 
   font-size: 12px;
 
-  animation: bounce 2s infinite;
+  animation:
+    bounce 2s infinite;
+}
+
+
+.scroll-hint i {
+  font-size: 16px;
 }
 
 
@@ -410,11 +404,7 @@
 .intro-section {
   padding: 110px 7%;
 
-  background: #f5f9fc;
-
-  position: relative;
-
-  direction: rtl;
+  background: #f8fcfd;
 }
 
 
@@ -432,7 +422,7 @@
 
 
 .section-title>span {
-  color: #00aeca;
+  color: #0bb2c9;
 
   font-size: 14px;
 
@@ -450,20 +440,18 @@
   font-size: clamp(30px, 5vw, 48px);
 
   line-height: 1.25;
-
-  font-weight: 700;
 }
 
 
 .section-title h2 strong {
   display: block;
 
-  color: #00aeca;
+  color: #0eafc8;
 }
 
 
 .section-title p {
-  color: #71808d;
+  color: #71868d;
 
   line-height: 1.8;
 
@@ -482,11 +470,14 @@
 
   display: grid;
 
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns:
+    repeat(3, 1fr);
 
   gap: 25px;
 }
 
+
+/* כרטיס */
 
 .feature-card {
   position: relative;
@@ -495,12 +486,12 @@
 
   border-radius: 25px;
 
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.9);
 
-  border: 1px solid rgba(30, 58, 95, 0.08);
+  border: 1px solid rgba(10, 170, 195, 0.12);
 
   box-shadow:
-    0 15px 50px rgba(30, 58, 95, 0.08);
+    0 15px 50px rgba(24, 76, 88, 0.08);
 
   overflow: hidden;
 
@@ -514,13 +505,11 @@
   transform: translateY(-10px);
 
   box-shadow:
-    0 25px 60px rgba(30, 58, 95, 0.15);
+    0 25px 60px rgba(24, 76, 88, 0.14);
 }
 
 
-/* =========================================================
-   FEATURE ICON
-========================================================= */
+/* אייקון */
 
 .feature-icon {
   width: 65px;
@@ -535,7 +524,7 @@
 
   justify-content: center;
 
-  color: #00aeca;
+  color: #0eafc8;
 
   background:
     linear-gradient(135deg,
@@ -545,27 +534,13 @@
   font-size: 27px;
 
   margin-bottom: 25px;
-
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
 }
 
 
-.feature-card:hover .feature-icon {
-  transform: scale(1.08) rotate(-3deg);
-
-  box-shadow:
-    0 10px 25px rgba(0, 210, 255, 0.15);
-}
-
-
-/* =========================================================
-   FEATURE TEXT
-========================================================= */
+/* כותרת */
 
 .feature-card h3 {
-  color: #1e3a5f;
+  color: #214653;
 
   font-size: 21px;
 
@@ -573,8 +548,10 @@
 }
 
 
+/* טקסט */
+
 .feature-card p {
-  color: #71808d;
+  color: #71858c;
 
   line-height: 1.8;
 
@@ -582,9 +559,7 @@
 }
 
 
-/* =========================================================
-   FEATURE NUMBER
-========================================================= */
+/* מספר */
 
 .feature-number {
   position: absolute;
@@ -593,388 +568,11 @@
 
   bottom: -10px;
 
-  color: rgba(30, 58, 95, 0.05);
+  color: rgba(14, 175, 200, 0.06);
 
   font-size: 70px;
 
   font-weight: 900;
-
-  pointer-events: none;
-}
-
-
-/* =========================================================
-   FORUM SECTION
-========================================================= */
-
-.forum-section {
-  padding: 110px 7%;
-
-  background: #1e3a5f;
-
-  direction: rtl;
-}
-
-
-/* כותרת הפורום */
-.forum-section .section-title>span {
-  color: #77fd68;
-}
-
-
-.forum-section .section-title h2 {
-  color: white;
-}
-
-
-.forum-section .section-title h2 strong {
-  color: #00d2ff;
-}
-
-
-.forum-section .section-title p {
-  color: #cbd5e1;
-}
-
-
-/* =========================================================
-   FORUM CARDS
-========================================================= */
-
-.forum-container {
-  max-width: 1200px;
-
-  margin: auto;
-
-  display: grid;
-
-  grid-template-columns: repeat(3, 1fr);
-
-  gap: 25px;
-}
-
-
-.forum-card {
-  padding: 28px;
-
-  border-radius: 22px;
-
-  background: rgba(255, 255, 255, 0.08);
-
-  border: 1px solid rgba(255, 255, 255, 0.15);
-
-  backdrop-filter: blur(15px);
-
-  color: white;
-
-  transition:
-    transform 0.3s ease,
-    background 0.3s ease,
-    box-shadow 0.3s ease;
-}
-
-
-.forum-card:hover {
-  transform: translateY(-8px);
-
-  background: rgba(255, 255, 255, 0.12);
-
-  box-shadow:
-    0 20px 45px rgba(0, 0, 0, 0.18);
-}
-
-
-/* =========================================================
-   FORUM USER
-========================================================= */
-
-.forum-card-top {
-  display: flex;
-
-  align-items: center;
-
-  gap: 12px;
-
-  margin-bottom: 22px;
-}
-
-
-.forum-avatar {
-  width: 45px;
-
-  height: 45px;
-
-  border-radius: 50%;
-
-  background: white;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  font-size: 22px;
-}
-
-
-.forum-card-top strong {
-  display: block;
-
-  font-size: 14px;
-
-  color: white;
-}
-
-
-.forum-card-top small {
-  display: block;
-
-  margin-top: 4px;
-
-  color: #94a3b8;
-
-  font-size: 11px;
-}
-
-
-/* =========================================================
-   FORUM CONTENT
-========================================================= */
-
-.forum-card h3 {
-  font-size: 20px;
-
-  margin-bottom: 12px;
-
-  color: white;
-}
-
-
-.forum-card p {
-  color: #cbd5e1;
-
-  line-height: 1.8;
-
-  font-size: 14px;
-
-  min-height: 70px;
-
-  margin-bottom: 0;
-}
-
-
-/* =========================================================
-   FORUM LINK
-========================================================= */
-
-.forum-link {
-  margin-top: 10px;
-
-  border: none;
-
-  background: transparent;
-
-  color: #77fd68;
-
-  font-weight: 700;
-
-  cursor: pointer;
-
-  transition:
-    color 0.2s ease,
-    transform 0.2s ease;
-}
-
-
-.forum-link:hover {
-  color: #00d2ff;
-
-  transform: translateX(-4px);
-}
-
-
-/* =========================================================
-   ANIMATIONS
-========================================================= */
-
-@keyframes heroAppear {
-  from {
-    opacity: 0;
-
-    transform: translateY(35px);
-  }
-
-  to {
-    opacity: 1;
-
-    transform: translateY(0);
-  }
-}
-
-
-@keyframes floating {
-
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-14px);
-  }
-}
-
-
-@keyframes bounce {
-
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(8px);
-  }
-}
-
-
-/* =========================================================
-   RESPONSIVE - TABLET
-========================================================= */
-
-@media (max-width: 900px) {
-
-  .features-container {
-    grid-template-columns: 1fr;
-  }
-
-
-  .forum-container {
-    grid-template-columns: 1fr;
-  }
-
-
-  .hero-section {
-    background-attachment: scroll;
-  }
-}
-
-
-/* =========================================================
-   RESPONSIVE - MOBILE
-========================================================= */
-
-@media (max-width: 600px) {
-
-  .hero-section {
-    min-height: 100svh;
-  }
-
-
-  .hero-content {
-    width: 92%;
-  }
-
-
-  .hero-logo {
-    font-size: 55px;
-
-    letter-spacing: -2px;
-  }
-
-
-  .hero-content h2 {
-    font-size: 30px;
-
-    margin: 15px 0;
-  }
-
-
-  .hero-content p {
-    font-size: 15px;
-
-    line-height: 1.7;
-  }
-
-
-  .hero-buttons {
-    flex-direction: column;
-
-    max-width: 330px;
-
-    margin: 25px auto 0;
-  }
-
-
-  .main-btn,
-  .secondary-btn {
-    width: 100%;
-  }
-
-
-  .intro-section {
-    padding: 75px 20px;
-  }
-
-
-  .forum-section {
-    padding: 75px 20px;
-  }
-
-
-  .section-title {
-    margin-bottom: 40px;
-  }
-
-
-  .section-title h2 {
-    font-size: 32px;
-  }
-
-
-  .feature-card {
-    padding: 30px 25px;
-  }
-
-
-  .forum-card {
-    padding: 24px;
-  }
-
-  .hero-logo {
-    gap: 10px;
-  }
-
-  .hero-logo-icon {
-    width: 55px;
-    height: 55px;
-
-    border-radius: 15px;
-  }
-
-  .hero-link-chain {
-    width: 27px;
-    height: 13px;
-
-    border-width: 3px;
-  }
-
-  .hero-link-chain::after {
-    width: 13px;
-    height: 13px;
-
-    border-width: 3px;
-
-    top: -9px;
-    left: 6px;
-  }
-
-  .hero-logo-text {
-    font-size: 55px;
-
-    letter-spacing: -2px;
-  }
 }
 
 
@@ -996,7 +594,9 @@
 }
 
 
-/* כותרת */
+/* =========================================================
+   FORUM TITLE
+========================================================= */
 
 .forum-section-title {
   text-align: center;
@@ -1050,15 +650,29 @@
 
 
 /* =========================================================
-   FEATURED MESSAGE
+   FORUM CARD WRAPPER
+========================================================= */
+
+.forum-card-wrapper {
+  width: min(850px, 100%);
+
+  margin: auto;
+
+  overflow: hidden;
+
+  border-radius: 28px;
+}
+
+
+/* =========================================================
+   FEATURED FORUM CARD
 ========================================================= */
 
 .forum-featured-card {
-  width: min(850px, 100%);
+
+  width: 100%;
 
   min-height: 220px;
-
-  margin: auto;
 
   padding: 35px 40px;
 
@@ -1068,7 +682,7 @@
 
   gap: 25px;
 
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.95);
 
   border: 1px solid rgba(30, 58, 95, 0.10);
 
@@ -1081,11 +695,75 @@
 
   overflow: hidden;
 
-  animation: forumMessageAppear 0.5s ease;
+  box-sizing: border-box;
+
+  /* הודעה חדשה נכנסת מימין */
+  animation:
+    forumMessageEnter 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+
+  will-change:
+    transform,
+    opacity;
 }
 
 
-/* פס קטן בצד */
+/* הודעה ישנה יוצאת שמאלה */
+
+.forum-featured-card.slide-out {
+
+  animation:
+    forumMessageExit 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+
+}
+
+
+/* =========================================
+   הודעה חדשה - כניסה מימין
+========================================= */
+
+@keyframes forumMessageEnter {
+
+  0% {
+
+    opacity: 0;
+
+    transform: translateX(100%);
+  }
+
+  100% {
+
+    opacity: 1;
+
+    transform: translateX(0);
+  }
+
+}
+
+
+/* =========================================
+   הודעה ישנה - יציאה שמאלה
+========================================= */
+
+@keyframes forumMessageExit {
+
+  0% {
+
+    opacity: 1;
+
+    transform: translateX(0);
+  }
+
+  100% {
+
+    opacity: 0;
+
+    transform: translateX(-100%);
+  }
+
+}
+
+
+/* פס צבע בצד */
 
 .forum-featured-card::before {
   content: '';
@@ -1108,13 +786,14 @@
 
 
 /* =========================================================
-   ICON
+   FORUM MESSAGE ICON
 ========================================================= */
 
 .forum-message-icon {
   flex-shrink: 0;
 
   width: 60px;
+
   height: 60px;
 
   border-radius: 18px;
@@ -1122,6 +801,7 @@
   display: flex;
 
   align-items: center;
+
   justify-content: center;
 
   background:
@@ -1136,7 +816,7 @@
 
 
 /* =========================================================
-   CONTENT
+   FORUM MESSAGE CONTENT
 ========================================================= */
 
 .forum-message-content {
@@ -1160,8 +840,11 @@
 }
 
 
+/* Avatar */
+
 .forum-avatar {
   width: 42px;
+
   height: 42px;
 
   border-radius: 50%;
@@ -1169,6 +852,7 @@
   display: flex;
 
   align-items: center;
+
   justify-content: center;
 
   background:
@@ -1182,6 +866,8 @@
 }
 
 
+/* שם משתמש */
+
 .forum-user strong {
   display: block;
 
@@ -1190,6 +876,8 @@
   font-size: 15px;
 }
 
+
+/* תאריך */
 
 .forum-user small {
   display: block;
@@ -1202,6 +890,8 @@
 }
 
 
+/* כותרת הודעה */
+
 .forum-message-content h3 {
   margin: 0 0 10px;
 
@@ -1210,6 +900,8 @@
   font-size: 22px;
 }
 
+
+/* תוכן */
 
 .forum-message-text {
   margin: 0;
@@ -1223,7 +915,7 @@
 
 
 /* =========================================================
-   DOTS
+   FORUM DOTS
 ========================================================= */
 
 .forum-dots {
@@ -1240,8 +932,9 @@
 
 
 .forum-dots button {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+
+  height: 7px;
 
   padding: 0;
 
@@ -1254,13 +947,19 @@
   cursor: pointer;
 
   transition:
-    width 0.3s ease,
-    background 0.3s ease;
+    width 0.35s ease,
+    background 0.35s ease,
+    transform 0.35s ease;
+}
+
+
+.forum-dots button:hover {
+  transform: scale(1.3);
 }
 
 
 .forum-dots button.active {
-  width: 25px;
+  width: 26px;
 
   border-radius: 10px;
 
@@ -1272,7 +971,7 @@
 
 
 /* =========================================================
-   EMPTY
+   FORUM EMPTY STATE
 ========================================================= */
 
 .forum-empty {
@@ -1304,17 +1003,67 @@
 
 
 /* =========================================================
-   ANIMATION
+   FORUM ANIMATION
 ========================================================= */
 
-@keyframes forumMessageAppear {
+@keyframes forumSlideIn {
+
+  0% {
+    opacity: 0;
+
+    transform:
+      translateX(35px) scale(0.985);
+  }
+
+
+  45% {
+    opacity: 0.7;
+  }
+
+
+  100% {
+    opacity: 1;
+
+    transform:
+      translateX(0) scale(1);
+  }
+
+}
+
+
+/* =========================================================
+   GENERAL ANIMATIONS
+========================================================= */
+
+@keyframes heroAppear {
 
   from {
     opacity: 0;
 
     transform:
-      translateY(12px) scale(0.98);
+      translateY(35px);
   }
+
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+
+}
+
+
+@keyframes logoAppear {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(-20px) scale(0.95);
+  }
+
 
   to {
     opacity: 1;
@@ -1326,14 +1075,210 @@
 }
 
 
+@keyframes bounce {
+
+  0%,
+  100% {
+    transform:
+      translateY(0);
+  }
+
+
+  50% {
+    transform:
+      translateY(8px);
+  }
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .features-container {
+    grid-template-columns: 1fr;
+  }
+
+
+  .hero-section {
+    background-attachment: scroll;
+  }
+
+}
+
+
 /* =========================================================
    MOBILE
 ========================================================= */
 
 @media (max-width: 600px) {
 
+
+  /* -------------------------
+     HERO
+  ------------------------- */
+
+  .hero-content {
+    width: 92%;
+  }
+
+
+  .hero-badge {
+    font-size: 12px;
+
+    padding: 8px 14px;
+  }
+
+
+  /* -------------------------
+     LOGO
+  ------------------------- */
+
+  .hero-logo {
+    gap: 10px;
+  }
+
+
+  .hero-logo-icon {
+    width: 55px;
+
+    height: 55px;
+
+    border-radius: 15px;
+  }
+
+
+  .hero-link-chain {
+    width: 27px;
+
+    height: 13px;
+
+    border-width: 3px;
+  }
+
+
+  .hero-link-chain::after {
+    width: 13px;
+
+    height: 13px;
+
+    border-width: 3px;
+
+    top: -9px;
+
+    left: 6px;
+  }
+
+
+  .hero-logo-text {
+    font-size: 55px;
+
+    letter-spacing: -2px;
+  }
+
+
+  /* -------------------------
+     TITLE
+  ------------------------- */
+
+  .hero-content h2 {
+    font-size: 30px;
+
+    margin: 18px 0;
+  }
+
+
+  .hero-content p {
+    font-size: 15px;
+
+    line-height: 1.7;
+
+    margin-bottom: 25px;
+  }
+
+
+  /* -------------------------
+     BUTTONS
+  ------------------------- */
+
+  .hero-buttons {
+    flex-direction: column;
+
+    max-width: 330px;
+
+    margin: auto;
+  }
+
+
+  .main-btn,
+  .secondary-btn {
+    width: 100%;
+  }
+
+
+  /* -------------------------
+     SCROLL
+  ------------------------- */
+
+  .scroll-hint {
+    margin-top: 35px;
+  }
+
+
+  /* -------------------------
+     INTRO
+  ------------------------- */
+
+  .intro-section {
+    padding: 75px 20px;
+  }
+
+
+  .section-title {
+    margin-bottom: 40px;
+  }
+
+
+  .section-title p {
+    font-size: 15px;
+  }
+
+
+  /* -------------------------
+     FEATURES
+  ------------------------- */
+
+  .features-container {
+    grid-template-columns: 1fr;
+
+    gap: 18px;
+  }
+
+
+  .feature-card {
+    padding: 30px 25px;
+  }
+
+
+  /* -------------------------
+     FORUM
+  ------------------------- */
+
   .forum-section {
     padding: 75px 20px 90px;
+  }
+
+
+  .forum-section-title {
+    margin-bottom: 35px;
+  }
+
+
+  .forum-section-title p {
+    font-size: 15px;
   }
 
 
@@ -1348,6 +1293,7 @@
 
   .forum-message-icon {
     width: 50px;
+
     height: 50px;
 
     font-size: 20px;
@@ -1361,6 +1307,11 @@
 
   .forum-message-text {
     font-size: 15px;
+  }
+
+
+  .forum-dots {
+    margin-top: 20px;
   }
 
 }

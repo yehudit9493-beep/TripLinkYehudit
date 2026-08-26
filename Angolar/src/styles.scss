@@ -215,3 +215,39 @@ body.home-bg {
     position: fixed;
 }
 
+/* =========================================================
+   TRIPLINK ANGULAR MATERIAL MODAL
+========================================================= */
+
+.custom-modalbox {
+    --mdc-dialog-container-shape: 28px;
+}
+
+
+/* החלונית עצמה */
+
+.custom-modalbox .mat-mdc-dialog-container {
+    padding: 0 !important;
+
+    border-radius: 28px !important;
+
+    overflow: hidden;
+
+    background: transparent !important;
+
+    box-shadow:
+        0 30px 90px rgba(20, 55, 70, 0.25) !important;
+}
+
+
+/* התוכן הפנימי */
+
+.custom-modalbox .mat-mdc-dialog-surface {
+    padding: 0 !important;
+
+    border-radius: 28px !important;
+
+    overflow: hidden;
+
+    background: transparent !important;
+}

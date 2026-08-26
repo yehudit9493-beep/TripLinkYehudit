@@ -44,6 +44,15 @@ export class Home implements OnInit, OnDestroy {
 
 
   // =====================================================
+  // אנימציה
+  // =====================================================
+
+  isForumMessageChanging: boolean = false;
+
+  private changeTimeout: ReturnType<typeof setTimeout> | null = null;
+
+
+  // =====================================================
   // Timer
   // =====================================================
 
@@ -81,10 +90,12 @@ export class Home implements OnInit, OnDestroy {
 
   private loadForumMessages(): void {
 
-    let messages = this.forums.getMessagesByForumId(1);
+    let messages =
+      this.forums.getMessagesByForumId(1);
 
 
-    // העתקה כדי לא לשנות את המערך המקורי
+    // העתקה כדי לא לשנות
+    // את המערך המקורי של הסרביס
     messages = [...messages];
 
 
@@ -97,14 +108,15 @@ export class Home implements OnInit, OnDestroy {
 
 
     // מקסימום 5 הודעות
-    this.forumMessages = messages.slice(0, 5);
+    this.forumMessages =
+      messages.slice(0, 5);
 
 
     // מתחילים מההודעה הראשונה
     this.currentForumMessageIndex = 0;
 
 
-    // אם יש יותר מהודעה אחת,
+    // אם יש יותר מהודעה אחת
     // מתחילים החלפה אוטומטית
     if (this.forumMessages.length > 1) {
 
@@ -124,16 +136,77 @@ export class Home implements OnInit, OnDestroy {
 
     this.forumInterval = setInterval(() => {
 
+      this.changeToNextForumMessage();
+
+    }, 5000);
+  }
+
+
+  // =====================================================
+  // מעבר להודעה הבאה
+  // =====================================================
+
+  private changeToNextForumMessage(): void {
+
+    if (this.forumMessages.length <= 1) {
+
+      return;
+    }
+
+
+    // מונע הפעלה כפולה
+    if (this.isForumMessageChanging) {
+
+      return;
+    }
+
+
+    /*
+      שלב 1:
+      מפעילים את אנימציית היציאה.
+
+      ההודעה הנוכחית תצא שמאלה.
+    */
+
+    this.isForumMessageChanging = true;
+
+    this.cdr.detectChanges();
+
+
+    /*
+      שלב 2:
+      מחכים שהאנימציה תסתיים.
+      
+      700ms = אורך האנימציה ב-CSS.
+    */
+
+    this.changeTimeout = setTimeout(() => {
+
+
+      /*
+        עוברים להודעה הבאה
+      */
+
       this.currentForumMessageIndex =
         (
           this.currentForumMessageIndex + 1
         ) % this.forumMessages.length;
 
 
-      // גורם ל-Angular לעדכן את המסך
+      /*
+        מחזירים את המצב ל-false.
+
+        Angular יציג עכשיו את ההודעה החדשה,
+        והיא תיכנס מימין.
+      */
+
+      this.isForumMessageChanging = false;
+
+
       this.cdr.detectChanges();
 
-    }, 5000);
+
+    }, 700);
   }
 
 
@@ -148,6 +221,14 @@ export class Home implements OnInit, OnDestroy {
       clearInterval(this.forumInterval);
 
       this.forumInterval = null;
+    }
+
+
+    if (this.changeTimeout !== null) {
+
+      clearTimeout(this.changeTimeout);
+
+      this.changeTimeout = null;
     }
   }
 
@@ -185,13 +266,49 @@ export class Home implements OnInit, OnDestroy {
     }
 
 
-    this.currentForumMessageIndex = index;
+    if (index === this.currentForumMessageIndex) {
+
+      return;
+    }
 
 
-    // מאפסים את ההחלפה
-    // כדי שהמשתמש יקבל 5 שניות
-    // מההודעה שבחר
-    this.startForumRotation();
+    // אם כבר מתבצעת אנימציה
+    if (this.isForumMessageChanging) {
+
+      return;
+    }
+
+
+    /*
+      הפעלה של אנימציית יציאה
+    */
+
+    this.isForumMessageChanging = true;
+
+    this.cdr.detectChanges();
+
+
+    /*
+      אחרי שההודעה הישנה יצאה
+      מציגים את ההודעה שבחר המשתמש.
+    */
+
+    this.changeTimeout = setTimeout(() => {
+
+      this.currentForumMessageIndex = index;
+
+      this.isForumMessageChanging = false;
+
+      this.cdr.detectChanges();
+
+
+      /*
+        מתחילים מחדש את 5 השניות
+      */
+
+      this.startForumRotation();
+
+    }, 700);
   }
 
 
@@ -204,10 +321,12 @@ export class Home implements OnInit, OnDestroy {
     this.dialog.open(Login, {
 
       width: '450px',
+      maxWidth: '92vw',
 
       panelClass: 'custom-modalbox'
 
     });
+
   }
 
 

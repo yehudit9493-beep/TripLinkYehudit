@@ -1,0 +1,434 @@
+/* =========================================================
+   REGISTRATION MODAL
+========================================================= */
+
+.registration-modal {
+  position: relative;
+
+  width: 100%;
+  padding: 25px 30px 30px;
+
+  box-sizing: border-box;
+
+  background:
+    linear-gradient(180deg,
+      #ffffff 0%,
+      #f8fcfd 100%);
+
+  color: #1e3a5f;
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   DECORATIVE CIRCLES
+========================================================= */
+
+.registration-modal::before {
+  content: '';
+
+  position: absolute;
+
+  width: 150px;
+  height: 150px;
+
+  top: -90px;
+  right: -60px;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(135deg,
+      rgba(119, 253, 104, 0.16),
+      rgba(0, 210, 255, 0.10));
+
+  pointer-events: none;
+}
+
+
+.registration-modal::after {
+  content: '';
+
+  position: absolute;
+
+  width: 100px;
+  height: 100px;
+
+  bottom: -65px;
+  left: -50px;
+
+  border-radius: 50%;
+
+  background: rgba(0, 210, 255, 0.06);
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+.modal-back-btn {
+  position: relative;
+  z-index: 2;
+
+  display: inline-flex;
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 3px 0;
+
+  border: none;
+  background: transparent;
+
+  color: #81949b;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+
+.modal-back-btn:hover {
+  color: #00a8c6;
+
+  transform: translateX(3px);
+}
+
+
+.modal-back-btn i {
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.modal-header {
+  position: relative;
+  z-index: 2;
+
+  text-align: center;
+
+  margin-top: 14px;
+  margin-bottom: 24px;
+}
+
+
+.modal-header h2 {
+  margin: 0;
+
+  padding: 0;
+
+  color: #1e3a5f;
+
+  font-size: 28px;
+  font-weight: 800;
+
+  line-height: 1.25;
+}
+
+
+.modal-header h2 strong {
+  color: #00a8c6;
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.options-container {
+  position: relative;
+  z-index: 2;
+
+  padding: 0 !important;
+
+  margin: 0 !important;
+
+  overflow: visible !important;
+}
+
+
+/* =========================================================
+   OPTION CARD
+========================================================= */
+
+.option-card {
+  position: relative;
+
+  width: 100%;
+
+  min-height: 82px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 14px 16px;
+
+  margin: 0 0 12px;
+
+  box-sizing: border-box;
+
+  border: 1px solid rgba(30, 58, 95, 0.08);
+
+  border-radius: 18px;
+
+  background: rgba(255, 255, 255, 0.96);
+
+  text-align: right;
+
+  cursor: pointer;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 8px 25px rgba(30, 58, 95, 0.06);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+
+/* פס צבע */
+
+.option-card::before {
+  content: '';
+
+  position: absolute;
+
+  right: 0;
+  top: 0;
+  bottom: 0;
+
+  width: 4px;
+
+  background:
+    linear-gradient(180deg,
+      #77fd68,
+      #00d2ff);
+
+  opacity: 0;
+
+  transition: opacity 0.3s ease;
+}
+
+
+.option-card:hover {
+  transform: translateY(-3px);
+
+  border-color: rgba(0, 168, 198, 0.22);
+
+  box-shadow:
+    0 14px 35px rgba(30, 58, 95, 0.11);
+}
+
+
+.option-card:hover::before {
+  opacity: 1;
+}
+
+
+/* =========================================================
+   ICON
+========================================================= */
+
+.option-icon {
+  flex-shrink: 0;
+
+  width: 52px;
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+
+  font-size: 22px;
+
+  transition:
+    transform 0.3s ease;
+}
+
+
+/* מדריכה */
+
+.instructor-icon {
+  color: white;
+
+  background:
+    linear-gradient(135deg,
+      #77fd68,
+      #00d2ff);
+
+  box-shadow:
+    0 7px 18px rgba(0, 210, 255, 0.18);
+}
+
+
+/* מרכזת */
+
+.coordinator-icon {
+  color: #00a8c6;
+
+  background:
+    linear-gradient(135deg,
+      #e1fbff,
+      #edffe9);
+}
+
+
+.option-card:hover .option-icon {
+  transform:
+    scale(1.07) rotate(-3deg);
+}
+
+
+/* =========================================================
+   TEXT
+========================================================= */
+
+.text-content {
+  flex: 1;
+
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+
+.text-content .title {
+  color: #1e3a5f;
+
+  font-size: 16px;
+  font-weight: 800;
+}
+
+
+.text-content .desc {
+  color: #81949b;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   ARROW
+========================================================= */
+
+.option-arrow {
+  flex-shrink: 0;
+
+  width: 29px;
+  height: 29px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #effafd;
+
+  color: #00a8c6;
+
+  font-size: 13px;
+
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease,
+    color 0.3s ease;
+}
+
+
+.option-card:hover .option-arrow {
+  transform: translateX(-4px);
+
+  background:
+    linear-gradient(135deg,
+      #77fd68,
+      #00d2ff);
+
+  color: white;
+}
+
+
+/* =========================================================
+   LAST CARD
+========================================================= */
+
+.option-card:last-child {
+  margin-bottom: 0;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 500px) {
+
+  .registration-modal {
+    padding: 22px 18px 24px;
+  }
+
+  .modal-header {
+    margin-top: 12px;
+    margin-bottom: 20px;
+  }
+
+  .modal-header h2 {
+    font-size: 24px;
+  }
+
+  .modal-header p {
+    font-size: 12px;
+  }
+
+  .option-card {
+    min-height: 76px;
+
+    padding: 12px;
+  }
+
+  .option-icon {
+    width: 47px;
+    height: 47px;
+
+    border-radius: 14px;
+
+    font-size: 20px;
+  }
+
+  .text-content .title {
+    font-size: 14px;
+  }
+
+  .text-content .desc {
+    font-size: 11px;
+  }
+
+  .option-arrow {
+    width: 27px;
+    height: 27px;
+  }
+}
