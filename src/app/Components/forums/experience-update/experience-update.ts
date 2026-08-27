@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { Forums } from '../../../Service/forums';
 import { Message, Reply } from '../../../Interfacess/message';
 import { DatePipe, SlicePipe } from '@angular/common';
@@ -42,7 +42,8 @@ export class ExperienceUpdate {
   constructor(private forums: Forums,
     private router: Router,
     private route: ActivatedRoute, private auth: Auth,
-    private snackBar: MatSnackBar) { }
+    private snackBar: MatSnackBar,
+   private cdr: ChangeDetectorRef ) { }
 
   ngOnInit() {
     this.currentUserId = this.auth.getCurrentUserId();
@@ -74,6 +75,7 @@ private loadMessages() {
     }
     
     this.message = messages;
+    this.cdr.markForCheck();
     console.log('🟢 נתונים אחרי מיון:', this.message); 
   });
   

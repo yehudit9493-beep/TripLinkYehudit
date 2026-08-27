@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http'; 
 import { User } from '../Interfacess/user';
-import { Observable, tap } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -21,15 +21,33 @@ export class Auth {
     const loginData = { userName: userName, password: password };
 
     return this.http.post<User>(`${this.apiURL}/Login/login`, loginData).pipe(
+      // tap((user: User) => {
+      //   // אם השרת החזיר משתמש בהצלחה, נשמור אותו ב-localStorage
+      //   if (user) {
+      //     localStorage.setItem('currentUser', JSON.stringify(user));
+      //     localStorage.setItem('isLoggedIn', 'true');
+      //   }
+      // })
+
       tap((user: User) => {
-        // אם השרת החזיר משתמש בהצלחה, נשמור אותו ב-localStorage
-        if (user) {
-          localStorage.setItem('currentUser', JSON.stringify(user));
-          localStorage.setItem('isLoggedIn', 'true');
-        }
-      })
-    );
-  }
+      console.log('✅ תשובה מהשרת:', user);
+      
+      // ✅ בדוק שיש userId (עכשיו זה יעבוד!)
+      if (user && user.userId) {
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        localStorage.setItem('isLoggedIn', 'true');
+      } else {
+        throw new Error('Invalid user response from server');
+      }
+    }),
+    catchError((error) => {
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('currentUser');
+      return throwError(() => error);
+    })
+    
+  );
+}
 
   isUserAuthenticated(): boolean {
     return localStorage.getItem('isLoggedIn') === 'true';
@@ -51,7 +69,7 @@ export class Auth {
     return this.http.get<User[]>(`${this.apiURL}/Users`); // שנה את ה-URL לפי הנתיב המדויק ב-C#
   }
 
-  // ✅ קבל את שם המשתמש
+  //  קבל את שם המשתמש
   getCurrentUserName(): string {
     const user = this.getCurrentUser() as any;
     if (!user) return 'משתמש';
@@ -59,13 +77,13 @@ export class Auth {
     // בודק אם הגיע firstName מהשרת או FirstName מהמוק
     return user.firstName || user.FirstName || 'משתמש';
   }
-  // ✅ קבל את ID המשתמש
+  //  קבל את ID המשתמש
   getCurrentUserId(): number {
     const user = this.getCurrentUser();
     return user?.userId || 1;
   }
 
-  // ✅ קבל את אימייל המשתמש
+  //  קבל את אימייל המשתמש
   getCurrentUserEmail(): string {
     const user = this.getCurrentUser();
     return user ? user.Email : '';

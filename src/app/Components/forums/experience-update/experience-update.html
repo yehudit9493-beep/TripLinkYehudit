@@ -8,7 +8,7 @@
     <div class="forum-container">
 
 
-        @if (canPost) {
+        @if (!canPost) {
         <div class="new-message-prompt" (click)="goToAdd()">
             <div class="prompt-avatar">👤</div>
             <div class="prompt-text">

@@ -61,7 +61,7 @@ export class Forums {
 getMessagesByForumId(forumId: number): Observable<Message[]> {
     console.log('🔵 הגיע לפונקציה הזו עם forumId:', forumId);
 
-    return this.httpClient.get<any[]>(`${this.API_URL}/Forum/${forumId}`).pipe(
+    return this.httpClient.get<any[]>(`${this.API_URL}/forum/${forumId}`).pipe(
       
       // שלב 1: ראה את הגולמי מהשרת
       tap(rawData => {
@@ -88,7 +88,7 @@ getMessagesByForumId(forumId: number): Observable<Message[]> {
    * Add a new message (post) to the server.
    */
   addMessage(msg: { userId: number; forumTypeId: number; title: string; content: string }): Observable<Message> {
-    return this.httpClient.post<any>(`${this.API_URL}/Forum`, msg).pipe(
+    return this.httpClient.post<any>(`${this.API_URL}/forum/messages`, msg).pipe(
       map(item => this.mapToMessage(item))
     );
   }
@@ -115,29 +115,29 @@ getMessagesByForumId(forumId: number): Observable<Message[]> {
   // מיפוי מהשרת לאנגולר
   // --------------------------------------------------------------------------
 
-  private mapToMessage(server: any): Message {
+ private mapToMessage(server: any): Message {
     return {
-      idMessage: server.messageId,
-      idForum: server.forumTypeId,
-      userId: server.userId,
-      userName: server.userFullName,
-      title: server.title,
-      content: server.content,
-      date: new Date(server.messageDate),
-      replies: server.replies?.map((r: any) => this.mapToReply(r)) ?? [],
-      likes: server.likeCount ?? 0
+        idMessage: server.messageId,
+        idForum: server.forumTypeId,
+        userId: server.userId,
+        userName: server.userFullName,        
+        title: server.title,
+        content: server.content,
+        date: new Date(server.messageDate),
+        replies: server.replies?.map((r: any) => this.mapToReply(r)) ?? [],
+        likes: server.likeCount ?? 0
     };
-  }
+}
 
-  private mapToReply(server: any): Reply {
+private mapToReply(server: any): Reply {
     return {
-      idMessage: server.messageId,
-      idForum: server.forumTypeId,
-      userId: server.userId,
-      userName: server.userFullName,
-      content: server.content,
-      date: new Date(server.messageDate),
-      replies: server.replies?.map((r: any) => this.mapToReply(r)) ?? []
+        idMessage: server.messageId,
+        idForum: server.forumTypeId,
+        userId: server.userId,
+        userName: server.userFullName,     
+        content: server.content,
+        date: new Date(server.messageDate),
+        replies: server.replies?.map((r: any) => this.mapToReply(r)) ?? []
     };
-  }
+}
 }
