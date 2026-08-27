@@ -81,35 +81,27 @@ export class Home implements OnInit, OnDestroy {
 
   private loadForumMessages(): void {
 
-    let messages = this.forums.getMessagesByForumId(1);
+    this.forums.getMessagesByForumId(1).subscribe(messages => {
 
+      // הודעות חדשות קודם
+      messages.sort(
+        (a, b) =>
+          new Date(b.date).getTime() -
+          new Date(a.date).getTime()
+      );
 
-    // העתקה כדי לא לשנות את המערך המקורי
-    messages = [...messages];
+      // מקסימום 5 הודעות
+      this.forumMessages = messages.slice(0, 5);
 
+      // מתחילים מההודעה הראשונה
+      this.currentForumMessageIndex = 0;
 
-    // הודעות חדשות קודם
-    messages.sort(
-      (a, b) =>
-        new Date(b.date).getTime() -
-        new Date(a.date).getTime()
-    );
-
-
-    // מקסימום 5 הודעות
-    this.forumMessages = messages.slice(0, 5);
-
-
-    // מתחילים מההודעה הראשונה
-    this.currentForumMessageIndex = 0;
-
-
-    // אם יש יותר מהודעה אחת,
-    // מתחילים החלפה אוטומטית
-    if (this.forumMessages.length > 1) {
-
-      this.startForumRotation();
-    }
+      // אם יש יותר מהודעה אחת,
+      // מתחילים החלפה אוטומטית
+      if (this.forumMessages.length > 1) {
+        this.startForumRotation();
+      }
+    });
   }
 
 

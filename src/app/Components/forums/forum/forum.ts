@@ -43,12 +43,17 @@ export class Forum {
   }
 
   addMessage() {
-    this.newMessage.idMessage = Date.now();
-    this.newMessage.date = new Date();
-    this.forums.addMessage(this.newMessage);
-    this.resetForm();
+    const msgPayload = {
+      userId: this.newMessage.userId,
+      forumTypeId: this.currentForumId,
+      title: this.newMessage.title,
+      content: this.newMessage.content
+    };
 
-    this.router.navigate([`/forum/${this.currentForumId}`]);
+    this.forums.addMessage(msgPayload).subscribe(() => {
+      this.resetForm();
+      this.router.navigate([`/forum/${this.currentForumId}`]);
+    });
   }
 
   cancelMessage() {
