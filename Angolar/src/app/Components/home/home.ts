@@ -44,15 +44,6 @@ export class Home implements OnInit, OnDestroy {
 
 
   // =====================================================
-  // אנימציה
-  // =====================================================
-
-  isForumMessageChanging: boolean = false;
-
-  private changeTimeout: ReturnType<typeof setTimeout> | null = null;
-
-
-  // =====================================================
   // Timer
   // =====================================================
 
@@ -90,38 +81,27 @@ export class Home implements OnInit, OnDestroy {
 
   private loadForumMessages(): void {
 
-    let messages =
-      this.forums.getMessagesByForumId(1);
+    this.forums.getMessagesByForumId(1).subscribe(messages => {
 
+      // הודעות חדשות קודם
+      messages.sort(
+        (a, b) =>
+          new Date(b.date).getTime() -
+          new Date(a.date).getTime()
+      );
 
-    // העתקה כדי לא לשנות
-    // את המערך המקורי של הסרביס
-    messages = [...messages];
+      // מקסימום 5 הודעות
+      this.forumMessages = messages.slice(0, 5);
 
+      // מתחילים מההודעה הראשונה
+      this.currentForumMessageIndex = 0;
 
-    // הודעות חדשות קודם
-    messages.sort(
-      (a, b) =>
-        new Date(b.date).getTime() -
-        new Date(a.date).getTime()
-    );
-
-
-    // מקסימום 5 הודעות
-    this.forumMessages =
-      messages.slice(0, 5);
-
-
-    // מתחילים מההודעה הראשונה
-    this.currentForumMessageIndex = 0;
-
-
-    // אם יש יותר מהודעה אחת
-    // מתחילים החלפה אוטומטית
-    if (this.forumMessages.length > 1) {
-
-      this.startForumRotation();
-    }
+      // אם יש יותר מהודעה אחת,
+      // מתחילים החלפה אוטומטית
+      if (this.forumMessages.length > 1) {
+        this.startForumRotation();
+      }
+    });
   }
 
 
@@ -136,77 +116,16 @@ export class Home implements OnInit, OnDestroy {
 
     this.forumInterval = setInterval(() => {
 
-      this.changeToNextForumMessage();
-
-    }, 5000);
-  }
-
-
-  // =====================================================
-  // מעבר להודעה הבאה
-  // =====================================================
-
-  private changeToNextForumMessage(): void {
-
-    if (this.forumMessages.length <= 1) {
-
-      return;
-    }
-
-
-    // מונע הפעלה כפולה
-    if (this.isForumMessageChanging) {
-
-      return;
-    }
-
-
-    /*
-      שלב 1:
-      מפעילים את אנימציית היציאה.
-
-      ההודעה הנוכחית תצא שמאלה.
-    */
-
-    this.isForumMessageChanging = true;
-
-    this.cdr.detectChanges();
-
-
-    /*
-      שלב 2:
-      מחכים שהאנימציה תסתיים.
-      
-      700ms = אורך האנימציה ב-CSS.
-    */
-
-    this.changeTimeout = setTimeout(() => {
-
-
-      /*
-        עוברים להודעה הבאה
-      */
-
       this.currentForumMessageIndex =
         (
           this.currentForumMessageIndex + 1
         ) % this.forumMessages.length;
 
 
-      /*
-        מחזירים את המצב ל-false.
-
-        Angular יציג עכשיו את ההודעה החדשה,
-        והיא תיכנס מימין.
-      */
-
-      this.isForumMessageChanging = false;
-
-
+      // גורם ל-Angular לעדכן את המסך
       this.cdr.detectChanges();
 
-
-    }, 700);
+    }, 5000);
   }
 
 
@@ -221,14 +140,6 @@ export class Home implements OnInit, OnDestroy {
       clearInterval(this.forumInterval);
 
       this.forumInterval = null;
-    }
-
-
-    if (this.changeTimeout !== null) {
-
-      clearTimeout(this.changeTimeout);
-
-      this.changeTimeout = null;
     }
   }
 
@@ -266,49 +177,13 @@ export class Home implements OnInit, OnDestroy {
     }
 
 
-    if (index === this.currentForumMessageIndex) {
-
-      return;
-    }
+    this.currentForumMessageIndex = index;
 
 
-    // אם כבר מתבצעת אנימציה
-    if (this.isForumMessageChanging) {
-
-      return;
-    }
-
-
-    /*
-      הפעלה של אנימציית יציאה
-    */
-
-    this.isForumMessageChanging = true;
-
-    this.cdr.detectChanges();
-
-
-    /*
-      אחרי שההודעה הישנה יצאה
-      מציגים את ההודעה שבחר המשתמש.
-    */
-
-    this.changeTimeout = setTimeout(() => {
-
-      this.currentForumMessageIndex = index;
-
-      this.isForumMessageChanging = false;
-
-      this.cdr.detectChanges();
-
-
-      /*
-        מתחילים מחדש את 5 השניות
-      */
-
-      this.startForumRotation();
-
-    }, 700);
+    // מאפסים את ההחלפה
+    // כדי שהמשתמש יקבל 5 שניות
+    // מההודעה שבחר
+    this.startForumRotation();
   }
 
 
@@ -321,12 +196,10 @@ export class Home implements OnInit, OnDestroy {
     this.dialog.open(Login, {
 
       width: '450px',
-      maxWidth: '92vw',
 
       panelClass: 'custom-modalbox'
 
     });
-
   }
 
 

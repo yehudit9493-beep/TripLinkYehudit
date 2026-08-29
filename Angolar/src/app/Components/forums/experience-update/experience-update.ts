@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { Forums } from '../../../Service/forums';
 import { Message, Reply } from '../../../Interfacess/message';
 import { DatePipe, SlicePipe } from '@angular/common';
@@ -12,14 +12,15 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   imports: [DatePipe, SlicePipe, FormsModule],
   templateUrl: './experience-update.html',
   styleUrl: './experience-update.scss',
-  standalone: true
+  standalone: true,
+   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExperienceUpdate {
 
   message: Message[] = [];
 
   showMoreIndex: number | null = null;
-  showMoreReplyIndex: Map<number, boolean> = new Map(); 
+  showMoreReplyIndex: Map<number, boolean> = new Map();
 
   private readonly CONTENT_LENGTH_LIMIT = 150;
 
@@ -41,7 +42,8 @@ export class ExperienceUpdate {
   constructor(private forums: Forums,
     private router: Router,
     private route: ActivatedRoute, private auth: Auth,
-    private snackBar: MatSnackBar) { }
+    private snackBar: MatSnackBar,
+   private cdr: ChangeDetectorRef ) { }
 
   ngOnInit() {
     this.currentUserId = this.auth.getCurrentUserId();
@@ -59,19 +61,26 @@ export class ExperienceUpdate {
       this.canReply = config.canReply.includes(userPermission);
     }
 
-    let messages = this.forums.getMessagesByForumId(this.currentForumId);
-
-   
-    if (this.currentForumId === 3) { 
-      messages.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-    } else { 
-      messages.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-    }
-
-    this.message = messages;
+    this.loadMessages();
   }
 
+private loadMessages() {
+  this.forums.getMessagesByForumId(this.currentForumId).subscribe(messages => {
+    console.log('🔵 נתונים שהגיעו מהשרת:', messages); 
+    
+    if (this.currentForumId === 3) {
+      messages.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    } else {
+      messages.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    }
+    
+    this.message = messages;
+    this.cdr.markForCheck();
+    console.log('🟢 נתונים אחרי מיון:', this.message); 
+  });
+  
 
+}
   toggleShowMore(index: number) {
     this.showMoreIndex = this.showMoreIndex === index ? null : index;
   }
@@ -90,68 +99,62 @@ export class ExperienceUpdate {
   }
 
   addReply(messageId: number) {
-
     if (!this.newReply.content.trim()) {
       return;
     }
 
-    const reply: Reply = {
-      idMessage: this.generateMessageId(),
-      idForum: this.currentForumId,
+    const replyPayload = {
       userId: this.currentUserId,
-      userName: this.currentUserName,
-      content: this.newReply.content,
-      date: new Date(),
-      relatedLinks: [],
-      replies: []
+      forumTypeId: this.currentForumId,
+      title: '',
+      content: this.newReply.content
     };
 
-    this.forums.addReply(messageId, reply);
-    this.message = [...this.message];
-    this.newReply = { content: '' };
-    this.replyIndex = null;
+    this.forums.addReply(messageId, replyPayload).subscribe(() => {
+      this.loadMessages(); // רענון ההודעות מהשרת
+      this.newReply = { content: '' };
+      this.replyIndex = null;
+    });
   }
-
-  private generateMessageId(): number {
-    return Math.max(...this.message.flatMap(m => [m.idMessage, ...(m.replies?.map(r => r.idMessage) || [])]), 0) + 1;
-  }
-
 
   toggleReplyForm(index: number) {
     this.replyIndex = this.replyIndex === index ? null : index;
   }
 
   addLike(messageId: number) {
-    const success = this.forums.addLike(messageId, this.currentUserId);
-    if (!success) {
-      this.snackBar.open('כבר סימנת לייק להודעה זו! ❤️', '', {
-        duration: 2500,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        panelClass: ['info-snackbar']
-      });
-    } else {
-      this.snackBar.open('לייק הוסף בהצלחה! 👍', '', {
-        duration: 2000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        panelClass: ['success-snackbar']
-      });
-    }
-    this.updateLikesDisplay(messageId);
+    this.forums.toggleLike(messageId, this.currentUserId).subscribe(liked => {
+      if (!liked) {
+        this.snackBar.open('הסרת לייק ❤️', '', {
+          duration: 2000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['info-snackbar']
+        });
+      } else {
+        this.snackBar.open('לייק הוסף בהצלחה! 👍', '', {
+          duration: 2000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['success-snackbar']
+        });
+      }
+      this.updateLikesDisplay(messageId);
+    });
   }
 
   hasUserLiked(messageId: number): boolean {
-    return this.forums.hasUserLiked(messageId, this.currentUserId);
+    const msg = this.message.find(m => m.idMessage === messageId);
+    return msg ? (msg.likes ?? 0) > 0 : false;
   }
 
   private updateLikesDisplay(messageId: number) {
-    this.likesCount = this.forums.getLikesCount(messageId);
-    this.isLiked = this.forums.hasUserLiked(messageId, this.currentUserId);
+    const msg = this.message.find(m => m.idMessage === messageId);
+    this.likesCount = msg?.likes ?? 0;
   }
 
   getLikesCount(messageId: number): number {
-    return this.forums.getLikesCount(messageId);
+    const msg = this.message.find(m => m.idMessage === messageId);
+    return msg?.likes ?? 0;
   }
 
 }
