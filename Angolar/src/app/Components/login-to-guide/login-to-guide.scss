@@ -1,0 +1,766 @@
+.guide-register-page {
+    min-height: 100vh;
+    position: relative;
+    padding: 50px 20px 80px;
+
+    background-image:
+        linear-gradient(rgba(7, 30, 45, 0.72),
+            rgba(7, 30, 45, 0.82)),
+        url('/travel-hero.svg');
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+
+    font-family: inherit;
+    overflow: hidden;
+}
+
+
+/* =========================================
+   רקע
+========================================= */
+
+.page-overlay {
+    position: absolute;
+    inset: 0;
+
+    background:
+        radial-gradient(circle at 15% 20%,
+            rgba(119, 253, 104, 0.12),
+            transparent 30%),
+        radial-gradient(circle at 85% 80%,
+            rgba(0, 210, 255, 0.14),
+            transparent 30%);
+
+    pointer-events: none;
+}
+
+
+/* =========================================
+   כפתור חזרה
+========================================= */
+
+.back-button {
+    position: relative;
+    z-index: 5;
+
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    margin-bottom: 25px;
+
+    padding: 9px 18px;
+
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 30px;
+
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(12px);
+
+    color: white;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.3s ease,
+        transform 0.3s ease,
+        border-color 0.3s ease;
+}
+
+.back-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.7);
+    transform: translateX(4px);
+}
+
+.back-arrow {
+    font-size: 18px;
+}
+
+
+/* =========================================
+   מיכל ראשי
+========================================= */
+
+.register-container {
+    position: relative;
+    z-index: 2;
+
+    width: min(900px, 100%);
+    margin: 0 auto;
+
+    padding: 45px;
+
+    border-radius: 30px;
+
+    background: rgba(255, 255, 255, 0.94);
+
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.28),
+        0 10px 30px rgba(0, 0, 0, 0.12);
+
+    backdrop-filter: blur(20px);
+
+    animation: formAppear 0.7s ease-out;
+}
+
+
+/* =========================================
+   כותרת
+========================================= */
+
+.register-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    padding-bottom: 35px;
+    margin-bottom: 35px;
+
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.header-icon {
+    width: 70px;
+    height: 70px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(135deg,
+            #77fd68,
+            #00d2ff);
+
+    box-shadow:
+        0 10px 25px rgba(0, 210, 255, 0.25);
+
+    font-size: 32px;
+}
+
+.header-small-title {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: #00a9c7;
+
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 3px;
+}
+
+.register-header h1 {
+    margin: 0;
+
+    color: #123447;
+
+    font-size: clamp(28px, 4vw, 38px);
+    font-weight: 800;
+}
+
+.register-header p {
+    margin: 8px 0 0;
+
+    color: #71808a;
+
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+
+/* =========================================
+   חלק בטופס
+========================================= */
+
+.form-section {
+    margin-bottom: 40px;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    margin-bottom: 24px;
+}
+
+.section-number {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: rgba(0, 210, 255, 0.1);
+
+    color: #00a6c7;
+
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.section-title h2 {
+    margin: 0;
+
+    color: #183c4e;
+
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.section-title p {
+    margin: 3px 0 0;
+
+    color: #89969d;
+
+    font-size: 13px;
+}
+
+
+/* =========================================
+   גריד שדות
+========================================= */
+
+.fields-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 22px;
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+
+/* =========================================
+   שדות
+========================================= */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 8px;
+
+    color: #314b58;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.form-group label span {
+    color: #00aeca;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+
+    right: 15px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    font-size: 17px;
+
+    opacity: 0.65;
+
+    pointer-events: none;
+}
+
+.input-wrapper input {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 14px 45px 14px 15px;
+
+    border: 1px solid #dce5e8;
+    border-radius: 13px;
+
+    outline: none;
+
+    background: #f8fafb;
+
+    color: #263f4b;
+
+    font-size: 14px;
+
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+}
+
+.input-wrapper input::placeholder {
+    color: #a7b2b7;
+}
+
+.input-wrapper input:hover {
+    border-color: #b9dce3;
+}
+
+.input-wrapper input:focus {
+    background: white;
+
+    border-color: #00c3df;
+
+    box-shadow:
+        0 0 0 4px rgba(0, 210, 255, 0.1);
+}
+
+.form-group small {
+    margin-top: 7px;
+
+    color: #929da2;
+
+    font-size: 11px;
+}
+
+
+/* =========================================
+   העלאת קבצים
+========================================= */
+
+.upload-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 18px;
+}
+
+.upload-box {
+    display: flex;
+    align-items: center;
+
+    gap: 17px;
+
+    padding: 22px;
+
+    border: 1px dashed #b9d7de;
+    border-radius: 18px;
+
+    background:
+        linear-gradient(135deg,
+            rgba(0, 210, 255, 0.035),
+            rgba(119, 253, 104, 0.035));
+
+    transition:
+        border-color 0.3s ease,
+        transform 0.3s ease,
+        background 0.3s ease;
+}
+
+.upload-box:hover {
+    border-color: #00c6dd;
+
+    background:
+        linear-gradient(135deg,
+            rgba(0, 210, 255, 0.08),
+            rgba(119, 253, 104, 0.08));
+
+    transform: translateY(-3px);
+}
+
+.upload-icon {
+    width: 50px;
+    height: 50px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 15px;
+
+    background: white;
+
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+
+    font-size: 22px;
+}
+
+.upload-content h3 {
+    margin: 0 0 4px;
+
+    color: #294653;
+
+    font-size: 15px;
+}
+
+.upload-content p {
+    margin: 0 0 12px;
+
+    color: #89969d;
+
+    font-size: 12px;
+}
+
+.upload-button {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 7px 13px;
+
+    border-radius: 8px;
+
+    background: #eaf9fb;
+
+    color: #009cb9;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+}
+
+.upload-button:hover {
+    background: #00bfd8;
+    color: white;
+}
+
+.upload-button input {
+    display: none;
+}
+
+
+/* =========================================
+   שליחה
+========================================= */
+
+.submit-area {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding-top: 25px;
+
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.submit-info {
+    max-width: 380px;
+
+    margin: 0;
+
+    color: #89969d;
+
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.submit-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+
+    min-width: 220px;
+
+    padding: 14px 24px;
+
+    border: none;
+    border-radius: 14px;
+
+    background:
+        linear-gradient(135deg,
+            #00bcd4,
+            #00a7c7);
+
+    color: white;
+
+    font-size: 14px;
+    font-weight: 800;
+
+    box-shadow:
+        0 10px 25px rgba(0, 188, 212, 0.25);
+
+    cursor: pointer;
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        opacity 0.3s ease;
+}
+
+.submit-button:hover:not(:disabled) {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 15px 30px rgba(0, 188, 212, 0.35);
+}
+
+.submit-button:disabled {
+    opacity: 0.45;
+
+    cursor: not-allowed;
+
+    box-shadow: none;
+}
+
+.submit-arrow {
+    font-size: 20px;
+
+    transition: transform 0.3s ease;
+}
+
+.submit-button:hover:not(:disabled) .submit-arrow {
+    transform: translateX(-4px);
+}
+
+
+/* =========================================
+   אנימציה
+========================================= */
+
+@keyframes formAppear {
+    from {
+        opacity: 0;
+        transform: translateY(25px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+/* =========================================
+   Responsive
+========================================= */
+
+@media (max-width: 700px) {
+
+    .guide-register-page {
+        padding: 25px 12px 50px;
+    }
+
+    .register-container {
+        padding: 28px 20px;
+
+        border-radius: 22px;
+    }
+
+    .register-header {
+        align-items: flex-start;
+    }
+
+    .header-icon {
+        width: 55px;
+        height: 55px;
+
+        font-size: 25px;
+    }
+
+    .register-header h1 {
+        font-size: 26px;
+    }
+
+    .fields-grid,
+    .upload-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .full-width {
+        grid-column: auto;
+    }
+
+    .submit-area {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .submit-info {
+        max-width: none;
+    }
+
+    .submit-button {
+        width: 100%;
+    }
+}
+
+/* =========================================
+   הצגת קבצים שנבחרו
+========================================= */
+
+.selected-files {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+
+    margin-top: 12px;
+}
+
+.selected-file {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    max-width: 100%;
+
+    padding: 7px 10px;
+
+    border-radius: 8px;
+
+    background: rgba(0, 188, 212, 0.07);
+
+    color: #46616d;
+
+    font-size: 12px;
+}
+
+.file-icon {
+    flex-shrink: 0;
+}
+
+.file-name {
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   הצגת סיסמה
+========================================= */
+
+.password-wrapper input {
+    padding-left: 48px;
+}
+
+.password-toggle {
+    position: absolute;
+
+    left: 12px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 8px;
+
+    background: transparent;
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+    opacity: 0.65;
+
+    transition:
+        opacity 0.2s ease,
+        background 0.2s ease;
+}
+
+.password-toggle:hover {
+    opacity: 1;
+
+    background: rgba(0, 188, 212, 0.08);
+}
+
+.selected-file {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    max-width: 100%;
+
+    padding: 7px 10px;
+
+    border-radius: 8px;
+
+    background: rgba(0, 188, 212, 0.07);
+
+    color: #46616d;
+
+    font-size: 12px;
+}
+
+.file-name {
+    flex: 1;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+.remove-file {
+    flex-shrink: 0;
+
+    width: 25px;
+    height: 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: #8b9ba1;
+
+    font-size: 20px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.remove-file:hover {
+    background: rgba(220, 70, 70, 0.1);
+
+    color: #d9534f;
+
+    transform: scale(1.1);
+}

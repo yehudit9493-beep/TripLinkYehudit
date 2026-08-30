@@ -1,112 +1,560 @@
-<!-- <button routerLink="/home">חזור</button> -->
-<button routerLink="/" class="btn btn-outline-dark btn-sm">חזור</button>
+<div class="coordinator-register-page" dir="rtl">
 
-<h1>טופס הרשמה לרכזת טיולים</h1>
+    <!-- שכבת רקע -->
+    <div class="page-overlay"></div>
 
-<form [formGroup]="CoordinatorForm">
+    <!-- כפתור חזרה -->
+    <button routerLink="/" class="back-button">
+        <span class="back-arrow">→</span>
+        חזרה
+    </button>
 
-    <div class="mb-3">
-        <label class="form-label fw-bold">שם פרטי</label>
-        <div class="input-wrapper">
-            <input type="text" formControlName="FirsName" class="form-control" placeholder="הכנס שם פרטי">
+
+    <div class="register-container">
+
+        <!-- ========================= -->
+        <!-- כותרת -->
+        <!-- ========================= -->
+
+        <div class="register-header">
+
+            <div class="header-icon">
+                🧭
+            </div>
+
+            <div>
+
+                <span class="header-small-title">
+                    TRIPLINK
+                </span>
+
+                <h1>
+                    הצטרפות כרכזת טיולים
+                </h1>
+
+                <p>
+                    הצטרפי לקהילת רכזות הטיולים שלנו
+                    והתחילי לנהל חוויות טיול בצורה פשוטה וחכמה
+                </p>
+
+            </div>
+
         </div>
+
+
+        <!-- ========================= -->
+        <!-- הטופס -->
+        <!-- ========================= -->
+
+        <form [formGroup]="CoordinatorForm" class="coordinator-form" (ngSubmit)="submitCoordinatorForm()">
+
+
+            <!-- ========================= -->
+            <!-- 01 פרטים אישיים -->
+            <!-- ========================= -->
+
+            <div class="form-section">
+
+                <div class="section-title">
+
+                    <span class="section-number">
+                        01
+                    </span>
+
+                    <div>
+
+                        <h2>
+                            פרטים אישיים
+                        </h2>
+
+                        <p>
+                            הפרטים שלך כרכזת
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="fields-grid">
+
+                    <!-- שם פרטי -->
+                    <div class="form-group">
+
+                        <label>
+                            שם פרטי
+                            <span>*</span>
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                👤
+                            </span>
+
+                            <input type="text" formControlName="FirsName" placeholder="הכניסי שם פרטי">
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- שם משפחה -->
+                    <div class="form-group">
+
+                        <label>
+                            שם משפחה
+                            <span>*</span>
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                👤
+                            </span>
+
+                            <input type="text" formControlName="LastName" placeholder="הכניסי שם משפחה">
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- תפקיד -->
+                    <div class="form-group">
+
+                        <label>
+                            תפקיד במוסד
+                            <span>*</span>
+                        </label>
+
+                        <div class="input-wrapper select-wrapper">
+
+                            <span class="input-icon">
+                                💼
+                            </span>
+
+                            <select formControlName="Title">
+
+                                <option value="" disabled>
+                                    בחרי תפקיד
+                                </option>
+
+                                <option value="manager">
+                                    מנהלת
+                                </option>
+
+                                <option value="deputy">
+                                    סגנית
+                                </option>
+
+                                <option value="coordinator">
+                                    מרכזת
+                                </option>
+
+                                <option value="teacher">
+                                    מורה
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- טלפון -->
+                    <div class="form-group">
+
+                        <label>
+                            טלפון
+                            <span>*</span>
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                📱
+                            </span>
+
+                            <input type="text" formControlName="Phon" placeholder="הכניסי מספר טלפון">
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- אימייל -->
+                    <div class="form-group full-width">
+
+                        <label>
+                            כתובת אימייל
+                            <span>*</span>
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                ✉️
+                            </span>
+
+                            <input type="email" formControlName="Email" placeholder="הכניסי כתובת אימייל">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- 02 פרטי התחברות -->
+            <!-- ========================= -->
+
+            <div class="form-section">
+
+                <div class="section-title">
+
+                    <span class="section-number">
+                        02
+                    </span>
+
+                    <div>
+
+                        <h2>
+                            פרטי התחברות
+                        </h2>
+
+                        <p>
+                            צרי את פרטי החשבון שלך
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="fields-grid">
+
+                    <!-- שם משתמש -->
+                    <div class="form-group">
+
+                        <label>
+                            שם משתמש
+                            <span>*</span>
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                🔑
+                            </span>
+
+                            <input type="text" formControlName="UserName" placeholder="בחרי שם משתמש">
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- סיסמה -->
+                    <div class="form-group">
+
+                        <label>
+                            סיסמה
+                            <span>*</span>
+                        </label>
+
+                        <div class="input-wrapper password-wrapper">
+
+                            <span class="input-icon">
+                                🔒
+                            </span>
+
+                            <input [type]="showPassword ? 'text' : 'password'" formControlName="Password"
+                                placeholder="בחרי סיסמה">
+
+                            <button type="button" class="password-toggle" (click)="togglePasswordVisibility()"
+                                [attr.aria-label]="showPassword ? 'הסתר סיסמה' : 'הצג סיסמה'">
+
+                                {{ showPassword ? '🙈' : '👁️' }}
+
+                            </button>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <!-- ========================= -->
+            <!-- 03 פרטי המוסד -->
+            <!-- ========================= -->
+
+            <div class="form-section">
+
+                <div class="section-title">
+
+                    <span class="section-number">
+                        03
+                    </span>
+
+                    <div>
+
+                        <h2>
+                            פרטי המוסד
+                        </h2>
+
+                        <p>
+                            פרטים על המוסד שבו את מרכזת את הטיולים
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="fields-grid">
+
+                    <!-- שם מוסד -->
+                    <div class="form-group full-width">
+
+                        <label>
+                            שם המוסד
+                            <span>*</span>
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                🏫
+                            </span>
+
+                            <input type="text" formControlName="InstitutionName" placeholder="הכניסי את שם המוסד">
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- עיר -->
+                    <div class="form-group">
+
+                        <label>
+                            עיר
+                            <span>*</span>
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                📍
+                            </span>
+
+                            <input type="text" formControlName="InstitutionCity" placeholder="הכניסי עיר">
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- טלפון מזכירות -->
+                    <div class="form-group">
+
+                        <label>
+                            טלפון מזכירות
+                            <span>*</span>
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                ☎️
+                            </span>
+
+                            <input type="text" formControlName="InstitutionPhon" placeholder="הכניסי טלפון מזכירות">
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- מנהל -->
+                    <div class="form-group">
+
+                        <label>
+                            שם מנהל/ת
+                            <span>*</span>
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                👔
+                            </span>
+
+                            <input type="text" formControlName="PrincipalName" placeholder="הכניסי שם מנהל/ת">
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- סוג מוסד -->
+                    <div class="form-group">
+
+                        <label>
+                            סוג מוסד
+                            <span>*</span>
+                        </label>
+
+                        <div class="input-wrapper select-wrapper">
+
+                            <span class="input-icon">
+                                🏢
+                            </span>
+
+                            <select formControlName="InstitutionType">
+
+                                <option value="" disabled>
+                                    בחרי סוג מוסד
+                                </option>
+
+                                <option value="school">
+                                    בית ספר
+                                </option>
+
+                                <option value="seminary">
+                                    סמינר
+                                </option>
+
+                                <option value="high-school">
+                                    תיכון
+                                </option>
+
+                                <option value="other">
+                                    אחר
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- שכבת גיל -->
+                    <div class="form-group">
+
+                        <label>
+                            שכבת גיל
+                            <span>*</span>
+                        </label>
+
+                        <div class="input-wrapper select-wrapper">
+
+                            <span class="input-icon">
+                                🎒
+                            </span>
+
+                            <select formControlName="AgeGroup">
+
+                                <option value="" disabled>
+                                    בחרי שכבת גיל
+                                </option>
+
+                                <option value="elementary">
+                                    יסודי
+                                </option>
+
+                                <option value="middle">
+                                    חטיבת ביניים
+                                </option>
+
+                                <option value="high">
+                                    תיכון
+                                </option>
+
+                                <option value="mixed">
+                                    גילאים מעורבים
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- מגדר -->
+                    <div class="form-group">
+
+                        <label>
+                            מגדר
+                            <span>*</span>
+                        </label>
+
+                        <div class="input-wrapper select-wrapper">
+
+                            <span class="input-icon">
+                                👥
+                            </span>
+
+                            <select formControlName="Gender">
+
+                                <option value="" disabled>
+                                    בחרי אפשרות
+                                </option>
+
+                                <option value="girls">
+                                    בנות
+                                </option>
+
+                                <option value="boys">
+                                    בנים
+                                </option>
+
+                                <option value="mixed">
+                                    מעורב
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- שליחה -->
+            <!-- ========================= -->
+
+            <div class="submit-area">
+
+                <p class="submit-info">
+                    לאחר שליחת הטופס, הפרטים ייבדקו על ידי צוות TripLink
+                </p>
+
+                <button type="submit" class="submit-button" [disabled]="!CoordinatorForm.valid">
+
+                    <span>שליחת בקשת הצטרפות</span>
+                    <span class="submit-arrow">←</span>
+
+                </button>
+
+            </div>
+
+        </form>
+
     </div>
 
-    <div class="mb-3">
-        <label class="form-label fw-bold">שם משפחה</label>
-        <div class="input-wrapper">
-            <input type="text" formControlName="LastName" class="form-control" placeholder="הכנס שם משפחה">
-        </div>
-    </div>
-
-    <mat-form-field>
-        <mat-label>תפקיד</mat-label>
-        <mat-select formControlName="Title">
-            <mat-option value="one">מנהלת</mat-option>
-            <mat-option value="two">סגנית</mat-option>
-            <mat-option value="one">מרכזת</mat-option>
-            <mat-option value="two">מורה</mat-option>
-        </mat-select>
-    </mat-form-field>
-
-    <div class="mb-3">
-        <label class="form-label fw-bold">טלפון </label>
-        <div class="input-wrapper">
-            <input type="text" formControlName="Phon" class="form-control" placeholder="הכנס מספר טלפון ">
-        </div>
-    </div>
-
-
-    <div class="mb-3">
-        <label class="form-label fw-bold">אימייל </label>
-        <div class="input-wrapper">
-            <input type="text" formControlName="Email" class="form-control" placeholder="הכנס כתובת אימייל ">
-        </div>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label fw-bold">שם משתמש </label>
-        <div class="input-wrapper">
-            <input type="text" formControlName="UserName" class="form-control" placeholder="הכנס שם משתמש">
-        </div>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label fw-bold">סיסמה </label>
-        <div class="input-wrapper">
-            <input type="text" formControlName="Password" class="form-control" placeholder="הכנס סיסמה ">
-        </div>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label fw-bold">שם מוסד </label>
-        <div class="input-wrapper">
-            <input type="text" formControlName="InstitutionName" class="form-control" placeholder="הכנס שם מוסד">
-        </div>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label fw-bold">עיר </label>
-        <div class="input-wrapper">
-            <input type="text" formControlName="InstitutionCity" class="form-control" placeholder="הכנס עיר ">
-        </div>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label fw-bold">טלפון מזכירות </label>
-        <div class="input-wrapper">
-            <input type="text" formControlName="InstitutionPhon" class="form-control" placeholder="הכנס טלפון מזכירות">
-        </div>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label fw-bold">שם מנהל </label>
-        <div class="input-wrapper">
-            <input type="text" formControlName="PrincipalName" class="form-control" placeholder="הכנס שם מנהל">
-        </div>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label fw-bold">סוג מוסד</label>
-        <div class="input-wrapper">
-            <input type="text" formControlName="InstitutionType" class="form-control" placeholder="הכנס סוג מוסד ">
-        </div>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label fw-bold">שכבת גיל</label>
-        <div class="input-wrapper">
-            <input type="text" formControlName="AgeGroup" class="form-control" placeholder="הכנס שכבת גיל">
-        </div>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label fw-bold">מגדר</label>
-        <div class="input-wrapper">
-            <input type="text" formControlName="Gender" class="form-control" placeholder="הכנס מגדר">
-        </div>
-    </div>
-
-    <button type="button" [disabled]="!CoordinatorForm.valid">לשליחת הטופס</button>
-
-</form>
+</div>

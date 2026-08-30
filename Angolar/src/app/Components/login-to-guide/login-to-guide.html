@@ -1,81 +1,348 @@
-<button routerLink="/" class="btn btn-outline-dark btn-sm">חזור</button>
+<div class="guide-register-page" dir="rtl">
 
+    <!-- רקע -->
+    <div class="page-overlay"></div>
 
-<h1>טופס הרשמה למדריכת טיולים</h1>
+    <!-- כפתור חזרה -->
+    <button routerLink="/" class="back-button">
+        <span class="back-arrow">→</span>
+        חזרה
+    </button>
 
-<form [formGroup]="GuideForm">
+    <div class="register-container">
 
-    <div class="mb-3">
-        <label class="form-label fw-bold">שם פרטי</label>
-        <div class="input-wrapper">
-            <input type="text" formControlName="FirsName" class="form-control" placeholder="הכנס שם פרטי">
+        <!-- כותרת -->
+        <div class="register-header">
+
+            <div class="header-icon">
+                🥾
+            </div>
+
+            <div>
+                <span class="header-small-title">TRIPLINK</span>
+
+                <h1>הצטרפות כמדריכת טיולים</h1>
+
+                <p>
+                    הצטרפי לקהילת מדריכות הטיולים שלנו
+                    והתחילי ליצור חוויות בלתי נשכחות
+                </p>
+            </div>
+
         </div>
+
+
+        <!-- הטופס -->
+        <form [formGroup]="GuideForm" (ngSubmit)="submitGuideForm()" class="guide-form">
+
+            <!-- פרטים אישיים -->
+            <div class="form-section">
+
+                <div class="section-title">
+                    <span class="section-number">01</span>
+
+                    <div>
+                        <h2>פרטים אישיים</h2>
+                        <p>ספרי לנו קצת על עצמך</p>
+                    </div>
+                </div>
+
+
+                <div class="fields-grid">
+
+                    <!-- שם פרטי -->
+                    <div class="form-group">
+                        <label>
+                            שם פרטי
+                            <span>*</span>
+                        </label>
+
+                        <div class="input-wrapper">
+                            <span class="input-icon">👤</span>
+
+                            <input type="text" formControlName="FirsName" placeholder="הכניסי שם פרטי">
+                        </div>
+                    </div>
+
+
+                    <!-- שם משפחה -->
+                    <div class="form-group">
+                        <label>
+                            שם משפחה
+                            <span>*</span>
+                        </label>
+
+                        <div class="input-wrapper">
+                            <span class="input-icon">👤</span>
+
+                            <input type="text" formControlName="LastName" placeholder="הכניסי שם משפחה">
+                        </div>
+                    </div>
+
+
+                    <!-- תעודת זהות -->
+                    <div class="form-group">
+                        <label>
+                            תעודת זהות
+                            <span>*</span>
+                        </label>
+
+                        <div class="input-wrapper">
+                            <span class="input-icon">🪪</span>
+
+                            <input type="text" formControlName="Id" placeholder="הכניסי מספר תעודת זהות">
+                        </div>
+                    </div>
+
+
+                    <!-- מוצא -->
+                    <div class="form-group">
+                        <label>
+                            מוצא
+                        </label>
+
+                        <div class="input-wrapper">
+                            <span class="input-icon">🌍</span>
+
+                            <input type="text" formControlName="PCountryOfOriginhon" placeholder="הכניסי מוצא">
+                        </div>
+                    </div>
+
+
+                    <!-- אזורי הכשרה -->
+                    <div class="form-group full-width">
+                        <label>
+                            אזורי הכשרה
+                            <span>*</span>
+                        </label>
+
+                        <div class="input-wrapper">
+                            <span class="input-icon">🗺️</span>
+
+                            <input type="text" formControlName="ReligiousAffiliation"
+                                placeholder="לדוגמה: גליל עליון, גולן, ירושלים...">
+                        </div>
+
+                        <small>
+                            צייני את האזורים שבהם הוכשרת להדריך
+                        </small>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- פרטי התחברות -->
+            <div class="form-section">
+
+                <div class="section-title">
+                    <span class="section-number">02</span>
+
+                    <div>
+                        <h2>פרטי התחברות</h2>
+                        <p>צרי את פרטי החשבון שלך</p>
+                    </div>
+                </div>
+
+
+                <div class="fields-grid">
+
+                    <!-- שם משתמש -->
+                    <div class="form-group">
+                        <label>
+                            שם משתמש
+                            <span>*</span>
+                        </label>
+
+                        <div class="input-wrapper">
+                            <span class="input-icon">🔑</span>
+
+                            <input type="text" formControlName="UserName" placeholder="בחרי שם משתמש">
+                        </div>
+                    </div>
+
+
+                    <!-- סיסמה -->
+                    <div class="form-group">
+
+                        <label>
+                            סיסמה
+                            <span>*</span>
+                        </label>
+
+                        <div class="input-wrapper password-wrapper">
+
+                            <span class="input-icon">🔒</span>
+
+                            <input [type]="showPassword ? 'text' : 'password'" formControlName="Password"
+                                placeholder="בחרי סיסמה">
+
+                            <button type="button" class="password-toggle" (click)="togglePasswordVisibility()"
+                                [attr.aria-label]="showPassword ? 'הסתר סיסמה' : 'הצג סיסמה'">
+
+                                {{ showPassword ? '🙈' : '👁️' }}
+
+                            </button>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- מסמכים -->
+            <div class="form-section">
+
+                <div class="section-title">
+                    <span class="section-number">03</span>
+
+                    <div>
+                        <h2>מסמכים והסמכות</h2>
+                        <p>העלי את המסמכים הנדרשים לאישור ההרשמה</p>
+                    </div>
+                </div>
+
+
+                <div class="upload-grid">
+
+                    <!-- קורות חיים -->
+                    <div class="upload-box">
+
+                        <div class="upload-icon">
+                            📄
+                        </div>
+
+                        <div class="upload-content">
+
+                            <h3>קורות חיים</h3>
+
+                            <p>
+                                העלי את קורות החיים שלך
+                            </p>
+
+                            <label class="upload-button">
+                                {{ selectedCvName ? 'החלפת קובץ' : 'בחירת קובץ' }}
+
+                                <input type="file" accept=".pdf,.doc,.docx" (change)="onCvSelected($event)">
+                            </label>
+
+                            <!-- שם הקובץ -->
+                            @if (selectedCvName) {
+                            <div class="selected-file">
+
+                                <span class="file-icon">📎</span>
+
+                                <span class="file-name">
+                                    {{ selectedCvName }}
+                                </span>
+
+                                <button type="button" class="remove-file" (click)="removeCv()"
+                                    aria-label="הסרת קורות החיים">
+                                    ×
+                                </button>
+
+                            </div>
+                            }
+
+                        </div>
+
+                    </div>
+
+                    @if (
+                    GuideForm.controls.CvFile.touched &&
+                    GuideForm.controls.CvFile.hasError('fileRequired')
+                    ) {
+                    <small class="validation-error">
+                        חובה להעלות קורות חיים
+                    </small>
+                    }
+
+                    <!-- תעודות -->
+                    <div class="upload-box">
+
+                        <div class="upload-icon">
+                            🎓
+                        </div>
+
+                        <div class="upload-content">
+
+                            <h3>תעודות הכשרה</h3>
+
+                            <p>
+                                ניתן להעלות מספר תעודות
+                            </p>
+
+                            <label class="upload-button">
+                                {{ selectedCertificateNames.length ? 'החלפת קבצים' : 'בחירת קבצים' }}
+
+                                <input type="file" multiple accept=".pdf,.jpg,.jpeg,.png"
+                                    (change)="onCertificatesSelected($event)">
+                            </label>
+
+
+                            <!-- רשימת הקבצים -->
+                            @if (selectedCertificateNames.length > 0) {
+                            <div class="selected-files">
+
+                                @for (fileName of selectedCertificateNames; track fileName) {
+                                <div class="selected-file">
+
+                                    <span class="file-icon">📎</span>
+
+                                    <span class="file-name">
+                                        {{ fileName }}
+                                    </span>
+
+                                    <button type="button" class="remove-file" (click)="removeCertificate(fileName)"
+                                        aria-label="הסרת תעודה">
+                                        ×
+                                    </button>
+
+                                </div>
+                                }
+
+                            </div>
+                            }
+
+                        </div>
+                        @if (
+                        GuideForm.controls.Certificates.touched &&
+                        GuideForm.controls.Certificates.hasError('fileRequired')
+                        ) {
+                        <small class="validation-error">
+                            חובה להעלות לפחות תעודת הכשרה אחת
+                        </small>
+                        }
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- שליחה -->
+            <div class="submit-area">
+
+                <p class="submit-info">
+                    לאחר שליחת הטופס, הפרטים ייבדקו על ידי צוות TripLink
+                </p>
+
+                <button type="submit" class="submit-button" [disabled]="GuideForm.invalid">
+
+                    <span>שליחת בקשת הצטרפות</span>
+                    <span class="submit-arrow">←</span>
+
+                </button>
+
+            </div>
+
+        </form>
+
     </div>
 
-    <div class="mb-3">
-        <label class="form-label fw-bold">שם משפחה</label>
-        <div class="input-wrapper">
-            <input type="text" formControlName="LastName" class="form-control" placeholder="הכנס שם משפחה">
-        </div>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label fw-bold">תעודת זהות </label>
-        <div class="input-wrapper">
-            <input type="text" formControlName="Id" class="form-control" placeholder="הכנס תעודת זהות">
-        </div>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label fw-bold">מוצא </label>
-        <div class="input-wrapper">
-            <input type="text" formControlName="PCountryOfOriginhon" class="form-control" placeholder="הכנס מוצא">
-        </div>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label fw-bold">אזורי הכשרה </label>
-        <div class="input-wrapper">
-            <input type="text" formControlName="ReligiousAffiliation" class="form-control"
-                placeholder="הכנס אזורי הכשרה">
-        </div>
-    </div>
-
-    <!-- <div class="mb-3">
-        <label class="form-label fw-bold">סטטוס </label>
-        <div class="input-wrapper">
-            <input type="text" formControlName="Status" class="form-control">
-        </div>
-    </div> -->
-
-    <div class="mb-3">
-        <label class="form-label fw-bold">שם משתמש</label>
-        <div class="input-wrapper">
-            <input type="text" formControlName="UserName" class="form-control" placeholder="הכנס שם משתמש">
-        </div>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label fw-bold">סיסמה</label>
-        <div class="input-wrapper">
-            <input type="text" formControlName="Password" class="form-control" placeholder="הכנס סיסמה">
-        </div>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label fw-bold">קורות חיים</label>
-        <div class="input-wrapper">
-            <input type="file" class="form-control" (change)="onCvSelected($event)">
-        </div>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label fw-bold">תעודות הכשרה</label>
-        <div class="input-wrapper">
-            <input type="file" class="form-control" multiple (change)="onCertificatesSelected($event)">
-        </div>
-    </div>
-
-    <button type="button" [disabled]="!GuideForm.valid">שלח טופס</button>
-
-</form>
+</div>
