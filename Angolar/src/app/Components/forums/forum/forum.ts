@@ -19,8 +19,8 @@ export class Forum {
 
   newMessage: Message = {
     idMessage: 0,
-    idForum: 1, // שים לב לעדכן לפי הפורום המתאים
-    userId: 1, // יש להעביר מזהה משתמש שמחובר
+    idForum: 1, 
+    userId: 1, 
     userName: '',
     content: '',
     title: '',

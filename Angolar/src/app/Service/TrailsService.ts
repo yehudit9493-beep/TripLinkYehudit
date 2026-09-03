@@ -4,6 +4,15 @@ import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators'; // חובה לוודא שהשורה הזו קיימת בייבוא
 
+export interface DeleteTrailResponse {
+  isSuccess: boolean;
+  message: string;
+  routeId: number;
+  rowsAffected: number;
+  deletedAt: string;
+}
+
+
 @Injectable({
   providedIn: 'root',
 })
@@ -14,7 +23,6 @@ export class TrailsService {
 
   constructor(private httpClient: HttpClient) { }
 
-  // ✅ הבאת כל המסלולים - מתורגמים ישירות לטובת אנגולר
   GetTrail(): Observable<Trail[]> {
     return this.httpClient.get<any[]>(`${this.API_URL}/Routes`).pipe(
       map(serverRoutes => serverRoutes.map(route => this.mapToAngular(route)))
@@ -25,14 +33,12 @@ export class TrailsService {
     return this.GetTrail();
   }
 
-  // ✅ הבאת מסלול בודד לפי מזהה - מתורגם
   getTrailById(id: number): Observable<Trail> {
     return this.httpClient.get<any>(`${this.API_URL}/Routes/${id}`).pipe(
       map(route => this.mapToAngular(route))
     );
   }
 
-  // ✅ עדכון מסלול קיים - מתרגם את מה שאנגולר שלח למבנה של השרת
   UpdateTrail(updatedTrail: Trail): Observable<Trail> {
     const body = this.mapToSever(updatedTrail);
     return this.httpClient.put<any>(`${this.API_URL}/Routes/${updatedTrail.id}`, body).pipe(
@@ -41,9 +47,10 @@ export class TrailsService {
   }
 
   // ✅ מחיקת מסלול
-  DeleteTrail(trailId: number): Observable<Trail> {
-    return this.httpClient.delete<any>(`${this.API_URL}/Routes/${trailId}`).pipe(
-      map(route => this.mapToAngular(route))
+  
+   DeleteTrail(trailId: number): Observable<DeleteTrailResponse> {
+    return this.httpClient.delete<DeleteTrailResponse>(
+      `${this.API_URL}/Routes/${trailId}`
     );
   }
 

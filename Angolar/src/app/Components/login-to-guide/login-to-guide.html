@@ -36,102 +36,107 @@
         <form [formGroup]="GuideForm" (ngSubmit)="submitGuideForm()" class="guide-form">
 
             <!-- פרטים אישיים -->
-            <div class="form-section">
+<div class="form-section">
+  <div class="section-title">
+    <span class="section-number">01</span>
+    <div>
+      <h2>פרטים אישיים</h2>
+      <p>ספרי לנו קצת על עצמך</p>
+    </div>
+  </div>
 
-                <div class="section-title">
-                    <span class="section-number">01</span>
+  <div class="fields-grid">
 
-                    <div>
-                        <h2>פרטים אישיים</h2>
-                        <p>ספרי לנו קצת על עצמך</p>
-                    </div>
-                </div>
+    <!-- שם פרטי -->
+    <div class="form-group">
+      <label>שם פרטי <span>*</span></label>
+      <div class="input-wrapper">
+        <span class="input-icon">👤</span>
+        <input type="text" formControlName="FirsName" placeholder="הכניסי שם פרטי">
+      </div>
+    </div>
 
+    <!-- שם משפחה -->
+    <div class="form-group">
+      <label>שם משפחה <span>*</span></label>
+      <div class="input-wrapper">
+        <span class="input-icon">👤</span>
+        <input type="text" formControlName="LastName" placeholder="הכניסי שם משפחה">
+      </div>
+    </div>
 
-                <div class="fields-grid">
+    <!-- תעודת זהות -->
+    <div class="form-group">
+      <label>תעודת זהות <span>*</span></label>
+      <div class="input-wrapper">
+        <span class="input-icon">🪪</span>
+        <input type="text" formControlName="Id" placeholder="הכניסי מספר תעודת זהות">
+      </div>
+    </div>
 
-                    <!-- שם פרטי -->
-                    <div class="form-group">
-                        <label>
-                            שם פרטי
-                            <span>*</span>
-                        </label>
+    <!-- מוצא -->
+    <div class="form-group">
+      <label>מוצא</label>
+      <div class="input-wrapper">
+        <span class="input-icon">🌍</span>
+        <input type="text" formControlName="PCountryOfOriginhon" placeholder="הכניסי מוצא">
+      </div>
+    </div>
 
-                        <div class="input-wrapper">
-                            <span class="input-icon">👤</span>
+    <!-- השתייכות דתית -->
+    <div class="form-group">
+      <label>השתייכות דתית <span>*</span></label>
+      <div class="input-wrapper">
+        <span class="input-icon">🕍</span>
+        <select formControlName="ReligiousAffiliation">
+          <option value="" disabled>בחרי השתייכות דתית</option>
+          @for (r of religiousList; track r.religiousId) {
+            <option [value]="r.religiousId">{{ r.religiousName }}</option>
+          }
+        </select>
+      </div>
+    </div>
 
-                            <input type="text" formControlName="FirsName" placeholder="הכניסי שם פרטי">
-                        </div>
-                    </div>
+    <!-- עיר - כתיבה + בחירה מרשימה נפתחת -->
+    <div class="form-group">
+      <label>עיר <span>*</span></label>
+      <div class="input-wrapper">
+        <span class="input-icon">🏙️</span>
+        <input
+          type="text"
+          formControlName="City"
+          list="guide-cities-list"
+          placeholder="התחילי לכתוב או בחרי עיר"
+          autocomplete="off"
+        />
+        <datalist id="guide-cities-list">
+          @for (c of citiesList; track c) {
+            <option [value]="c"></option>
+          }
+        </datalist>
+      </div>
+    </div>
 
+    <!-- אזורי הכשרה - בחירה מרובה (checkboxes) -->
+    <div class="form-group full-width">
+      <label>אזורי הכשרה <span>*</span></label>
+      <div class="areas-checkboxes">
+        @for (a of areasList; track a.areaId) {
+          <label class="area-option" [class.selected]="isAreaSelected(a.areaId)">
+            <input
+              type="checkbox"
+              [checked]="isAreaSelected(a.areaId)"
+              (change)="toggleArea(a.areaId)" />
+            <span class="area-box"></span>
+            {{ a.areaName }}
+          </label>
+        }
+      </div>
+      <small>סמני את כל האזורים שבהם הוכשרת להדריך (ניתן לבחור כמה)</small>
+    </div>
 
-                    <!-- שם משפחה -->
-                    <div class="form-group">
-                        <label>
-                            שם משפחה
-                            <span>*</span>
-                        </label>
-
-                        <div class="input-wrapper">
-                            <span class="input-icon">👤</span>
-
-                            <input type="text" formControlName="LastName" placeholder="הכניסי שם משפחה">
-                        </div>
-                    </div>
-
-
-                    <!-- תעודת זהות -->
-                    <div class="form-group">
-                        <label>
-                            תעודת זהות
-                            <span>*</span>
-                        </label>
-
-                        <div class="input-wrapper">
-                            <span class="input-icon">🪪</span>
-
-                            <input type="text" formControlName="Id" placeholder="הכניסי מספר תעודת זהות">
-                        </div>
-                    </div>
-
-
-                    <!-- מוצא -->
-                    <div class="form-group">
-                        <label>
-                            מוצא
-                        </label>
-
-                        <div class="input-wrapper">
-                            <span class="input-icon">🌍</span>
-
-                            <input type="text" formControlName="PCountryOfOriginhon" placeholder="הכניסי מוצא">
-                        </div>
-                    </div>
-
-
-                    <!-- אזורי הכשרה -->
-                    <div class="form-group full-width">
-                        <label>
-                            אזורי הכשרה
-                            <span>*</span>
-                        </label>
-
-                        <div class="input-wrapper">
-                            <span class="input-icon">🗺️</span>
-
-                            <input type="text" formControlName="ReligiousAffiliation"
-                                placeholder="לדוגמה: גליל עליון, גולן, ירושלים...">
-                        </div>
-
-                        <small>
-                            צייני את האזורים שבהם הוכשרת להדריך
-                        </small>
-                    </div>
-
-                </div>
-
-            </div>
-
+  </div>
+</div>
 
             <!-- פרטי התחברות -->
             <div class="form-section">
@@ -344,5 +349,17 @@
         </form>
 
     </div>
+
+    <!-- הודעה מעוצבת (במקום alert) -->
+    @if (toastVisible) {
+    <div class="toast toast-{{ toastType }}" role="alert">
+        <span class="toast-icon">
+            @if (toastType === 'success') { ✓ }
+            @else if (toastType === 'error') { ✕ }
+            @else { ℹ }
+        </span>
+        <span class="toast-message">{{ toastMessage }}</span>
+    </div>
+    }
 
 </div>

@@ -330,6 +330,67 @@
         0 0 0 4px rgba(0, 210, 255, 0.1);
 }
 
+/* select - עיצוב זהה לשדות הקלט */
+.input-wrapper select {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 14px 45px 14px 15px;
+
+    border: 1px solid #dce5e8;
+    border-radius: 13px;
+
+    outline: none;
+
+    background: #f8fafb;
+
+    color: #263f4b;
+
+    font-size: 14px;
+
+    font-family: inherit;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+}
+
+.input-wrapper select:hover {
+    border-color: #b9dce3;
+}
+
+.input-wrapper select:focus {
+    background: white;
+
+    border-color: #00c3df;
+
+    box-shadow:
+        0 0 0 4px rgba(0, 210, 255, 0.1);
+}
+
+.input-wrapper select.multiple-select {
+    height: auto;
+    min-height: 110px;
+
+    padding: 10px 12px;
+
+    resize: vertical;
+}
+
+.input-wrapper select.multiple-select option {
+    padding: 6px 8px;
+
+    border-radius: 6px;
+
+    color: #263f4b;
+
+    font-size: 13px;
+}
+
 .form-group small {
     margin-top: 7px;
 
@@ -763,4 +824,220 @@
     color: #d9534f;
 
     transform: scale(1.1);
+}
+
+
+/* =========================================
+   אזורי הכשרה - בחירה מרובה
+========================================= */
+
+.areas-checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.area-option {
+    position: relative;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 11px 16px;
+
+    border: 1.5px solid #dce5e8;
+    border-radius: 13px;
+
+    background: #f8fafb;
+
+    color: #3a5563;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+    user-select: none;
+
+    transition:
+        border-color 0.25s ease,
+        background 0.25s ease,
+        color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.2s ease;
+}
+
+.area-option:hover {
+    border-color: #9fd6e2;
+
+    transform: translateY(-2px);
+}
+
+.area-option .area-box {
+    width: 19px;
+    height: 19px;
+
+    flex-shrink: 0;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1.5px solid #c3d2d8;
+    border-radius: 6px;
+
+    background: white;
+
+    font-size: 12px;
+    line-height: 1;
+    color: white;
+
+    transition:
+        background 0.25s ease,
+        border-color 0.25s ease,
+        transform 0.2s ease;
+}
+
+.area-option input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.area-option.selected {
+    border-color: #00bcd4;
+
+    background:
+        linear-gradient(135deg,
+            rgba(0, 210, 255, 0.12),
+            rgba(119, 253, 104, 0.12));
+
+    color: #00758c;
+}
+
+.area-option.selected .area-box {
+    background:
+        linear-gradient(135deg,
+            #00bcd4,
+            #009cb9);
+
+    border-color: transparent;
+
+    transform: scale(1.05);
+}
+
+.area-option.selected .area-box::after {
+    content: '✓';
+
+    font-weight: 800;
+}
+
+
+/* =========================================
+   הודעה מעוצבת (טוסט) - במקום alert
+========================================= */
+
+.toast {
+    position: fixed;
+
+    bottom: 28px;
+
+    /* נצמד לצד ההתחלתי של ה-RTL (מימין בממשק עברי) */
+    inset-inline-start: 28px;
+
+    max-width: min(420px, calc(100vw - 40px));
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 15px 20px;
+
+    border-radius: 15px;
+
+    color: white;
+
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.5;
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.25),
+        0 5px 15px rgba(0, 0, 0, 0.12);
+
+    z-index: 1000;
+
+    animation: toastIn 0.4s cubic-bezier(0.21, 1.02, 0.73, 1);
+}
+
+.toast-icon {
+    width: 30px;
+    height: 30px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.22);
+
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.toast-message {
+    flex: 1;
+}
+
+/* סוג ההודעה נותן את צבע הרקע */
+.toast-success {
+    background:
+        linear-gradient(135deg,
+            #2fb067,
+            #26a05b);
+}
+
+.toast-error {
+    background:
+        linear-gradient(135deg,
+            #e2594f,
+            #d1453c);
+}
+
+.toast-info {
+    background:
+        linear-gradient(135deg,
+            #00bcd4,
+            #009cb9);
+}
+
+@keyframes toastIn {
+    from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.toast-enter {
+    animation: toastIn 0.4s cubic-bezier(0.21, 1.02, 0.73, 1);
+}
+
+@media (max-width: 700px) {
+    .toast {
+        bottom: 16px;
+
+        left: 16px;
+        right: 16px;
+
+        max-width: none;
+    }
 }

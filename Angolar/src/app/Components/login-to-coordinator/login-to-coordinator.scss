@@ -488,6 +488,20 @@
 
 
 /* =========================================
+   ולידציה - הדגשת שדות לא תקינים
+========================================= */
+
+.coordinator-form .ng-invalid.ng-touched {
+
+  border-color: #e04f5f;
+
+  box-shadow: 0 0 0 4px rgba(224, 79, 95, 0.1);
+
+  background: #fff9f9;
+}
+
+
+/* =========================================
    סיסמה
 ========================================= */
 
@@ -730,5 +744,131 @@
   .submit-button {
 
     width: 100%;
+  }
+}
+
+
+/* =========================================
+   הודעה מעוצבת (טוסט) - במקום alert
+========================================= */
+
+.toast {
+
+  position: fixed;
+
+  bottom: 28px;
+
+  inset-inline-start: 28px;
+
+  max-width: min(420px, calc(100vw - 40px));
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 15px 20px;
+
+  border-radius: 15px;
+
+  color: white;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  line-height: 1.5;
+
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.25),
+    0 5px 15px rgba(0, 0, 0, 0.12);
+
+  z-index: 1000;
+
+  animation: toastIn 0.4s cubic-bezier(0.21, 1.02, 0.73, 1);
+}
+
+.toast-icon {
+
+  width: 30px;
+
+  height: 30px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.22);
+
+  font-size: 15px;
+
+  font-weight: 800;
+}
+
+.toast-message {
+
+  flex: 1;
+}
+
+/* סוג ההודעה נותן את צבע הרקע */
+.toast-success {
+
+  background:
+    linear-gradient(135deg,
+      #2fb067,
+      #26a05b);
+}
+
+.toast-error {
+
+  background:
+    linear-gradient(135deg,
+      #e2594f,
+      #d1453c);
+}
+
+.toast-info {
+
+  background:
+    linear-gradient(135deg,
+      #00bcd4,
+      #009cb9);
+}
+
+@keyframes toastIn {
+
+  from {
+
+    opacity: 0;
+
+    transform: translateY(24px) scale(0.95);
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 700px) {
+
+  .toast {
+
+    bottom: 16px;
+
+    left: 16px;
+
+    right: 16px;
+
+    max-width: none;
   }
 }

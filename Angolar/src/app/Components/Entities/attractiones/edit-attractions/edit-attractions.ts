@@ -3,7 +3,6 @@ import { ChangeDetectorRef, Component, EventEmitter, inject, Input, OnChanges, O
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Attraction } from '../../../../Interfacess/attraction';
 import { AttractionService } from '../../../../Service/attraction-service';
-import { Regions } from '../../../../Service/regions';
 import { getCity } from '../../../../Service/city';
 
 @Component({
@@ -49,11 +48,19 @@ export class EditAttractions implements OnChanges, OnInit {
     city: new FormControl(''),
   });
 
-  constructor(private attractionService: AttractionService,
-    private regions: Regions, private cdr: ChangeDetectorRef
-  ) { this.areaList = this.regions.getAllAreas(); }
+  constructor(private attractionService: AttractionService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
+    this.attractionService.GetAreas().subscribe({
+      next: (areas) => {
+        this.areaList = areas;
+        // הצגת האזורים היא אסינכרונית (מגיעה מהשרת) - מפעילים שינוי-זיהוי ידני
+        // כדי למנוע את שגיאת ExpressionChangedAfterItHasBeenCheckedError
+        this.cdr.detectChanges();
+      },
+      error: (err) => { console.error('שגיאה בטעינת אזורים:', err); }
+    });
+
     this.cityService.getCities().subscribe(data => {
       if (data.success && data.result && Array.isArray(data.result.records)) {
         this.cities.set(data.result.records.map(record => record.שם_ישוב.trim()).sort());

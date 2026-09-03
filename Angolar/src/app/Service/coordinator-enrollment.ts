@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class CoordinatorEnrollment {
 
-  private apiUrl = 'https://localhost:7000/api/Coordinator';
+  private apiUrl = 'https://localhost:7216/api/Coordinator';
 
   constructor(private http: HttpClient) {}
 
@@ -19,5 +19,10 @@ export class CoordinatorEnrollment {
     );
 
   }
-  
+
+  // רשימת ערים (מערך שמות) - לטעינת שדה העיר
+  getCities(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.apiUrl}/cities`);
+  }
+
 }

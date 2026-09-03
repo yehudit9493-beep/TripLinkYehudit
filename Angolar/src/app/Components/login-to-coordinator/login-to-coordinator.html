@@ -177,7 +177,7 @@
                                 📱
                             </span>
 
-                            <input type="text" formControlName="Phon" placeholder="הכניסי מספר טלפון">
+                            <input type="text" formControlName="Phone" placeholder="הכניסי מספר טלפון">
 
                         </div>
 
@@ -342,7 +342,7 @@
                     </div>
 
 
-                    <!-- עיר -->
+                    <!-- עיר - כתיבה + בחירה מרשימה נפתחת -->
                     <div class="form-group">
 
                         <label>
@@ -356,7 +356,21 @@
                                 📍
                             </span>
 
-                            <input type="text" formControlName="InstitutionCity" placeholder="הכניסי עיר">
+                            <input
+                                type="text"
+                                formControlName="InstitutionCity"
+                                list="coordinator-cities-list"
+                                placeholder="התחילי לכתוב או בחרי עיר"
+                                autocomplete="off"
+                            />
+
+                            <datalist id="coordinator-cities-list">
+
+                                @for (c of citiesList; track c) {
+                                    <option [value]="c"></option>
+                                }
+
+                            </datalist>
 
                         </div>
 
@@ -556,5 +570,17 @@
         </form>
 
     </div>
+
+    <!-- הודעה מעוצבת (במקום alert) -->
+    @if (toastVisible) {
+    <div class="toast toast-{{ toastType }}" role="alert">
+        <span class="toast-icon">
+            @if (toastType === 'success') { ✓ }
+            @else if (toastType === 'error') { ✕ }
+            @else { ℹ }
+        </span>
+        <span class="toast-message">{{ toastMessage }}</span>
+    </div>
+    }
 
 </div>

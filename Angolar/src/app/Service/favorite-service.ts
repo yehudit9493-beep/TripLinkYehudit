@@ -28,6 +28,12 @@ export class FavoriteService {
   pendingAttraction: Attraction | null = null;
   pendingAccommodation: Accommodation | null = null;
 
+  // החזרת המזהה הייחודי של כל ישות בהתאם לסוגה
+  // (Attraction משתמש ב-attractionId, שאר הישויות ב-id)
+  private getItemId(item: FavoriteItem): any {
+    return item.data?.id ?? item.data?.attractionId;
+  }
+
   // הוספת פריט למועדפים
   addFavorite(item: FavoriteItem) {
     this.favorites.push(item);
@@ -35,8 +41,9 @@ export class FavoriteService {
 
   // הסרת פריט מהמועדפים
   removeFavorite(item: FavoriteItem) {
+    const id = this.getItemId(item);
     this.favorites = this.favorites.filter(
-      fav => !(fav.type === item.type && fav.data.id === item.data.id)
+      fav => !(fav.type === item.type && this.getItemId(fav) === id)
     );
   }
   // קבלת כל המועדפים

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -6,7 +6,7 @@ import {
   Validators
 } from '@angular/forms';
 
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 import { CoordinatorEnrollment } from '../../Service/coordinator-enrollment';
 
@@ -24,13 +24,43 @@ import { CoordinatorEnrollment } from '../../Service/coordinator-enrollment';
 })
 
 
-export class LoginToCoordinator {
+export class LoginToCoordinator implements OnInit {
 
   showPassword = false;
 
+  // רשימת הערים למילוי שדה העיר (נטען מהשרת)
+  citiesList: string[] = [];
+
+  // =========================
+  // הודעות (טוסט) - מוחלפות במקום alert
+  // =========================
+  toastMessage: string = '';
+  toastType: 'success' | 'error' | 'info' = 'info';
+  toastVisible = false;
+
+  private toastTimer: ReturnType<typeof setTimeout> | null = null;
+
+  showToast(message: string, type: 'success' | 'error' | 'info' = 'info', duration = 3500) {
+    this.toastMessage = message;
+    this.toastType = type;
+    this.toastVisible = true;
+
+    if (this.toastTimer) clearTimeout(this.toastTimer);
+    this.toastTimer = setTimeout(() => (this.toastVisible = false), duration);
+  }
+
   constructor(
-    private coordinatorService: CoordinatorEnrollment
+    private coordinatorService: CoordinatorEnrollment,
+    private router: Router
   ) { }
+
+  ngOnInit(): void {
+    // טעינת רשימת הערים למילוי שדה העיר
+    this.coordinatorService.getCities().subscribe({
+      next: (data) => (this.citiesList = data),
+      error: (e) => console.error('שגיאה בטעינת ערים', e),
+    });
+  }
 
 
   CoordinatorForm = new FormGroup({
@@ -125,6 +155,8 @@ export class LoginToCoordinator {
   submitCoordinatorForm() {
 
     if (this.CoordinatorForm.invalid) {
+
+      this.showToast('יש למלא את כל שדות החובה', 'error');
 
       this.CoordinatorForm.markAllAsTouched();
 
@@ -235,11 +267,12 @@ export class LoginToCoordinator {
             response
           );
 
-          alert(
-            'ההרשמה נשלחה בהצלחה!'
-          );
+          this.showToast('ההרשמה נשלחה בהצלחה!', 'success');
 
           this.CoordinatorForm.reset();
+
+          // חזרה לדף הנחיתה
+          setTimeout(() => this.router.navigate(['/']), 1300);
 
         },
 
@@ -251,8 +284,11 @@ export class LoginToCoordinator {
             error
           );
 
-          alert(
-            'אירעה שגיאה בשליחת הטופס'
+          // הודעת השגיאה האמיתית מהשרת (אם קיימת)
+          const serverMessage = error?.error?.message;
+          this.showToast(
+            serverMessage ? serverMessage : 'אירעה שגיאה בשליחת הטופס',
+            'error'
           );
 
         }

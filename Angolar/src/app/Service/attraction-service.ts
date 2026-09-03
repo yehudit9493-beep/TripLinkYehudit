@@ -192,6 +192,13 @@ export class AttractionService {
     );
   }
 
+  // הבאת האזורים מה-DB (למילוי ה-select). מחזיר {id, name} לצרכי הטופס.
+  GetAreas(): Observable<{ id: number, name: string }[]> {
+    return this.httpClient.get<any[]>(`${this.API_URL}/attractions/areas`).pipe(
+      map(list => list.map(a => ({ id: a.areaId, name: a.areaName })))
+    );
+  }
+
   getAttractionById(id: number): Observable<Attraction> {
     return this.httpClient.get<any>(`${this.API_URL}/attractions/${id}`).pipe(
       map(a => this.mapToAngular(a))

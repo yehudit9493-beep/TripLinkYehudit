@@ -1,15 +1,16 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { Forums } from '../../../Service/forums';
 import { Message, Reply } from '../../../Interfacess/message';
-import { DatePipe, SlicePipe } from '@angular/common';
+import { AsyncPipe, DatePipe, SlicePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Auth } from '../../../Service/auth';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HebrewDateConverterPipe } from '../../../pipe/hebrewDateConverter.pipe';
 
 @Component({
   selector: 'app-experience-update',
-  imports: [DatePipe, SlicePipe, FormsModule],
+  imports: [DatePipe, SlicePipe, FormsModule,HebrewDateConverterPipe, AsyncPipe],
   templateUrl: './experience-update.html',
   styleUrl: './experience-update.scss',
   standalone: true,
@@ -76,7 +77,6 @@ private loadMessages() {
     
     this.message = messages;
     this.cdr.markForCheck();
-    console.log('🟢 נתונים אחרי מיון:', this.message); 
   });
   
 
@@ -111,7 +111,7 @@ private loadMessages() {
     };
 
     this.forums.addReply(messageId, replyPayload).subscribe(() => {
-      this.loadMessages(); // רענון ההודעות מהשרת
+      this.loadMessages(); 
       this.newReply = { content: '' };
       this.replyIndex = null;
     });

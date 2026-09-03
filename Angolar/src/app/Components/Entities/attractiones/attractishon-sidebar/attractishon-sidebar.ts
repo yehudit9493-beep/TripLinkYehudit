@@ -99,7 +99,7 @@ export class AttractishonSidebar {
 
   isFavorite(attraction: Attraction): boolean {
     return this.favoritesService.getFavorites().some(
-      fav => fav.type === 'attraction' && fav.data.id === attraction.attractionId
+      fav => fav.type === 'attraction' && (fav.data.attractionId ?? fav.data.id) === attraction.attractionId
     );
   }
 

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Trail } from '../../../../Interfacess/Trail';
-import { TrailsService } from '../../../../Service/TrailsService';
+import { DeleteTrailResponse, TrailsService } from '../../../../Service/TrailsService';
 
 @Component({
   selector: 'app-edit-trail',
@@ -16,11 +16,14 @@ export class EditTrail implements OnChanges {
   @Input() trail!: Trail;
   @Output() closed = new EventEmitter<void>();
   @Output() updated = new EventEmitter<Trail>();
+  @Output() deleted = new EventEmitter<number>(); 
 
  existingImages: string[] = [];
   newImageFiles: File[] = []; 
   previewUrls: string[] = []; 
   isSaving: boolean = false;
+  isDeleting: boolean = false; 
+  errorMessage: string | null = null; 
 
   editTrailForm = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -105,6 +108,36 @@ export class EditTrail implements OnChanges {
       }
     });
   }
+
+  deleteTrail(): void {
+    // בדיקה 1: בקשת אישור מהמשתמש
+    if (!confirm('האם אתה בטוח שברצונך למחוק את המסלול? פעולה זו לא ניתן לבטל!')) {
+      return;
+    }
+
+    this.isDeleting = true;
+    this.errorMessage = null;
+
+    this.trailsService.DeleteTrail(this.trail.id).subscribe({
+      next: (response: DeleteTrailResponse) => {
+        // בדיקה 2: בדיקה אם המחיקה הצליחה
+        if (response.isSuccess) {
+          console.log('המסלול נמחק בהצלחה:', response.message);
+          this.deleted.emit(this.trail.id);
+          this.closed.emit();
+        } else {
+          this.errorMessage = response.message;
+        }
+        this.isDeleting = false;
+      },
+      error: (error) => {
+        console.error('שגיאה במחיקת המסלול:', error);
+        this.errorMessage = 'שגיאה בעת מחיקת המסלול';
+        this.isDeleting = false;
+      }
+    });
+  }
+
 
   onSeasonChange(event: Event) {
     const checkbox = event.target as HTMLInputElement;

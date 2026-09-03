@@ -3,7 +3,6 @@ import { AttractionWithoutId } from '../../../../Interfacess/attraction';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AttractionService } from '../../../../Service/attraction-service';
 import { CommonModule } from '@angular/common';
-import { Regions } from '../../../../Service/regions';
 
 @Component({
   selector: 'app-add-attraction',
@@ -22,8 +21,20 @@ export class AddAttraction {
   previewUrls: string[] = [];
   isSaving: boolean = false;
 
-  constructor(private attractionService: AttractionService,
-    private regions: Regions, private cdr: ChangeDetectorRef) { this.areaList = this.regions.getAllAreas(); }
+  constructor(private attractionService: AttractionService, private cdr: ChangeDetectorRef) { }
+
+  ngOnInit() {
+    // האזורים מגיעים מה-DB (במקום רשימה מקודדת) כדי שישקפו תמיד את ה-data
+    this.attractionService.GetAreas().subscribe({
+      next: (areas) => {
+        this.areaList = areas;
+        // הצגת האזורים היא אסינכרונית - שינוי-זיהוי ידני מונע את
+        // שגיאת ExpressionChangedAfterItHasBeenCheckedError
+        this.cdr.detectChanges();
+      },
+      error: (err) => { console.error('שגיאה בטעינת אזורים:', err); }
+    });
+  }
 
   addAttractionForm = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -74,7 +85,12 @@ export class AddAttraction {
   }
 
   saveAttractionWithImages(attractionData: any): void {
-    this.attractionService.addAttraction(attractionData).subscribe({
+    // ערכי ה-form הגולמיים שהועלו לא ב-mapping התקין - בונים את מבנה ה-Attraction מחדש
+    const attraction: AttractionWithoutId =
+      attractionData && 'attractionName' in attractionData
+        ? attractionData
+        : this.buildAttraction(attractionData?.images || []);
+    this.attractionService.addAttraction(attraction).subscribe({
       next: (response) => {
         console.log('אטרקציה נוספה בהצלחה עם תמונות');
         this.addAttractionForm.reset();
@@ -91,9 +107,29 @@ export class AddAttraction {
     });
   }
 
+  // ממיר את ערכי הטופס (name/regionId/type...) למבנה ה-Attraction התקין
+  // (attractionName/areaId/typeName...) שהשרת והמיפוי מזהים
+  private buildAttraction(images: string[]): AttractionWithoutId {
+    const v = this.addAttractionForm.value;
+    return {
+      attractionName: v.name?.trim() || '',
+      areaId: v.regionId ?? 0,
+      address: v.address?.trim() || '',
+      typeName: v.type?.trim() || '',
+      sabbathKeeper: v.SabbathKeeper ?? false,
+      entryFee: v.entryFee ?? 0,
+      openingHours: v.openingHours?.trim() || '',
+      phoneNumber: v.phoneNumber?.trim() || '',
+      description: v.description?.trim() || '',
+      suitableForKids: v.suitableForKids ?? false,
+      city: '',
+      images: images,
+    };
+  }
+
   saveAttraction(): void {
     this.isSaving = true;
-    this.attractionService.addAttraction(this.addAttractionForm.value as AttractionWithoutId).subscribe({
+    this.attractionService.addAttraction(this.buildAttraction(this.previewUrls)).subscribe({
       next: (response) => {
         console.log('אטרקציה נוספה בהצלחה');
         this.addAttractionForm.reset();

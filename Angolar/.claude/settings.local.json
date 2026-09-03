@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/פרויקט גמר/**)",
+      "Bash(xargs grep -li \"toastr\\\\|@ng-bootstrap\\\\|mat-snackbar\\\\|primeng\\\\|ngx-toastr\\\\|MsalModule\")",
+      "Bash(dotnet build *)",
+      "Bash(npx ng *)",
+      "Bash(command -v sqlcmd)",
+      "Read(//c/Program Files/Microsoft SQL Server/**)",
+      "Bash(npx tsc *)"
+    ],
+    "additionalDirectories": [
+      "C:\\פרויקט גמר\\Server\\project\\project\\DTOs",
+      "C:\\פרויקט גמר\\Server\\project\\project\\Repository",
+      "C:\\פרויקט גמר\\Server\\project\\project\\Service",
+      "C:\\פרויקט גמר\\Server\\project\\project\\Controllers",
+      "C:\\פרויקט גמר\\Server\\project\\project"
+    ]
+  }
+}

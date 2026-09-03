@@ -42,32 +42,14 @@ export class Forums {
       }
     };
 
-  /**
-   * Get all messages for a given forum type from the server.
-   * Returns an Observable because it's an HTTP call.
-   */
-  // getMessagesByForumId(forumId: number): Observable<Message[]> {
-  //       console.log(' הגיע לפונקציה הזו')
-
-  //   return this.httpClient.get<any[]>(`${this.API_URL}/Forum/${forumId}`).pipe(
-  //     map(list => list.map(item => this.mapToMessage(item)))
-
-  //   );
-    
-  // }
-
-
 
 getMessagesByForumId(forumId: number): Observable<Message[]> {
-    console.log('🔵 הגיע לפונקציה הזו עם forumId:', forumId);
 
     return this.httpClient.get<any[]>(`${this.API_URL}/forum/${forumId}`).pipe(
       
       // שלב 1: ראה את הגולמי מהשרת
       tap(rawData => {
-        console.log('🟢 נתונים גולמיים מהשרת:');
-        console.log(rawData);
-        console.log('מספר הפריטים:', rawData?.length);
+       
       }),
       
       // שלב 2: ממיר לאובייקטים
@@ -75,8 +57,7 @@ getMessagesByForumId(forumId: number): Observable<Message[]> {
       
       // שלב 3: ראה אחרי המיפוי
       tap(mappedData => {
-        console.log('🟡 נתונים לאחר מיפוי:');
-        console.log(mappedData);
+       
       })
     );
 }
@@ -84,29 +65,26 @@ getMessagesByForumId(forumId: number): Observable<Message[]> {
 
 
 
-  /**
-   * Add a new message (post) to the server.
-   */
-  addMessage(msg: { userId: number; forumTypeId: number; title: string; content: string }): Observable<Message> {
+  
+  addMessage(msg: { userId: number; forumTypeId: number; title: string; content: string;  routeId?: number; 
+  attractionId?: number;
+  lodgingId?: number;
+  guideUserId?: number; }): Observable<Message> {
     return this.httpClient.post<any>(`${this.API_URL}/forum/messages`, msg).pipe(
       map(item => this.mapToMessage(item))
     );
   }
 
-  /**
-   * Add a reply to an existing message.
-   */
+ 
   addReply(messageId: number, reply: { userId: number; forumTypeId: number; title: string; content: string }): Observable<Message> {
-    return this.httpClient.post<any>(`${this.API_URL}/Forum/${messageId}/reply`, reply).pipe(
+    return this.httpClient.post<any>(`${this.API_URL}/forum/${messageId}/reply`, reply).pipe(
       map(item => this.mapToMessage(item))
     );
   }
 
-  /**
-   * Toggle like on a message. Returns true if liked, false if unliked.
-   */
+  
   toggleLike(messageId: number, userId: number): Observable<boolean> {
-    return this.httpClient.post<{ liked: boolean }>(`${this.API_URL}/Forum/${messageId}/like`, { userId }).pipe(
+    return this.httpClient.post<{ liked: boolean }>(`${this.API_URL}/forum/${messageId}/like`, { userId }).pipe(
       map(res => res.liked)
     );
   }
