@@ -1,34 +1,607 @@
+// .password-container {
+//   position: relative;
+//   width: 100%;
+
+//   input.form-control {
+//     width: 100%;
+//     padding-left: 40px; /* משאיר מקום לאייקון בצד שמאל */
+//     padding-right: 12px;
+//   }
+
+//   button.eye-btn {
+//     position: absolute;
+//     left: 10px; /* ממקם את העין בצד שמאל של התיבה */
+//     top: 50%;
+//     transform: translateY(-50%);
+//     background: none;
+//     border: none;
+//     padding: 0;
+//     cursor: pointer;
+//     z-index: 5; /* מבטיח שהכפתור יהיה מעל התיבה הלבנה */
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+
+//     i {
+//       font-size: 1.25rem; /* נותן גודל ברור לאייקון */
+//       color: #6c757d;
+
+//       &:hover {
+//         color: #467af3; /* הופך לוורוד שלך במעבר עכבר */
+//       }
+//     }
+//   }
+// }
+
+
+
+.entry-page {
+  min-height: 100vh;
+
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 80px 20px 40px;
+
+  overflow: hidden;
+
+  background-image: url('/travel-hero.svg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* שכבת רקע */
+.page-overlay {
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(135deg,
+      rgba(255, 255, 255, 0.82),
+      rgba(238, 250, 249, 0.72),
+      rgba(255, 255, 255, 0.80));
+
+  backdrop-filter: blur(2px);
+}
+
+/* =========================
+כפתור חזרה
+========================= */
+
+.back-button {
+  position: absolute;
+
+  top: 28px;
+  right: 35px;
+
+  z-index: 5;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 10px 18px;
+
+  border: none;
+  border-radius: 25px;
+
+  background: rgba(255, 255, 255, 0.78);
+
+  color: #176b73;
+
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 5px 18px rgba(0, 80, 90, 0.12);
+
+  transition: all 0.3s ease;
+}
+
+.back-arrow {
+  font-size: 20px;
+
+  transition: transform 0.3s ease;
+}
+
+.back-button:hover {
+  background: white;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 22px rgba(0, 80, 90, 0.18);
+}
+
+.back-button:hover .back-arrow {
+  transform: translateX(5px);
+}
+
+/* =========================
+הכרטיס המרכזי
+========================= */
+
+.entry-container {
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+  max-width: 500px;
+
+  padding: 42px 45px 30px;
+
+  background: rgba(255, 255, 255, 0.91);
+
+  border: 1px solid rgba(255, 255, 255, 0.85);
+
+  border-radius: 28px;
+
+  box-shadow:
+    0 25px 70px rgba(24, 91, 98, 0.18),
+    0 8px 25px rgba(0, 0, 0, 0.08);
+
+  backdrop-filter: blur(14px);
+
+  animation: entryCardEnter 0.7s ease-out;
+}
+
+/* =========================
+כותרת
+========================= */
+
+.entry-header {
+  text-align: center;
+
+  margin-bottom: 32px;
+}
+
+.entry-icon {
+  width: 64px;
+  height: 64px;
+
+  margin: 0 auto 15px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(135deg,
+      #77fd68,
+      #00d2ff);
+
+  font-size: 27px;
+
+  box-shadow:
+    0 8px 22px rgba(0, 180, 190, 0.25);
+}
+
+.entry-header h1 {
+  margin: 0 0 10px;
+
+  color: #155c63;
+
+  font-size: 31px;
+  font-weight: 800;
+}
+
+.entry-header p {
+  margin: 0 auto;
+
+  max-width: 360px;
+
+  color: #64777a;
+
+  font-size: 15px;
+
+  line-height: 1.7;
+}
+
+/* =========================
+שדות
+========================= */
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  padding-right: 5px;
+
+  color: #315e63;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.input-wrapper,
 .password-container {
   position: relative;
+
   width: 100%;
 
-  input.form-control {
-    width: 100%;
-    padding-left: 40px; /* משאיר מקום לאייקון בצד שמאל */
-    padding-right: 12px;
+  display: flex;
+  align-items: center;
+}
+
+/* אייקון בתוך השדה */
+.input-icon {
+  position: absolute;
+
+  right: 16px;
+
+  z-index: 2;
+
+  color: #159aa4;
+
+  font-size: 16px;
+
+  pointer-events: none;
+
+  transition: all 0.3s ease;
+}
+
+/* שדות */
+.input-wrapper input,
+.password-container input {
+  width: 100%;
+  height: 52px;
+
+  box-sizing: border-box;
+
+  padding: 0 48px 0 48px;
+
+  border: 1.5px solid #d8e7e8;
+
+  border-radius: 14px;
+
+  background: rgba(250, 253, 253, 0.95);
+
+  color: #244d51;
+
+  font-family: inherit;
+
+  font-size: 15px;
+
+  outline: none;
+
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    background 0.3s ease;
+}
+
+.input-wrapper input::placeholder,
+.password-container input::placeholder {
+  color: #9aaeb0;
+}
+
+.input-wrapper input:focus,
+.password-container input:focus {
+  background: white;
+
+  border-color: #25c5c5;
+
+  box-shadow:
+    0 0 0 4px rgba(37, 197, 197, 0.11);
+}
+
+.input-wrapper:focus-within .input-icon,
+.password-container:focus-within .input-icon {
+  color: #00aeb8;
+
+  transform: scale(1.08);
+}
+
+/* =========================
+כפתור הצגת סיסמה
+========================= */
+
+.eye-btn {
+  position: absolute;
+
+  left: 12px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
+
+  color: #84989a;
+
+  cursor: pointer;
+
+  z-index: 3;
+
+  transition: all 0.25s ease;
+}
+
+.eye-btn i {
+  font-size: 19px;
+}
+
+.eye-btn:hover {
+  color: #00aeb8;
+
+  transform:
+    translateY(-50%) scale(1.08);
+}
+
+/* =========================
+הודעות ולידציה
+========================= */
+
+.validation-message {
+  margin-top: -12px;
+
+  margin-bottom: 14px;
+
+  padding-right: 5px;
+
+  color: #d95c5c;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+/* =========================
+הודעת שגיאה מהשרת
+========================= */
+
+.login-error {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  margin-top: 8px;
+
+  padding: 11px 15px;
+
+  border-radius: 12px;
+
+  background: rgba(220, 70, 70, 0.08);
+
+  border: 1px solid rgba(220, 70, 70, 0.15);
+
+  color: #c44d4d;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  text-align: center;
+}
+
+.login-error span {
+  font-size: 16px;
+}
+
+/* =========================
+כפתור כניסה
+========================= */
+
+.login-button {
+  width: 100%;
+  height: 54px;
+
+  margin-top: 12px;
+
+  border: none;
+
+  border-radius: 15px;
+
+  background:
+    linear-gradient(135deg,
+      #77fd68,
+      #00d2ff);
+
+  color: white;
+
+  font-family: inherit;
+
+  font-size: 16px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 22px rgba(0, 184, 205, 0.22);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.login-button:not(:disabled):hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 28px rgba(0, 184, 205, 0.30);
+}
+
+.login-button:not(:disabled):active {
+  transform: translateY(0);
+}
+
+.login-button:disabled {
+  opacity: 0.45;
+
+  cursor: not-allowed;
+
+  box-shadow: none;
+}
+
+.button-arrow {
+  display: inline-block;
+
+  margin-right: 8px;
+
+  font-size: 20px;
+
+  transition: transform 0.3s ease;
+}
+
+.login-button:not(:disabled):hover .button-arrow {
+  transform: translateX(-5px);
+}
+
+/* =========================
+שכחתי סיסמה
+========================= */
+
+.forgot-password {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 6px;
+
+  margin-top: 22px;
+
+  font-size: 13px;
+}
+
+.forgot-password span {
+  color: #7b8f91;
+}
+
+.forgot-password a {
+  color: #009ca8;
+
+  font-weight: 700;
+
+  text-decoration: none;
+
+  transition: color 0.25s ease;
+}
+
+.forgot-password a:hover {
+  color: #00747d;
+
+  text-decoration: underline;
+}
+
+/* =========================
+תחתית
+========================= */
+
+.entry-footer {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 6px;
+
+  margin-top: 23px;
+
+  color: #819496;
+
+  font-size: 12px;
+}
+
+/* =========================
+אנימציה
+========================= */
+
+@keyframes entryCardEnter {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(25px) scale(0.98);
+
   }
 
-  button.eye-btn {
-    position: absolute;
-    left: 10px; /* ממקם את העין בצד שמאל של התיבה */
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    z-index: 5; /* מבטיח שהכפתור יהיה מעל התיבה הלבנה */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  to {
+    opacity: 1;
 
-    i {
-      font-size: 1.25rem; /* נותן גודל ברור לאייקון */
-      color: #6c757d;
-      
-      &:hover {
-        color: #467af3; /* הופך לוורוד שלך במעבר עכבר */
-      }
-    }
+    transform:
+      translateY(0) scale(1);
+
   }
+
+}
+
+/* =========================
+מובייל
+========================= */
+
+@media (max-width: 600px) {
+
+  .entry-page {
+    padding:
+      80px 15px 30px;
+
+    background-attachment: scroll;
+
+  }
+
+  .back-button {
+    top: 18px;
+    right: 18px;
+  }
+
+  .entry-container {
+    padding:
+      32px 23px 25px;
+
+    border-radius: 22px;
+
+  }
+
+  .entry-header h1 {
+    font-size: 27px;
+  }
+
+  .entry-header p {
+    font-size: 14px;
+  }
+
+  .entry-icon {
+    width: 56px;
+    height: 56px;
+
+    font-size: 23px;
+
+  }
+
+  .input-wrapper input,
+  .password-container input {
+    height: 50px;
+  }
+
 }

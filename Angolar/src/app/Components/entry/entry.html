@@ -1,4 +1,4 @@
-<div class="container mt-5">
+<!-- <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
 
@@ -66,4 +66,193 @@
 
         </div>
     </div>
+</div> -->
+
+
+
+
+
+<div class="entry-page" dir="rtl">
+
+    <!-- שכבת רקע -->
+
+    <div class="page-overlay"></div>
+
+    <!-- כפתור חזרה -->
+
+    <button type="button" routerLink="/" class="back-button">
+
+        <span class="back-arrow">→</span>
+        חזרה
+
+
+    </button>
+
+    <!-- כרטיס הכניסה -->
+
+    <div class="entry-container">
+
+        <!-- כותרת -->
+        <div class="entry-header">
+
+            <div class="entry-icon">
+                👤
+            </div>
+
+            <h1>כניסה למשתמש שלך</h1>
+
+            <p>
+                התחברו לחשבון שלכם והמשיכו
+                למסע שלכם עם TripLink
+            </p>
+
+        </div>
+
+
+        <form [formGroup]="UserForm" (ngSubmit)="onSubmit()">
+
+            <!-- שם משתמש -->
+            <div class="form-group">
+
+                <label for="UserName">
+                    שם משתמש
+                </label>
+
+                <div class="input-wrapper">
+
+                    <span class="input-icon">
+                        👤
+                    </span>
+
+                    <input id="UserName" type="text" formControlName="UserName" placeholder="הכניסו שם משתמש"
+                        autocomplete="username">
+
+                </div>
+
+            </div>
+
+
+            @if(UserForm.get('UserName')?.touched &&
+            UserForm.get('UserName')?.hasError('email')) {
+
+            <div class="validation-message">
+                הקלט אינו תקין
+            </div>
+
+            }
+
+
+            @if(UserForm.get('UserName')?.touched &&
+            UserForm.get('UserName')?.hasError('required')) {
+
+            <div class="validation-message">
+                השדה חובה
+            </div>
+
+            }
+
+
+            <!-- סיסמה -->
+            <div class="form-group password-group">
+
+                <label for="Password">
+                    סיסמה
+                </label>
+
+                <div class="password-container">
+
+                    <span class="input-icon">
+                        🔒
+                    </span>
+
+                    <input id="Password" [type]="isPasswordVisible ? 'text' : 'password'" formControlName="Password"
+                        placeholder="הכניסו סיסמה" autocomplete="current-password">
+
+                    <button type="button" class="eye-btn" (click)="togglePasswordVisibility()"
+                        [attr.aria-label]="isPasswordVisible ? 'הסתר סיסמה' : 'הצג סיסמה'">
+
+                        <i [ngClass]="
+            isPasswordVisible
+              ? 'bi bi-eye'
+              : 'bi bi-eye-slash'
+          ">
+                        </i>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            @if(UserForm.get('Password')?.touched &&
+            UserForm.get('Password')?.hasError('required')) {
+
+            <div class="validation-message">
+                השדה חובה
+            </div>
+
+            }
+
+
+            @if(UserForm.get('Password')?.touched &&
+            UserForm.get('Password')?.hasError('pattern')) {
+
+            <div class="validation-message">
+                יש להכניס סיסמה חזקה
+            </div>
+
+            }
+
+
+            <!-- הודעת שגיאה -->
+            @if (errorMessage) {
+
+            <div class="login-error">
+                <span>⚠</span>
+                {{ errorMessage }}
+            </div>
+
+            }
+
+
+            <!-- כפתור כניסה -->
+            <button type="submit" class="login-button" [disabled]="UserForm.invalid">
+
+                כניסה
+
+                <span class="button-arrow">
+                    ←
+                </span>
+
+            </button>
+
+
+        </form>
+
+
+        <!-- איפוס סיסמה -->
+        <div class="forgot-password">
+
+            <span>שכחתם את הסיסמה?</span>
+
+            <a routerLink="/reset-password">
+                איפוס סיסמה
+            </a>
+
+        </div>
+
+
+        <!-- שורת אבטחה -->
+        <div class="entry-footer">
+
+            <span>🔒</span>
+
+            הכניסה לחשבון מאובטחת
+
+        </div>
+
+
+    </div>
+
 </div>
