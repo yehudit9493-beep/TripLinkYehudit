@@ -253,44 +253,6 @@
 }
 
 // ==================
-// מפה
-// ==================
-.map-section {
-    background: white;
-    padding: 28px 24px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    border-radius: 12px;
-
-    h2 {
-        font-size: 1.3rem;
-        font-weight: 700;
-        color: #1a1a2e;
-        margin: 0;
-        text-align: center;
-    }
-}
-
-.map-placeholder {
-    background: linear-gradient(135deg, #e8f4fd 0%, #d0eafa 100%);
-    border: 2px dashed rgba(9, 144, 212, 0.3);
-    height: 350px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: 3rem;
-    color: #6c757d;
-
-    p {
-        font-size: 0.9rem;
-        margin-top: 12px;
-    }
-}
-
-// ==================
 // רספונסיבי
 // ==================
 @media (max-width: 1024px) {

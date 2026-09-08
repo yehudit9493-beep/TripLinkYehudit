@@ -12,7 +12,6 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { AddGuide } from '../add-guide/add-guide';
 import { Regions } from '../../../../Service/regions';
 import { RatingService } from '../../../../Service/rating-service';
 
@@ -20,7 +19,7 @@ import { RatingService } from '../../../../Service/rating-service';
 @Component({
   selector: 'app-guide',
   imports: [MatTableModule, GuideSidebar, MatSortModule, MatFormFieldModule, MatInputModule,
-    MatSelectModule, FormsModule, ReactiveFormsModule, CommonModule, AddGuide],
+    MatSelectModule, FormsModule, ReactiveFormsModule, CommonModule],
   templateUrl: './guide.html',
   styleUrl: './guide.scss',
   standalone: true
@@ -44,8 +43,6 @@ export class Guide implements OnInit, OnDestroy {
     private favoritesService: FavoriteService,
     private ratingService: RatingService,
     private regions: Regions) { this.loadAreaList(); }
-
-  isAddGuideOpen = false;
 
   searchText = '';
 
@@ -157,20 +154,6 @@ export class Guide implements OnInit, OnDestroy {
 
   getRegionName(areaId: number): string {
     return this.regions.getAreasById(areaId);
-  }
-
-  onAddGuide() {
-    this.isAddGuideOpen = true;
-  }
-
-  onGuideAdded() {
-    this.isAddGuideOpen = false;
-    this.guideService.getGuids().subscribe({
-      next: (data) => {
-        this.allGuides = data;
-        this.applyFilters();
-      }
-    });
   }
 
   getRegionNames(regionIds: number[]): string {

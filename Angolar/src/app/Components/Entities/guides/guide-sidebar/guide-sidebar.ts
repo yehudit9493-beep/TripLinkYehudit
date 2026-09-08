@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Guides } from '../../../../Interfacess/guides';
 import { CommonModule } from '@angular/common';
 import { FavoriteItem, FavoriteService } from '../../../../Service/favorite-service';
@@ -20,7 +20,7 @@ import { Auth } from '../../../../Service/auth';
   styleUrl: './guide-sidebar.scss',
   standalone: true
 })
-export class GuideSidebar {
+export class GuideSidebar implements OnInit {
 
   constructor(private favoritesService: FavoriteService,
     private guideService: GuideService,
@@ -41,6 +41,25 @@ export class GuideSidebar {
   userRating: number = 0;
   userComment: string = '';
   ratingError: string = '';
+
+  // נתוני הדירוג של המדריכה הנוכחית (נטענים מהשרת ב-ngOnInit)
+  avgRating: number = 0;
+  rated: boolean = false;
+
+  ngOnInit() {
+    this.loadRating();
+  }
+
+  // טעינת ממוצע הדירוגים ובדיקה אם המשתמש כבר דירג - עבור המדריכה הנוכחית
+  loadRating() {
+    if (!this.guide) return;
+    this.ratingService.getAverageRating('guide', this.guide.id).subscribe({
+      next: avg => this.avgRating = avg
+    });
+    this.ratingService.hasRated('guide', this.guide.id, this.auth.getCurrentUserId()).subscribe({
+      next: rated => this.rated = rated
+    });
+  }
 
   close() {
     this.closed.emit();
@@ -86,7 +105,7 @@ export class GuideSidebar {
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
           this.guideService.DeleteGuide(this.guide!.id).subscribe(deletedGuide => {
-            if (deletedGuide) {
+            if (deletedGuide && deletedGuide.isSuccess) {
               this.closed.emit();
             }
           });
@@ -109,8 +128,7 @@ export class GuideSidebar {
   });
 
   getAverageRating(): number {
-    if (!this.guide) return 0;
-    return this.ratingService.getAverageRating('guide', this.guide.id);
+    return this.avgRating;
   }
 
   goToRatings() {
@@ -125,15 +143,13 @@ export class GuideSidebar {
   }
 
   alreadyRated(): boolean {
-    if (!this.guide) return false;
-    return this.ratingService.hasRated('guide', this.guide.id, this.auth.getCurrentUserName());
+    return this.rated;
   }
 
   submitRating() {
     this.ratingError = '';
-    const userName = this.auth.getCurrentUserName();
 
-    if (this.ratingService.hasRated('guide', this.guide!.id, userName)) {
+    if (this.rated) {
       this.ratingError = 'כבר דירגת מדריכה זו';
       return;
     }
@@ -145,8 +161,19 @@ export class GuideSidebar {
       entityId: this.guide!.id,
       stars: this.userRating,
       comment: this.userComment.trim(),
-      raterName: userName,
+      raterName: this.auth.getCurrentUserName(),
       date: new Date()
+    }, this.auth.getCurrentUserId()).subscribe({
+      next: () => {
+        this.rated = true;
+        this.ratingError = '';
+        this.ratingService.getAverageRating('guide', this.guide!.id).subscribe({
+          next: avg => this.avgRating = avg
+        });
+      },
+      error: (err) => {
+        this.ratingError = err?.error?.message ?? 'שגיאה בשמירת הדירוג';
+      }
     });
     this.userRating = 0;
     this.userComment = '';

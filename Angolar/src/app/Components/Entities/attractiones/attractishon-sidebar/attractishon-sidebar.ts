@@ -34,6 +34,10 @@ export class AttractishonSidebar {
   userComment: string = '';
   ratingError: string = '';
 
+  // נתוני הדירוג של האטרקציה הנוכחית (נטענים מהשרת ב-ngOnInit)
+  avgRating: number = 0;
+  rated: boolean = false;
+
   constructor(private favoritesService: FavoriteService,
     private attractionService: AttractionService,
     private dialog: MatDialog,
@@ -55,6 +59,19 @@ export class AttractishonSidebar {
         console.error('No cities found or response is not in expected format:', data);
       }
       console.log(this.cities)
+    });
+
+    this.loadRating();
+  }
+
+  // טעינת ממוצע הדירוגים ובדיקה אם המשתמש כבר דירג - עבור האטרקציה הנוכחית
+  loadRating() {
+    if (!this.attraction) return;
+    this.ratingService.loadAverage('attraction', this.attraction.attractionId).subscribe({
+      next: avg => this.avgRating = avg
+    });
+    this.ratingService.hasRated('attraction', this.attraction.attractionId, this.auth.getCurrentUserId()).subscribe({
+      next: rated => this.rated = rated
     });
   }
 
@@ -118,7 +135,7 @@ export class AttractishonSidebar {
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
           this.attractionService.DeleteAttraction(this.attraction!.attractionId).subscribe(deletedAttraction => {
-            if (deletedAttraction) {
+            if (deletedAttraction?.isSuccess) {
               this.closed.emit();
             }
           });
@@ -131,9 +148,9 @@ export class AttractishonSidebar {
     return this.regions.getAreasById(regionId);
   }
 
+  // קריאת ממוצע הדירוגים (מהמשתנה שנטען מהשרת)
   getAverageRating(): number {
-    if (!this.attraction) return 0;
-    return this.ratingService.getAverageRating('attraction', this.attraction.attractionId);
+    return this.avgRating;
   }
 
   goToRatings() {
@@ -148,15 +165,13 @@ export class AttractishonSidebar {
   }
 
   alreadyRated(): boolean {
-    if (!this.attraction) return false;
-    return this.ratingService.hasRated('attraction', this.attraction.attractionId, this.auth.getCurrentUserName());
+    return this.rated;
   }
 
   submitRating() {
     this.ratingError = '';
-    const userName = this.auth.getCurrentUserName();
 
-    if (this.ratingService.hasRated('attraction', this.attraction!.attractionId, userName)) {
+    if (this.rated) {
       this.ratingError = 'כבר דירגת אטרקציה זו';
       return;
     }
@@ -168,8 +183,26 @@ export class AttractishonSidebar {
       entityId: this.attraction!.attractionId,
       stars: this.userRating,
       comment: this.userComment.trim(),
-      raterName: userName,
+      raterName: this.auth.getCurrentUserName(),
       date: new Date()
+    }, this.auth.getCurrentUserId()).subscribe({
+      next: () => {
+        this.rated = true;
+        this.ratingError = '';
+        // רענון הממוצע לאחר ההוספה
+        this.ratingService.getAverageRating('attraction', this.attraction!.attractionId).subscribe({
+          next: avg => this.avgRating = avg
+        });
+      },
+      error: (err) => {
+        // טיפול בשגיאה (למשל כבר דירגו - דרך אינדקס ייחודי בשרת)
+        const msg = err?.error?.message;
+        if (msg) {
+          this.ratingError = msg;
+        } else {
+          this.ratingError = 'שגיאה בשמירת הדירוג';
+        }
+      }
     });
     this.userRating = 0;
     this.userComment = '';

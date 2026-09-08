@@ -32,6 +32,10 @@ export class HotelSidebar {
   userComment: string = '';
   ratingError: string = '';
 
+  // נתוני הדירוג של מקום הלינה הנוכחי (נטענים מהשרת ב-ngOnInit)
+  avgRating: number = 0;
+  rated: boolean = false;
+
   nextImage() {
     if (this.hotel?.images && this.hotel.images.length > 0) {
       this.currentImageIndex = (this.currentImageIndex + 1) % this.hotel.images.length;
@@ -50,6 +54,18 @@ export class HotelSidebar {
 
   ngOnInit() {
     this.currentImageIndex = 0;
+    this.loadRating();
+  }
+
+  // טעינת ממוצע הדירוגים ובדיקה אם המשתמש כבר דירג - עבור מקום הלינה הנוכחי
+  loadRating() {
+    if (!this.hotel) return;
+    this.ratingService.getAverageRating('accommodation', this.hotel.id).subscribe({
+      next: avg => this.avgRating = avg
+    });
+    this.ratingService.hasRated('accommodation', this.hotel.id, this.auth.getCurrentUserId()).subscribe({
+      next: rated => this.rated = rated
+    });
   }
 
   constructor(private favoritesService: FavoriteService,
@@ -105,7 +121,7 @@ export class HotelSidebar {
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
           this.hotelService.DeleteHotel(this.hotel!.id).subscribe(deletedHotel => {
-            if (deletedHotel) {
+            if (deletedHotel?.isSuccess) {
               this.closed.emit();
             }
           });
@@ -119,8 +135,7 @@ export class HotelSidebar {
   }
 
   getAverageRating(): number {
-    if (!this.hotel) return 0;
-    return this.ratingService.getAverageRating('accommodation', this.hotel.id);
+    return this.avgRating;
   }
 
   goToRatings() {
@@ -135,15 +150,13 @@ export class HotelSidebar {
   }
 
   alreadyRated(): boolean {
-    if (!this.hotel) return false;
-    return this.ratingService.hasRated('accommodation', this.hotel.id, this.auth.getCurrentUserName());
+    return this.rated;
   }
 
   submitRating() {
     this.ratingError = '';
-    const userName = this.auth.getCurrentUserName();
 
-    if (this.ratingService.hasRated('accommodation', this.hotel!.id, userName)) {
+    if (this.rated) {
       this.ratingError = 'כבר דירגת מקום לינה זה';
       return;
     }
@@ -155,8 +168,19 @@ export class HotelSidebar {
       entityId: this.hotel!.id,
       stars: this.userRating,
       comment: this.userComment.trim(),
-      raterName: userName,
+      raterName: this.auth.getCurrentUserName(),
       date: new Date()
+    }, this.auth.getCurrentUserId()).subscribe({
+      next: () => {
+        this.rated = true;
+        this.ratingError = '';
+        this.ratingService.getAverageRating('accommodation', this.hotel!.id).subscribe({
+          next: avg => this.avgRating = avg
+        });
+      },
+      error: (err) => {
+        this.ratingError = err?.error?.message ?? 'שגיאה בשמירת הדירוג';
+      }
     });
     this.userRating = 0;
     this.userComment = '';

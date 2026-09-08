@@ -82,6 +82,24 @@ export class LoginToGuide implements OnInit {
     // אזורי הכשרה - select מרובה (ערך = מערך של AreaId, נשלח מופרד בפסיקים)
     TrainingAreas: new FormControl<number[]>([], [Validators.required]),
 
+    // טלפון
+    Phone: new FormControl('', [
+      Validators.required,
+      Validators.pattern(/^[0-9+\-\s]{9,15}$/)
+    ]),
+
+    // אימייל
+    Email: new FormControl('', [
+      Validators.required,
+      Validators.email
+    ]),
+
+    // שנות ניסיון
+    YearsOfExperience: new FormControl<number | null>(null, [
+      Validators.required,
+      Validators.min(0)
+    ]),
+
     CvFile: new FormControl<File | null>(null, [Validators.required]),
 
     Certificates: new FormControl<File[] | null>(null, [Validators.required])
@@ -225,6 +243,13 @@ export class LoginToGuide implements OnInit {
 
     // אזורי הכשרה - נשלחים כ-IDs מופרדים בפסיקים
     formData.append('TrainingAreas', trainingAreaIds.join(','));
+
+    // =========================
+    // פרטי קשר וניסיון
+    // =========================
+    formData.append('Phone', this.GuideForm.controls.Phone.value ?? '');
+    formData.append('Email', this.GuideForm.controls.Email.value ?? '');
+    formData.append('YearsOfExperience', String(this.GuideForm.controls.YearsOfExperience.value ?? 0));
 
     // =========================
     // קורות חיים

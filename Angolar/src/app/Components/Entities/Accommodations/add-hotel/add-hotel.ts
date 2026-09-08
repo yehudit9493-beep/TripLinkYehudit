@@ -31,8 +31,9 @@ export class AddHotel {
     regionId: new FormControl(0, Validators.required),
     address: new FormControl(''),
     description: new FormControl(''),
-    numberOfRooms: new FormControl(0, Validators.required),
-    pricePerNight: new FormControl(0, Validators.required),
+    numberOfRooms: new FormControl(0, [Validators.required, Validators.min(1)]),
+    numberOfBeds: new FormControl(0, [Validators.required, Validators.min(1)]),
+    pricePerNight: new FormControl(0, [Validators.required, Validators.min(1)]),
     phoneNumber: new FormControl(''),
   });
 
@@ -46,6 +47,7 @@ export class AddHotel {
         },
         error: (error) => {
           console.error('שגיאה בהוספת מקום הלינה:', error);
+          console.error('פירוט השרת:', error.error);
         }
       });
     } else {

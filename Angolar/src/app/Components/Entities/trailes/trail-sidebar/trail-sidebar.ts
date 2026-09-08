@@ -40,6 +40,18 @@ export class TrailSidebar {
 
   ngOnInit() {
     this.currentImageIndex = 0;
+    this.loadRating();
+  }
+
+  // טעינת ממוצע הדירוגים ובדיקה אם המשתמש כבר דירג - עבור המסלול הנוכחי
+  loadRating() {
+    if (!this.trail) return;
+    this.ratingService.getAverageRating('trail', this.trail.id).subscribe({
+      next: avg => this.avgRating = avg
+    });
+    this.ratingService.hasRated('trail', this.trail.id, this.auth.getCurrentUserId()).subscribe({
+      next: rated => this.rated = rated
+    });
   }
 
   close() {
@@ -119,9 +131,12 @@ export class TrailSidebar {
   userComment: string = '';
   ratingError: string = '';
 
+  // נתוני הדירוג של המסלול הנוכחי (נטענים מהשרת ב-ngOnInit)
+  avgRating: number = 0;
+  rated: boolean = false;
+
   getAverageRating(): number {
-    if (!this.trail) return 0;
-    return this.ratingService.getAverageRating('trail', this.trail.id);
+    return this.avgRating;
   }
 
   goToRatings() {
@@ -137,9 +152,8 @@ export class TrailSidebar {
 
   submitRating() {
     this.ratingError = '';
-    const userName = this.auth.getCurrentUserName();
 
-    if (this.ratingService.hasRated('trail', this.trail!.id, userName)) {
+    if (this.rated) {
       this.ratingError = 'כבר דירגת מסלול זה';
       return;
     }
@@ -150,15 +164,25 @@ export class TrailSidebar {
     this.ratingService.addRating({
       entityType: 'trail', entityId: this.trail!.id,
       stars: this.userRating, comment: this.userComment.trim(),
-      raterName: userName, date: new Date()
+      raterName: this.auth.getCurrentUserName(), date: new Date()
+    }, this.auth.getCurrentUserId()).subscribe({
+      next: () => {
+        this.rated = true;
+        this.ratingError = '';
+        this.ratingService.getAverageRating('trail', this.trail!.id).subscribe({
+          next: avg => this.avgRating = avg
+        });
+      },
+      error: (err) => {
+        this.ratingError = err?.error?.message ?? 'שגיאה בשמירת הדירוג';
+      }
     });
     this.userRating = 0;
     this.userComment = '';
   }
 
   alreadyRated(): boolean {
-    if (!this.trail) return false;
-    return this.ratingService.hasRated('trail', this.trail.id, this.auth.getCurrentUserName());
+    return this.rated;
   }
 
 }

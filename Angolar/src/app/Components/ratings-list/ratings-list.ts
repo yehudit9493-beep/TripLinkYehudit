@@ -29,7 +29,11 @@ export class RatingsList implements OnInit {
     this.entityType = this.route.snapshot.paramMap.get('type') ?? '';
     this.entityId = Number(this.route.snapshot.paramMap.get('id'));
     this.entityName = this.route.snapshot.queryParamMap.get('name') ?? '';
-    this.ratings = this.ratingService.getRatings(this.entityType, this.entityId);
+
+    // טעינת כל הדירוגים של הישות מהשרת (לפי הסוג והמזהה שבנתיב)
+    this.ratingService.getRatings(this.entityType, this.entityId).subscribe({
+      next: ratings => this.ratings = ratings
+    });
   }
 
   getStarsArray(rating: number): string[] {

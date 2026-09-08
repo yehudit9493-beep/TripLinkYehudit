@@ -17,6 +17,7 @@ export class AddAttraction {
   @Output() updated = new EventEmitter<AttractionWithoutId>();
 
   areaList: { id: number, name: string }[] = [];
+  typeList: { id: number, name: string }[] = [];
   newImageFiles: File[] = [];
   previewUrls: string[] = [];
   isSaving: boolean = false;
@@ -33,6 +34,15 @@ export class AddAttraction {
         this.cdr.detectChanges();
       },
       error: (err) => { console.error('שגיאה בטעינת אזורים:', err); }
+    });
+
+    // סוגי האטרקציות מגיעים מה-DB (טבלת AttractionsTypes)
+    this.attractionService.GetTypes().subscribe({
+      next: (types) => {
+        this.typeList = types;
+        this.cdr.detectChanges();
+      },
+      error: (err) => { console.error('שגיאה בטעינת סוגי אטרקציות:', err); }
     });
   }
 

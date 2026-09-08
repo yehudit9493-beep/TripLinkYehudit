@@ -49,7 +49,12 @@
 
             <div class="form-field">
                 <label>סוג</label>
-                <input formControlName="type" />
+                <select formControlName="type">
+                    <option value="">-- בחר סוג --</option>
+                    @for (type of typeList; track type.id) {
+                    <option [value]="type.name">{{type.name}}</option>
+                    }
+                </select>
             </div>
 
             <div class="form-field">

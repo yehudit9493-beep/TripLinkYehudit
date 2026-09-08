@@ -177,6 +177,14 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Regions } from './regions';
 
+export interface DeleteAttractionResponse {
+  isSuccess: boolean;
+  message: string;
+  attractionId: number;
+  rowsAffected: number;
+  deletedAt: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -199,6 +207,13 @@ export class AttractionService {
     );
   }
 
+  // הבאת סוגי האטרקציות מה-DB (למילוי ה-select). מחזיר {id, name}.
+  GetTypes(): Observable<{ id: number, name: string }[]> {
+    return this.httpClient.get<any[]>(`${this.API_URL}/attractions/types`).pipe(
+      map(list => list.map(t => ({ id: t.typeId, name: t.typeName })))
+    );
+  }
+
   getAttractionById(id: number): Observable<Attraction> {
     return this.httpClient.get<any>(`${this.API_URL}/attractions/${id}`).pipe(
       map(a => this.mapToAngular(a))
@@ -212,10 +227,8 @@ export class AttractionService {
     );
   }
 
-  DeleteAttraction(attractionId: number): Observable<Attraction> {
-    return this.httpClient.delete<any>(`${this.API_URL}/attractions/${attractionId}`).pipe(
-      map(a => this.mapToAngular(a))
-    );
+  DeleteAttraction(attractionId: number): Observable<DeleteAttractionResponse> {
+    return this.httpClient.delete<DeleteAttractionResponse>(`${this.API_URL}/attractions/${attractionId}`);
   }
 
   addAttraction(attractionData: AttractionWithoutId): Observable<Attraction> {

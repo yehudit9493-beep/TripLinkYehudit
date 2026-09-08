@@ -1,0 +1,383 @@
+:host {
+  display: block;
+  font-family: 'Segoe UI', sans-serif;
+  direction: rtl;
+}
+
+.area-filter {
+  width: 100%;
+}
+
+/* ============ container של ה-drawer ============ */
+.af-drawer-container {
+  height: 100%;
+  min-height: 420px;
+  background: transparent;
+}
+
+/* ============ drawer פרטים (PUSH) ============ */
+.af-drawer.mat-drawer {
+  width: 360px;
+  background: #fff;
+  border-left: 1px solid #e5e7eb;
+  box-shadow: 0 0 24px rgba(0, 0, 0, 0.15);
+}
+
+.af-drawer-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  direction: rtl;
+}
+
+.af-drawer-header {
+  padding: 1.5rem;
+  background: linear-gradient(160deg, #1a3c5e 0%, #2c6fb3 100%);
+  color: #fff;
+  position: relative;
+
+  .af-close {
+    position: absolute;
+    top: 0.9rem;
+    left: 1rem;
+    background: rgba(255, 255, 255, 0.18);
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.32);
+    }
+  }
+
+  .af-drawer-type {
+    font-size: 0.8rem;
+    font-weight: 600;
+    opacity: 0.85;
+  }
+
+  h3 {
+    margin: 0.4rem 0 0.75rem;
+    font-size: 1.4rem;
+    font-weight: 700;
+  }
+
+  .af-drawer-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .af-region-chip {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 999px;
+  }
+}
+
+.af-drawer-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.af-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.af-info-cell {
+  background: #f8fafc;
+  border: 1px solid #eef2f7;
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.9rem;
+  color: #1a1a1a;
+  font-weight: 500;
+}
+
+.af-label {
+  font-size: 0.72rem;
+  color: #9aa5b1;
+  font-weight: 500;
+}
+
+.af-drawer-desc {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #374151;
+  line-height: 1.6;
+
+  p {
+    margin: 4px 0 0;
+  }
+}
+
+/* ============ תוכן ראשי ============ */
+.af-content {
+  padding: 0;
+}
+
+.af-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+
+  h2 {
+    margin: 0 0 4px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a3c5e;
+  }
+
+  p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.9rem;
+  }
+}
+
+.af-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.af-link-btn {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #378add;
+  background: #e6f1fb;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+
+  &:hover {
+    background: #378add;
+    color: #fff;
+  }
+}
+
+.af-loading {
+  text-align: center;
+  padding: 3rem;
+  color: #9aa5b1;
+  font-size: 1rem;
+}
+
+.af-error {
+  color: #c0392b;
+}
+
+/* ============ אזורים (תיבות סימון) ============ */
+.af-areas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.af-area-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+
+  input[type='checkbox'] {
+    width: 18px;
+    height: 18px;
+    accent-color: #378add;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .af-area-name {
+    flex: 1;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #1a1a1a;
+  }
+
+  .af-area-count {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #378add;
+    background: #e6f1fb;
+    padding: 2px 8px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  &.checked {
+    border-color: #378add;
+    background: #f0f7ff;
+    box-shadow: 0 2px 8px rgba(55, 138, 221, 0.12);
+  }
+
+  &:hover {
+    border-color: #378add;
+  }
+}
+
+.af-clear-all {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  min-height: 24px;
+
+  .af-selected-info {
+    font-size: 0.85rem;
+    color: #6b7280;
+    font-weight: 500;
+  }
+}
+
+/* ============ רשימות ============ */
+.af-lists {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.af-list-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.af-list-head {
+  padding: 14px 18px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #f8fafc;
+
+  h3 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1a3c5e;
+
+    .af-count {
+      display: inline-block;
+      margin-right: 8px;
+      font-size: 0.75rem;
+      color: #378add;
+      background: #e6f1fb;
+      padding: 2px 10px;
+      border-radius: 999px;
+    }
+  }
+}
+
+.af-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.af-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  border-bottom: 1px solid #f3f4f6;
+  transition: background 0.15s;
+
+  &:hover {
+    background: #f0f7ff;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .af-row-name {
+    flex: 1;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+
+  .af-row-meta {
+    font-size: 0.82rem;
+    color: #9aa5b1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 45%;
+  }
+
+  .af-info-btn {
+    border: none;
+    background: #e6f1fb;
+    color: #378add;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+
+    &:hover {
+      background: #378add;
+      color: #fff;
+      transform: scale(1.1);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+}
+
+.af-empty {
+  text-align: center;
+  padding: 3rem;
+  color: #9aa5b1;
+  font-size: 1rem;
+  background: #fff;
+  border: 1px dashed #e5e7eb;
+  border-radius: 16px;
+}
+
+/* ============ רספונסיבי ============ */
+@media (max-width: 640px) {
+  .af-drawer.mat-drawer {
+    width: 85vw;
+  }
+
+  .af-areas {
+    grid-template-columns: 1fr;
+  }
+
+  .af-header {
+    flex-direction: column;
+  }
+}

@@ -6,6 +6,14 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Regions } from './regions';
 
+export interface DeleteHotelResponse {
+  isSuccess: boolean;
+  message: string;
+  lodgingId: number;
+  rowsAffected: number;
+  deletedAt: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -49,10 +57,8 @@ export class HotelService {
   }
 
   // ✅ מחיקת מקום לינה
-  DeleteHotel(hotelId: number): Observable<Accommodation> {
-    return this.httpClient.delete<any>(`${this.API_URL}/Hotels/${hotelId}`).pipe(
-      map(l => this.mapToAngular(l))
-    );
+  DeleteHotel(hotelId: number): Observable<DeleteHotelResponse> {
+    return this.httpClient.delete<DeleteHotelResponse>(`${this.API_URL}/Hotels/${hotelId}`);
   }
 
   // ✅ הוספת מקום לינה חדש

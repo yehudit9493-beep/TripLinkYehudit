@@ -34,11 +34,18 @@
             <div class="form-row">
                 <div class="form-field">
                     <label>מספר חדרים</label>
-                    <input type="number" formControlName="numberOfRooms" />
+                    <input type="number" formControlName="numberOfRooms" min="1" />
                 </div>
                 <div class="form-field">
+                    <label>מספר מיטות</label>
+                    <input type="number" formControlName="numberOfBeds" min="1" />
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-field">
                     <label>מחיר ללילה (₪)</label>
-                    <input type="number" formControlName="pricePerNight" />
+                    <input type="number" formControlName="pricePerNight" min="1" />
                 </div>
             </div>
 

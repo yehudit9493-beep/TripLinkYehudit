@@ -1,0 +1,199 @@
+<div class="area-filter" dir="rtl">
+  <!-- ========== container של ה-DRAWER (PUSH) ========== -->
+  <mat-drawer-container class="af-drawer-container" autosize="false">
+
+    <!-- drawer פרטים — נדחף ומשנה את התוכן -->
+    <mat-drawer #detailsDrawer mode="push" position="end" class="af-drawer">
+      @if (selectedItem) {
+      <div class="af-drawer-inner">
+        <div class="af-drawer-header">
+          <button class="af-close" (click)="closeDrawer()" title="סגירה">✕</button>
+          <span class="af-drawer-type">{{ selectedItem.typeLabel }}</span>
+          <h3>{{ selectedItem.name }}</h3>
+          <div class="af-drawer-badges">
+            @for (r of selectedItem.regions; track r) {
+            <span class="af-region-chip">{{ r }}</span>
+            }
+          </div>
+        </div>
+
+        <div class="af-drawer-body">
+          @if (selectedItem.type === 'attraction') {
+            <div class="af-info-grid">
+              <div class="af-info-cell"><span class="af-label">עיר</span><span>{{ selectedItem.payload.city || '—' }}</span></div>
+              <div class="af-info-cell"><span class="af-label">כתובת</span><span>{{ selectedItem.payload.address || '—' }}</span></div>
+              <div class="af-info-cell"><span class="af-label">סוג</span><span>{{ selectedItem.payload.typeName || '—' }}</span></div>
+              <div class="af-info-cell"><span class="af-label">כניסה</span><span>{{ selectedItem.payload.entryFee }} ₪</span></div>
+              <div class="af-info-cell"><span class="af-label">שעות פתיחה</span><span>{{ selectedItem.payload.openingHours || '—' }}</span></div>
+              <div class="af-info-cell"><span class="af-label">טלפון</span><span>{{ selectedItem.payload.phoneNumber || '—' }}</span></div>
+            </div>
+          }
+
+          @if (selectedItem.type === 'accommodation') {
+            <div class="af-info-grid">
+              <div class="af-info-cell"><span class="af-label">עיר</span><span>{{ selectedItem.payload.city || '—' }}</span></div>
+              <div class="af-info-cell"><span class="af-label">כתובת</span><span>{{ selectedItem.payload.address || '—' }}</span></div>
+              <div class="af-info-cell"><span class="af-label">מחיר ללילה</span><span>{{ selectedItem.payload.pricePerNight }} ₪</span></div>
+              <div class="af-info-cell"><span class="af-label">חדרים</span><span>{{ selectedItem.payload.numberOfRooms }}</span></div>
+              <div class="af-info-cell"><span class="af-label">מיטות</span><span>{{ selectedItem.payload.numberOfBeds }}</span></div>
+              <div class="af-info-cell"><span class="af-label">טלפון</span><span>{{ selectedItem.payload.phoneNumber || '—' }}</span></div>
+            </div>
+          }
+
+          @if (selectedItem.type === 'guide') {
+            <div class="af-info-grid">
+              <div class="af-info-cell"><span class="af-label">מומחיות</span><span>{{ selectedItem.payload.specialization || '—' }}</span></div>
+              <div class="af-info-cell"><span class="af-label">שנות ניסיון</span><span>{{ selectedItem.payload.yearsOfExperience }}</span></div>
+              <div class="af-info-cell"><span class="af-label">רישיון</span><span>{{ selectedItem.payload.licenseNumber || '—' }}</span></div>
+              <div class="af-info-cell"><span class="af-label">טלפון</span><span>{{ selectedItem.payload.phoneNumber || '—' }}</span></div>
+              <div class="af-info-cell"><span class="af-label">דוא"ל</span><span>{{ selectedItem.payload.email || '—' }}</span></div>
+            </div>
+          }
+
+          @if (selectedItem.type === 'trail') {
+            <div class="af-info-grid">
+              <div class="af-info-cell"><span class="af-label">אורך</span><span>{{ selectedItem.payload.RouteLengthInKM }} ק"מ</span></div>
+              <div class="af-info-cell"><span class="af-label">משך</span><span>{{ selectedItem.payload.RouteDuration || '—' }}</span></div>
+              <div class="af-info-cell"><span class="af-label">רמת קושי</span><span>{{ selectedItem.payload.DifficultyLevel || '—' }}</span></div>
+              <div class="af-info-cell"><span class="af-label">גיל מינימלי</span><span>{{ selectedItem.payload.minimumAge }}</span></div>
+            </div>
+          }
+
+          <div class="af-drawer-desc" *ngIf="selectedItem.type === 'attraction' && selectedItem.payload.description">
+            <span class="af-label">תיאור</span>
+            <p>{{ selectedItem.payload.description }}</p>
+          </div>
+        </div>
+      </div>
+      }
+    </mat-drawer>
+
+    <!-- ========== התוכן הראשי (נדחף ע"י ה-drawer) ========== -->
+    <mat-drawer-content class="af-content">
+
+      <!-- כותרת -->
+      <div class="af-header">
+        <div>
+          <h2>🔍 חיפוש לפי צורכי טיול</h2>
+          <p>בחרו אזורי אימון וצפו בכל פריטי התיירות השייכים אליהם</p>
+        </div>
+        <div class="af-actions">
+          <button class="af-link-btn" (click)="selectAll(true)">✓ בחירת הכל</button>
+          <button class="af-link-btn" (click)="clearFilters()">✕ ניקוי בחירה</button>
+        </div>
+      </div>
+
+      @if (isLoading) {
+      <div class="af-loading">טוען נתונים…</div>
+      } @else if (loadError) {
+      <div class="af-loading af-error">{{ loadError }}</div>
+      } @else {
+
+      <!-- אזורים — תיבות סימון -->
+      <div class="af-areas">
+        @for (area of areaList; track area) {
+        <label class="af-area-card" [class.checked]="isAreaSelected(area)">
+          <input type="checkbox" [checked]="isAreaSelected(area)"
+            (change)="toggleArea(area, $event.target.checked)" />
+          <span class="af-area-name">{{ area }}</span>
+          @if (areaBadge(area)) {
+          <span class="af-area-count">{{ areaBadge(area) }}</span>
+          }
+        </label>
+        }
+      </div>
+
+      <div class="af-clear-all">
+        <span *ngIf="selectedAreas.length > 0" class="af-selected-info">
+          נבחרו {{ selectedAreas.length }} אזורים • {{ totalVisible }} פריטים
+        </span>
+        @if (selectedAreas.length > 1) {
+        <button class="af-link-btn" (click)="selectAll(false)">נקה בחירה</button>
+        }
+      </div>
+
+      <!-- רשימות לפי סוגים -->
+      <div class="af-lists">
+
+        <!-- אטרקציות -->
+        <div class="af-list-card" *ngIf="filteredAttractions.length > 0">
+          <div class="af-list-head">
+            <h3>🏛️ אטרקציות <span class="af-count">{{ filteredAttractions.length }}</span></h3>
+          </div>
+          <ul class="af-items">
+            @for (a of filteredAttractions; track a.attractionId) {
+            <li class="af-row">
+              <span class="af-row-name">{{ a.attractionName }}</span>
+              <span class="af-row-meta">{{ a.city }}{{ a.entryFee ? ' • ' + a.entryFee + ' ₪' : '' }}</span>
+              <button class="af-info-btn" (click)="showDetails(attractionItem(a))" title="פרטים נוספים">
+                <span [innerHTML]="infoIconSvg"></span>
+              </button>
+            </li>
+            }
+          </ul>
+        </div>
+
+        <!-- מקומות אירוח -->
+        <div class="af-list-card" *ngIf="filteredAccommodations.length > 0">
+          <div class="af-list-head">
+            <h3>🏨 מקומות אירוח <span class="af-count">{{ filteredAccommodations.length }}</span></h3>
+          </div>
+          <ul class="af-items">
+            @for (h of filteredAccommodations; track h.id) {
+            <li class="af-row">
+              <span class="af-row-name">{{ h.name }}</span>
+              <span class="af-row-meta">{{ h.city }}{{ h.pricePerNight ? ' • ' + h.pricePerNight + ' ₪' : '' }}</span>
+              <button class="af-info-btn" (click)="showDetails(accommodationItem(h))" title="פרטים נוספים">
+                <span [innerHTML]="infoIconSvg"></span>
+              </button>
+            </li>
+            }
+          </ul>
+        </div>
+
+        <!-- מדריכים -->
+        <div class="af-list-card" *ngIf="filteredGuides.length > 0">
+          <div class="af-list-head">
+            <h3>🧭 מדריכות <span class="af-count">{{ filteredGuides.length }}</span></h3>
+          </div>
+          <ul class="af-items">
+            @for (g of filteredGuides; track g.id) {
+            <li class="af-row">
+              <span class="af-row-name">{{ g.name }}</span>
+              <span class="af-row-meta">{{ g.specialization }}</span>
+              <button class="af-info-btn" (click)="showDetails(guideItem(g))" title="פרטים נוספים">
+                <span [innerHTML]="infoIconSvg"></span>
+              </button>
+            </li>
+            }
+          </ul>
+        </div>
+
+        <!-- מסלולים -->
+        <div class="af-list-card" *ngIf="filteredTrails.length > 0">
+          <div class="af-list-head">
+            <h3>🥾 מסלולים <span class="af-count">{{ filteredTrails.length }}</span></h3>
+          </div>
+          <ul class="af-items">
+            @for (t of filteredTrails; track t.id) {
+            <li class="af-row">
+              <span class="af-row-name">{{ t.name }}</span>
+              <span class="af-row-meta">{{ t.RouteLengthInKM ? t.RouteLengthInKM + ' ק"מ' : '' }}</span>
+              <button class="af-info-btn" (click)="showDetails(trailItem(t))" title="פרטים נוספים">
+                <span [innerHTML]="infoIconSvg"></span>
+              </button>
+            </li>
+            }
+          </ul>
+        </div>
+
+        <!-- אין תוצאות -->
+        @if (totalVisible === 0) {
+        <div class="af-empty">😕 לא נמצאו פריטים באזורים שנבחרו</div>
+        }
+
+      </div>
+      }
+    </mat-drawer-content>
+  </mat-drawer-container>
+</div>

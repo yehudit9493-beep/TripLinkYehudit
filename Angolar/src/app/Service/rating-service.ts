@@ -1,4 +1,7 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 export interface Rating {
   entityType: 'trail' | 'attraction' | 'guide' | 'accommodation';
@@ -12,48 +15,76 @@ export interface Rating {
 @Injectable({ providedIn: 'root' })
 export class RatingService {
 
+  private readonly API_URL = 'https://localhost:7216/api/Ratings';
+
   pendingRatingTrailId: number | null = null;
   pendingRatingAttractionId: number | null = null;
   pendingRatingGuideId: number | null = null;
   pendingRatingHotelId: number | null = null;
 
-  private ratings: Rating[] = [{
-    entityType: 'trail', entityId: 1,
-    stars: 5, comment: 'מסלול מדהים, ממליצה בחום!',
-    raterName: 'יהודית', date: new Date('2024-03-01')
-  },
-  {
-    entityType: 'trail', entityId: 1,
-    stars: 4, comment: 'יפה מאוד, קצת קשה לילדים קטנים',
-    raterName: 'חני', date: new Date('2024-05-15')
-  },];
+  // מטמון מקומי של ממוצעים לפי "סוג:מזהה" — מאפשר הצגה סינכרונית
+  // בטבלאות הרשימות (קומפוננטות האב). נטען מהשרת דרך loadAverage.
+  private avgCache: Map<string, number> = new Map();
 
-  addRating(rating: Rating) {
-    this.ratings.push(rating);
-  }
+  constructor(private httpClient: HttpClient) { }
 
-  getRatings(entityType: string, entityId: number): Rating[] {
-    return this.ratings.filter(
-      r => r.entityType === entityType && r.entityId === entityId
+  // ✅ טעינת ממוצע הדירוגים של ישות מהשרת אל המטמון
+  //    מחזיר Observable כך שקומפוננטות יוכלו להירשם לעדכון,
+  //    ומעדכן את המטמון ש- getAverageRating הסינכרוני יחזיר את הערך.
+  loadAverage(entityType: string, entityId: number): Observable<number> {
+    return this.httpClient.get<any>(`${this.API_URL}/${entityType}/${entityId}/average`).pipe(
+      map(res => {
+        const avg = res.average ?? 0;
+        this.avgCache.set(this.key(entityType, entityId), avg);
+        return avg;
+      })
     );
   }
 
+  // ✅ קריאה סינכרונית של ממוצע הדירוגים (מתוך המטמון, 0 אם עדיין לא נטען)
   getAverageRating(entityType: string, entityId: number): number {
-    const relevant = this.getRatings(entityType, entityId);
-    if (relevant.length === 0) return 0;
-    const sum = relevant.reduce((acc, r) => acc + r.stars, 0);
-    return sum / relevant.length;
+    return this.avgCache.get(this.key(entityType, entityId)) ?? 0;
   }
 
-  hasRated(entityType: string, entityId: number, userName: string): boolean {
-    return this.ratings.some(
-      r => r.entityType === entityType && r.entityId === entityId && r.raterName === userName
+  // ✅ בדיקה אם המשתמש כבר דירג את הישות
+  hasRated(entityType: string, entityId: number, userId: number): Observable<boolean> {
+    return this.httpClient.get<{ hasRated: boolean }>(`${this.API_URL}/has-rated/${entityType}/${entityId}/${userId}`).pipe(
+      map(res => !!res.hasRated)
     );
   }
 
+  // ✅ הוספת דירוג חדש לשרת
+  addRating(rating: Rating, userId: number): Observable<Rating> {
+    const body = {
+      entityType: rating.entityType,
+      entityId: rating.entityId,
+      userId,
+      stars: rating.stars,
+      comment: rating.comment
+    };
+    return this.httpClient.post<any>(this.API_URL, body).pipe(
+      map(() => rating)
+    );
+  }
+
+  // ✅ מערך של כוכבים להצגת דירוג (טהור וסינכרוני)
   getStarsArray(rating: number, maxStars: number = 5): string[] {
     const rounded = Math.round(rating);
     return Array.from({ length: maxStars }, (_, i) => i < rounded ? 'full' : 'empty');
   }
 
+  private mapToAngular(entityType: string, entityId: number, server: any): Rating {
+    return {
+      entityType: entityType as Rating['entityType'],
+      entityId,
+      stars: server.stars,
+      comment: server.comment ?? '',
+      raterName: server.raterName ?? '',
+      date: new Date(server.ratingDate)
+    };
+  }
+
+  private key(entityType: string, entityId: number): string {
+    return `${entityType}:${entityId}`;
+  }
 }
