@@ -1,7 +1,105 @@
 
+// import { Injectable } from '@angular/core';
+// import { Router } from '@angular/router';
+// import { HttpClient } from '@angular/common/http'; 
+// import { User } from '../Interfacess/user';
+// import { catchError, Observable, tap, throwError } from 'rxjs';
+
+// @Injectable({
+//   providedIn: 'root',
+// })
+// export class Auth {
+
+//   private apiURL = "https://localhost:7216/api";
+
+//   constructor(
+//     private router: Router,
+//     private http: HttpClient 
+//   ) { }
+
+//   login(userName: string, password: string): Observable<User> {
+//     const loginData = { userName: userName, password: password };
+
+//     return this.http.post<User>(`${this.apiURL}/Login/login`, loginData).pipe(
+//       // tap((user: User) => {
+//       //   // אם השרת החזיר משתמש בהצלחה, נשמור אותו ב-localStorage
+//       //   if (user) {
+//       //     localStorage.setItem('currentUser', JSON.stringify(user));
+//       //     localStorage.setItem('isLoggedIn', 'true');
+//       //   }
+//       // })
+
+//       tap((user: User) => {
+//       console.log('✅ תשובה מהשרת:', user);
+
+//       // ✅ בדוק שיש userId (עכשיו זה יעבוד!)
+//       if (user && user.userId) {
+//         localStorage.setItem('currentUser', JSON.stringify(user));
+//         localStorage.setItem('isLoggedIn', 'true');
+//       } else {
+//         throw new Error('Invalid user response from server');
+//       }
+//     }),
+//     catchError((error) => {
+//       localStorage.removeItem('isLoggedIn');
+//       localStorage.removeItem('currentUser');
+//       return throwError(() => error);
+//     })
+
+//   );
+// }
+
+//   isUserAuthenticated(): boolean {
+//     return localStorage.getItem('isLoggedIn') === 'true';
+//   }
+
+//   getCurrentUser(): User | null {
+//     const saved = localStorage.getItem('currentUser');
+//     return saved ? JSON.parse(saved) : null;
+//   }
+
+//   logout(): void {
+//     localStorage.removeItem('isLoggedIn');
+//     localStorage.removeItem('currentUser');
+//     this.router.navigate(['/entry']);
+//   }
+
+//   // הבאת כל המשתמשים מהשרת בבקשת GET
+//   GetUser(): Observable<User[]> {
+//     return this.http.get<User[]>(`${this.apiURL}/Users`); 
+//   }
+
+//   //  קבל את שם המשתמש
+//   getCurrentUserName(): string {
+//     const user = this.getCurrentUser() as any;
+//     if (!user) return 'משתמש';
+
+//     // בודק אם הגיע firstName מהשרת או FirstName מהמוק
+//     return user.firstName || user.FirstName || 'משתמש';
+//   }
+//   //  קבל את ID המשתמש
+//   getCurrentUserId(): number {
+//     const user = this.getCurrentUser();
+//     return user?.userId || 1;
+//   }
+
+//   //  קבל את אימייל המשתמש
+//   getCurrentUserEmail(): string {
+//     const user = this.getCurrentUser();
+//     return user ? user.Email : '';
+//   }
+
+//   getCurrentUserPermission(): number {
+//     const user = this.getCurrentUser();
+//     return user?.PermissionId ?? 0;
+//   }
+// }
+
+
+
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http'; 
+import { HttpClient } from '@angular/common/http';
 import { User } from '../Interfacess/user';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 
@@ -14,83 +112,184 @@ export class Auth {
 
   constructor(
     private router: Router,
-    private http: HttpClient 
+    private http: HttpClient
   ) { }
 
+
+  // =========================
+  // התחברות
+  // =========================
+
   login(userName: string, password: string): Observable<User> {
-    const loginData = { userName: userName, password: password };
 
-    return this.http.post<User>(`${this.apiURL}/Login/login`, loginData).pipe(
-      // tap((user: User) => {
-      //   // אם השרת החזיר משתמש בהצלחה, נשמור אותו ב-localStorage
-      //   if (user) {
-      //     localStorage.setItem('currentUser', JSON.stringify(user));
-      //     localStorage.setItem('isLoggedIn', 'true');
-      //   }
-      // })
+    const loginData = {
+      userName: userName,
+      password: password
+    };
 
-      tap((user: User) => {
-      console.log('✅ תשובה מהשרת:', user);
-      
-      // ✅ בדוק שיש userId (עכשיו זה יעבוד!)
-      if (user && user.userId) {
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        localStorage.setItem('isLoggedIn', 'true');
-      } else {
-        throw new Error('Invalid user response from server');
-      }
-    }),
-    catchError((error) => {
-      localStorage.removeItem('isLoggedIn');
-      localStorage.removeItem('currentUser');
-      return throwError(() => error);
-    })
-    
-  );
-}
+    return this.http
+      .post<User>(`${this.apiURL}/Login/login`, loginData)
+      .pipe(
+
+        tap((user: User) => {
+
+          console.log('✅ תשובה מהשרת:', user);
+
+          if (user && user.userId) {
+
+            localStorage.setItem(
+              'currentUser',
+              JSON.stringify(user)
+            );
+
+            localStorage.setItem(
+              'isLoggedIn',
+              'true'
+            );
+
+          } else {
+
+            throw new Error(
+              'Invalid user response from server'
+            );
+
+          }
+
+        }),
+
+        catchError((error) => {
+
+          localStorage.removeItem('isLoggedIn');
+          localStorage.removeItem('currentUser');
+
+          return throwError(() => error);
+
+        })
+
+      );
+  }
+
+
+  // =========================
+  // בדיקת משתמש לצורך איפוס סיסמה
+  // =========================
+
+  verifyResetDetails(data: {
+    UserName: string;
+    Email: string;
+    Phon: string;
+  }): Observable<any> {
+
+    return this.http.post<any>(
+      `${this.apiURL}/Login/verify-reset`,
+      data
+    );
+
+  }
+
+
+  // =========================
+  // שינוי סיסמה
+  // =========================
+
+  resetPassword(data: {
+    UserName: string;
+    Password: string;
+  }): Observable<any> {
+
+    return this.http.put<any>(
+      `${this.apiURL}/Login/reset-password`,
+      data
+    );
+
+  }
+
+
+  // =========================
+  // משתמש מחובר
+  // =========================
 
   isUserAuthenticated(): boolean {
+
     return localStorage.getItem('isLoggedIn') === 'true';
+
   }
+
 
   getCurrentUser(): User | null {
-    const saved = localStorage.getItem('currentUser');
-    return saved ? JSON.parse(saved) : null;
+
+    const saved =
+      localStorage.getItem('currentUser');
+
+    return saved
+      ? JSON.parse(saved)
+      : null;
+
   }
+
 
   logout(): void {
+
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('currentUser');
+
     this.router.navigate(['/entry']);
+
   }
 
-  // הבאת כל המשתמשים מהשרת בבקשת GET
+
+  // הבאת כל המשתמשים
   GetUser(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.apiURL}/Users`); // שנה את ה-URL לפי הנתיב המדויק ב-C#
+
+    return this.http.get<User[]>(
+      `${this.apiURL}/Users`
+    );
+
   }
 
-  //  קבל את שם המשתמש
+
+  // קבל את שם המשתמש
   getCurrentUserName(): string {
+
     const user = this.getCurrentUser() as any;
-    if (!user) return 'משתמש';
 
-    // בודק אם הגיע firstName מהשרת או FirstName מהמוק
-    return user.firstName || user.FirstName || 'משתמש';
+    if (!user)
+      return 'משתמש';
+
+    return user.firstName ||
+      user.FirstName ||
+      'משתמש';
+
   }
-  //  קבל את ID המשתמש
+
+
+  // קבל ID
   getCurrentUserId(): number {
+
     const user = this.getCurrentUser();
+
     return user?.userId || 1;
+
   }
 
-  //  קבל את אימייל המשתמש
+
+  // קבל אימייל
   getCurrentUserEmail(): string {
+
     const user = this.getCurrentUser();
+
     return user ? user.Email : '';
+
   }
 
+
+  // קבל הרשאה
   getCurrentUserPermission(): number {
+
     const user = this.getCurrentUser();
+
     return user?.PermissionId ?? 0;
+
   }
+
 }

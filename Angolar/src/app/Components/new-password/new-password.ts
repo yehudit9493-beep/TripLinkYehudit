@@ -1,76 +1,133 @@
-// import { Component, inject, model } from '@angular/core';
+// import { Component, inject } from '@angular/core';
 // import { FormsModule } from '@angular/forms';
 // import { MatButtonModule } from '@angular/material/button';
-// import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
+
+// import {
+//   MatDialogActions,
+//   MatDialogClose,
+//   MatDialogContent,
+//   MatDialogRef
+// } from '@angular/material/dialog';
+
 // import { MatFormFieldModule } from '@angular/material/form-field';
 // import { MatInputModule } from '@angular/material/input';
-// import { DialogData } from '../reset-password/reset-password';
 
 // @Component({
 //   selector: 'app-new-password',
-//   imports: [MatFormFieldModule,
+
+//   standalone: true,
+
+//   imports: [
+//     MatFormFieldModule,
 //     MatInputModule,
 //     FormsModule,
 //     MatButtonModule,
-//     MatDialogContent,
-//     MatDialogActions,
-//     MatDialogClose],
+//     MatDialogClose
+//   ],
+
 //   templateUrl: './new-password.html',
 //   styleUrl: './new-password.scss',
 // })
 // export class NewPassword {
 
-//   readonly dialogRef = inject(MatDialogRef<NewPassword>);
-//   readonly data = inject<DialogData>(MAT_DIALOG_DATA);
-//   readonly password = model(this.data.animal);
+//   readonly dialogRef =
+//     inject(MatDialogRef<NewPassword>);
+
+//   password = '';
+
+//   confirmPassword = '';
+
+//   showPassword = false;
+
+//   showConfirmPassword = false;
+
+
+//   passwordPattern =
+//     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
 
 //   onNoClick(): void {
+
 //     this.dialogRef.close();
+
 //   }
+
+
+//   get isPasswordValid(): boolean {
+
+//     return this.passwordPattern.test(
+//       this.password
+//     );
+
+//   }
+
+
+//   get passwordsMatch(): boolean {
+
+//     return (
+//       this.password ===
+//       this.confirmPassword
+//     );
+
+//   }
+
+
+//   get canSave(): boolean {
+
+//     return (
+//       this.isPasswordValid &&
+//       this.passwordsMatch
+//     );
+
+//   }
+
 // }
 
 
-import { Component, inject, model } from '@angular/core';
+
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
 import {
-  MAT_DIALOG_DATA,
-  MatDialogActions,
   MatDialogClose,
-  MatDialogContent,
   MatDialogRef
 } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { DialogData } from '../reset-password/reset-password';
 
 @Component({
   selector: 'app-new-password',
+  standalone: true,
   imports: [
-    MatFormFieldModule,
-    MatInputModule,
     FormsModule,
-    MatButtonModule,
-    MatDialogContent,
-    MatDialogActions,
     MatDialogClose
   ],
   templateUrl: './new-password.html',
-  styleUrl: './new-password.scss',
+  styleUrl: './new-password.scss'
 })
 export class NewPassword {
 
   readonly dialogRef = inject(MatDialogRef<NewPassword>);
-  readonly data = inject<DialogData>(MAT_DIALOG_DATA);
 
-  readonly password = model(this.data.animal);
-
+  password = '';
   confirmPassword = '';
 
   showPassword = false;
   showConfirmPassword = false;
 
+  passwordPattern =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  get isPasswordValid(): boolean {
+    return this.passwordPattern.test(this.password);
+  }
+
+  get passwordsMatch(): boolean {
+    return this.password === this.confirmPassword;
+  }
+
+  get canSave(): boolean {
+    return this.isPasswordValid && this.passwordsMatch;
   }
 }
