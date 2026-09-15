@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Attraction } from '../../../../Interfacess/attraction';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { AttractionService } from '../../../../Service/attraction-service';
@@ -26,6 +26,7 @@ import { RatingService } from '../../../../Service/rating-service';
 export class Attractions implements OnInit, OnDestroy {
 
   private _liveAnnouncer = inject(LiveAnnouncer);
+  private cdr = inject(ChangeDetectorRef);
 
   private allAttractions: Attraction[] = [];
 
@@ -39,6 +40,8 @@ export class Attractions implements OnInit, OnDestroy {
   private attractionSub!: Subscription;
 
   private areasSub!: Subscription;
+
+  private avgSub!: Subscription;
 
   searchText = '';
 
@@ -59,12 +62,14 @@ export class Attractions implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.attractionSub?.unsubscribe();
     this.areasSub?.unsubscribe();
+    this.avgSub?.unsubscribe();
   }
 
   ngOnInit(): void {
     this.attractionsService.GetAttraction().subscribe({
       next: (data) => {
         this.allAttractions = data;
+        this.ratingService.loadAverages('attraction', data.map(a => a.attractionId));
         this.applyFilters();
         this.dataSource.sort = this.sort;
 
@@ -87,6 +92,12 @@ export class Attractions implements OnInit, OnDestroy {
 
     this.attractionSub = this.favoritesService.openAttraction$.subscribe((attraction: Attraction) => {
       this.selectedAttraction = attraction;
+      this.cdr.markForCheck();
+    });
+
+    // ✅ עדכון מיידי של עמודת הדירוג כשממוצע חדש נטען/משתנה
+    this.avgSub = this.ratingService.averagesChanged().subscribe(() => {
+      this.cdr.markForCheck();
     });
 
     this.areasSub = this.selectedAreas.valueChanges.subscribe(() => {

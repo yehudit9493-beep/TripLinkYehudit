@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { Trail } from '../../../../Interfacess/Trail';
 import { CommonModule } from '@angular/common';
 import { FavoriteItem, FavoriteService } from '../../../../Service/favorite-service';
@@ -17,9 +19,10 @@ import { Auth } from '../../../../Service/auth';
   imports: [CommonModule, EditTrail, FormsModule],
   templateUrl: './trail-sidebar.html',
   styleUrl: './trail-sidebar.scss',
-  standalone: true
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TrailSidebar {
+export class TrailSidebar implements OnChanges, OnDestroy {
 
   @Input() trail: Trail | null = null;
   @Output() closed = new EventEmitter<void>();
@@ -29,29 +32,55 @@ export class TrailSidebar {
 
   currentImageIndex: number = 0;
 
+  private destroy$ = new Subject<void>();
+
   constructor(private favoritesService: FavoriteService,
     private trailsService: TrailsService,
     private dialog: MatDialog,
     private regions: Regions,
     private router: Router,
     private ratingService: RatingService,
-    private auth: Auth) { }
+    private auth: Auth,
+    private cdr: ChangeDetectorRef) { }
 
 
-  ngOnInit() {
-    this.currentImageIndex = 0;
-    this.loadRating();
+  // ✅ ריענון הדירוגים כשהמסלול משתנה
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['trail'] && this.trail) {
+      this.currentImageIndex = 0;
+      this.userRating = 0;
+      this.userComment = '';
+      this.ratingError = '';
+      this.loadRating();
+    }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   // טעינת ממוצע הדירוגים ובדיקה אם המשתמש כבר דירג - עבור המסלול הנוכחי
   loadRating() {
     if (!this.trail) return;
-    this.ratingService.getAverageRating('trail', this.trail.id).subscribe({
-      next: avg => this.avgRating = avg
-    });
-    this.ratingService.hasRated('trail', this.trail.id, this.auth.getCurrentUserId()).subscribe({
-      next: rated => this.rated = rated
-    });
+    this.ratingService.loadAverage('trail', this.trail.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: avg => {
+          this.avgRating = avg;
+          this.cdr.markForCheck();
+        },
+        error: (err) => console.error('Error loading average rating:', err)
+      });
+    this.ratingService.hasRated('trail', this.trail.id, this.auth.getCurrentUserId())
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: rated => {
+          this.rated = rated;
+          this.cdr.markForCheck();
+        },
+        error: (err) => console.error('Error checking if rated:', err)
+      });
   }
 
   close() {
@@ -169,9 +198,15 @@ export class TrailSidebar {
       next: () => {
         this.rated = true;
         this.ratingError = '';
-        this.ratingService.getAverageRating('trail', this.trail!.id).subscribe({
-          next: avg => this.avgRating = avg
-        });
+        this.cdr.markForCheck();
+        this.ratingService.loadAverage('trail', this.trail!.id)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: avg => {
+              this.avgRating = avg;
+              this.cdr.markForCheck();
+            }
+          });
       },
       error: (err) => {
         this.ratingError = err?.error?.message ?? 'שגיאה בשמירת הדירוג';

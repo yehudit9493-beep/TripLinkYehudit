@@ -30,4 +30,18 @@ export class Enrollment {
   getCities(): Observable<string[]> {
     return this.http.get<string[]>(`${this.apiUrl}/cities`);
   }
+
+  // =====================================
+  // פרופיל מדריכה - עריכה
+  // =====================================
+
+  // שליפת כל פרטי הפרופיל לעריכה
+  getGuideProfile(guideId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/profile/${guideId}`);
+  }
+
+  // עדכון הפרופיל (multipart/form-data - כולל קבצים אופציונליים)
+  updateGuideProfile(guideId: number, formData: FormData): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/profile/${guideId}`, formData);
+  }
 }

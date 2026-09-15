@@ -4,7 +4,9 @@
 
     <h2 class="page-title">דירוגים עבור: {{ entityName }}</h2>
 
-    @if (ratings.length === 0) {
+    @if (loading) {
+    <p class="empty-msg">טוען דירוגים...</p>
+    } @else if (ratings.length === 0) {
     <p class="empty-msg">אין דירוגים עדיין</p>
     }
 

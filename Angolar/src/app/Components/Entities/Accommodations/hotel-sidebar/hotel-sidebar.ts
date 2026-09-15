@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { Accommodation } from '../../../../Interfacess/accommodation';
 import { CommonModule } from '@angular/common';
 import { FavoriteItem, FavoriteService } from '../../../../Service/favorite-service';
@@ -17,9 +19,10 @@ import { Auth } from '../../../../Service/auth';
   imports: [CommonModule, EditHotel, FormsModule],
   templateUrl: './hotel-sidebar.html',
   styleUrl: './hotel-sidebar.scss',
-  standalone: true
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HotelSidebar {
+export class HotelSidebar implements OnChanges, OnDestroy {
   @Input() hotel: Accommodation | null = null;
   @Output() closed = new EventEmitter<void>();
   @Output() hotelUpdated = new EventEmitter<Accommodation>();
@@ -32,9 +35,11 @@ export class HotelSidebar {
   userComment: string = '';
   ratingError: string = '';
 
-  // נתוני הדירוג של מקום הלינה הנוכחי (נטענים מהשרת ב-ngOnInit)
+  // נתוני הדירוג של מקום הלינה הנוכחי (נטענים מהשרת)
   avgRating: number = 0;
   rated: boolean = false;
+
+  private destroy$ = new Subject<void>();
 
   nextImage() {
     if (this.hotel?.images && this.hotel.images.length > 0) {
@@ -52,20 +57,43 @@ export class HotelSidebar {
     this.currentImageIndex = index;
   }
 
-  ngOnInit() {
-    this.currentImageIndex = 0;
-    this.loadRating();
+  // ✅ ריענון הדירוגים כשמקום הלינה משתנה
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['hotel'] && this.hotel) {
+      this.currentImageIndex = 0;
+      this.userRating = 0;
+      this.userComment = '';
+      this.ratingError = '';
+      this.loadRating();
+    }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   // טעינת ממוצע הדירוגים ובדיקה אם המשתמש כבר דירג - עבור מקום הלינה הנוכחי
   loadRating() {
     if (!this.hotel) return;
-    this.ratingService.getAverageRating('accommodation', this.hotel.id).subscribe({
-      next: avg => this.avgRating = avg
-    });
-    this.ratingService.hasRated('accommodation', this.hotel.id, this.auth.getCurrentUserId()).subscribe({
-      next: rated => this.rated = rated
-    });
+    this.ratingService.loadAverage('accommodation', this.hotel.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: avg => {
+          this.avgRating = avg;
+          this.cdr.markForCheck();
+        },
+        error: (err) => console.error('Error loading average rating:', err)
+      });
+    this.ratingService.hasRated('accommodation', this.hotel.id, this.auth.getCurrentUserId())
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: rated => {
+          this.rated = rated;
+          this.cdr.markForCheck();
+        },
+        error: (err) => console.error('Error checking if rated:', err)
+      });
   }
 
   constructor(private favoritesService: FavoriteService,
@@ -74,7 +102,8 @@ export class HotelSidebar {
     private regions: Regions,
     private router: Router,
     private ratingService: RatingService,
-    private auth: Auth
+    private auth: Auth,
+    private cdr: ChangeDetectorRef
   ) { }
 
   close() {
@@ -174,9 +203,15 @@ export class HotelSidebar {
       next: () => {
         this.rated = true;
         this.ratingError = '';
-        this.ratingService.getAverageRating('accommodation', this.hotel!.id).subscribe({
-          next: avg => this.avgRating = avg
-        });
+        this.cdr.markForCheck();
+        this.ratingService.loadAverage('accommodation', this.hotel!.id)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: avg => {
+              this.avgRating = avg;
+              this.cdr.markForCheck();
+            }
+          });
       },
       error: (err) => {
         this.ratingError = err?.error?.message ?? 'שגיאה בשמירת הדירוג';

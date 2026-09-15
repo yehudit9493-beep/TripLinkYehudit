@@ -1,8 +1,7 @@
 <div class="area-filter" dir="rtl">
-  <!-- ========== container של ה-DRAWER (PUSH) ========== -->
   <mat-drawer-container class="af-drawer-container" autosize="false">
 
-    <!-- drawer פרטים — נדחף ומשנה את התוכן -->
+    <!-- drawer פרטים -->
     <mat-drawer #detailsDrawer mode="push" position="end" class="af-drawer">
       @if (selectedItem) {
       <div class="af-drawer-inner">
@@ -68,10 +67,9 @@
       }
     </mat-drawer>
 
-    <!-- ========== התוכן הראשי (נדחף ע"י ה-drawer) ========== -->
+    <!-- תוכן ראשי -->
     <mat-drawer-content class="af-content">
 
-      <!-- כותרת -->
       <div class="af-header">
         <div>
           <h2>🔍 חיפוש לפי צורכי טיול</h2>
@@ -89,7 +87,7 @@
       <div class="af-loading af-error">{{ loadError }}</div>
       } @else {
 
-      <!-- אזורים — תיבות סימון -->
+      <!-- אזורים -->
       <div class="af-areas">
         @for (area of areaList; track area) {
         <label class="af-area-card" [class.checked]="isAreaSelected(area)">
@@ -112,7 +110,7 @@
         }
       </div>
 
-      <!-- רשימות לפי סוגים -->
+      <!-- רשימות -->
       <div class="af-lists">
 
         <!-- אטרקציות -->
@@ -126,6 +124,7 @@
               <span class="af-row-name">{{ a.attractionName }}</span>
               <span class="af-row-meta">{{ a.city }}{{ a.entryFee ? ' • ' + a.entryFee + ' ₪' : '' }}</span>
               <button class="af-info-btn" (click)="showDetails(attractionItem(a))" title="פרטים נוספים">
+                <!-- ✅ השתמש ב-DomSanitizer -->
                 <span [innerHTML]="infoIconSvg"></span>
               </button>
             </li>

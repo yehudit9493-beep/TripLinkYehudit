@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, OnChanges, SimpleChanges, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { Guides } from '../../../../Interfacess/guides';
 import { CommonModule } from '@angular/common';
 import { FavoriteItem, FavoriteService } from '../../../../Service/favorite-service';
@@ -18,9 +20,10 @@ import { Auth } from '../../../../Service/auth';
   imports: [CommonModule, ButtonModule, EditGuide, RouterLink, FormsModule],
   templateUrl: './guide-sidebar.html',
   styleUrl: './guide-sidebar.scss',
-  standalone: true
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GuideSidebar implements OnInit {
+export class GuideSidebar implements OnInit, OnChanges, OnDestroy {
 
   constructor(private favoritesService: FavoriteService,
     private guideService: GuideService,
@@ -28,7 +31,8 @@ export class GuideSidebar implements OnInit {
     private regions: Regions,
     private router: Router,
     private ratingService: RatingService,
-    private auth: Auth) { }
+    private auth: Auth,
+    private cdr: ChangeDetectorRef) { }
 
   @Input() guide: Guides | null = null;
 
@@ -42,23 +46,52 @@ export class GuideSidebar implements OnInit {
   userComment: string = '';
   ratingError: string = '';
 
-  // נתוני הדירוג של המדריכה הנוכחית (נטענים מהשרת ב-ngOnInit)
+  // נתוני הדירוג של המדריכה הנוכחית (נטענים מהשרת)
   avgRating: number = 0;
   rated: boolean = false;
+
+  private destroy$ = new Subject<void>();
 
   ngOnInit() {
     this.loadRating();
   }
 
+  // ✅ ריענון הדירוגים כשהמדריכה משתנה
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['guide'] && this.guide) {
+      this.userRating = 0;
+      this.userComment = '';
+      this.ratingError = '';
+      this.loadRating();
+    }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   // טעינת ממוצע הדירוגים ובדיקה אם המשתמש כבר דירג - עבור המדריכה הנוכחית
   loadRating() {
     if (!this.guide) return;
-    this.ratingService.getAverageRating('guide', this.guide.id).subscribe({
-      next: avg => this.avgRating = avg
-    });
-    this.ratingService.hasRated('guide', this.guide.id, this.auth.getCurrentUserId()).subscribe({
-      next: rated => this.rated = rated
-    });
+    this.ratingService.loadAverage('guide', this.guide.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: avg => {
+          this.avgRating = avg;
+          this.cdr.markForCheck();
+        },
+        error: (err) => console.error('Error loading average rating:', err)
+      });
+    this.ratingService.hasRated('guide', this.guide.id, this.auth.getCurrentUserId())
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: rated => {
+          this.rated = rated;
+          this.cdr.markForCheck();
+        },
+        error: (err) => console.error('Error checking if rated:', err)
+      });
   }
 
   close() {
@@ -167,9 +200,15 @@ export class GuideSidebar implements OnInit {
       next: () => {
         this.rated = true;
         this.ratingError = '';
-        this.ratingService.getAverageRating('guide', this.guide!.id).subscribe({
-          next: avg => this.avgRating = avg
-        });
+        this.cdr.markForCheck();
+        this.ratingService.loadAverage('guide', this.guide!.id)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: avg => {
+              this.avgRating = avg;
+              this.cdr.markForCheck();
+            }
+          });
       },
       error: (err) => {
         this.ratingError = err?.error?.message ?? 'שגיאה בשמירת הדירוג';

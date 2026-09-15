@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Enrollment } from '../../Service/enrollment';
+import { Auth } from '../../Service/auth';
 
 @Component({
   selector: 'app-login-to-guide',
@@ -13,8 +14,21 @@ export class LoginToGuide implements OnInit {
 
   showPassword = false;
 
+  // מצב עריכה - true אם מגיעים מהדר (עריכת פרופיל) ולא מהרשמה חדשה
+  isEditMode = false;
+
+  // מזהה המדריכה בעת עריכה (מהמשתמש המחובר)
+  guideId: number | null = null;
+
   selectedCvName: string = '';
   selectedCertificateNames: string[] = [];
+
+  // קבצים קיימים של המדריכה (מהפרופיל) להורדה/השלמה
+  existingCvFiles: { fileId: number; fileName: string; filePath: string }[] = [];
+  existingCertFiles: { fileId: number; fileName: string; filePath: string }[] = [];
+
+  // בסיס ה-URL לגישה לקבצים (ללא "/api/Guide")
+  fileBaseUrl = 'https://localhost:7216';
 
   // נתוני ה-selectים שנטען מהשרת (השרת מחזיר camelCase)
   religiousList: { religiousId: number; religiousName: string }[] = [];
@@ -26,6 +40,7 @@ export class LoginToGuide implements OnInit {
 
   constructor(
     private enrollmentService: Enrollment,
+    private authService: Auth,
     private router: Router
   ) { }
 
@@ -44,6 +59,64 @@ export class LoginToGuide implements OnInit {
       next: (data) => (this.citiesList = data),
       error: (e) => console.error('שגיאה בטעינת ערים', e),
     });
+
+    // אם יש משתמש מחובר - מדובר בעריכת פרופיל (מגיעים מהדר)
+    const currentUser = this.authService.getCurrentUser();
+    if (currentUser?.userId) {
+      this.isEditMode = true;
+      this.guideId = currentUser.userId;
+      this.loadProfileForEdit(this.guideId);
+    }
+  }
+
+  // =====================
+  // מצב עריכה - מילוי הטופס בפרטי הפרופיל הקיימים
+  // =====================
+  private loadProfileForEdit(guideId: number): void {
+    this.enrollmentService.getGuideProfile(guideId).subscribe({
+      next: (profile) => {
+        // הקבצים אינם שדות חובה בעריכה - מאפשרים לעדכן בלי להעלות שוב
+        this.makeFilesOptional();
+
+        this.GuideForm.patchValue({
+          FirsName: profile.firstName,
+          LastName: profile.lastName,
+          Id: profile.identityCard,
+          PCountryOfOriginhon: profile.countryOfOrigin,
+          ReligiousAffiliation: profile.religiousId,
+          UserName: profile.userName,
+          Password: profile.password ?? '',   // מאפשר לראות/לשנות סיסמה
+          City: profile.city,
+          TrainingAreas: profile.trainingAreas ?? [],
+          Phone: profile.phone,
+          Email: profile.email,
+          YearsOfExperience: profile.yearsOfExperience,
+        });
+
+        // הצגת הקבצים הקיימים לפי סוגם
+        this.existingCvFiles = profile.files?.filter((f: any) => f.kind === 'cv') ?? [];
+        this.existingCertFiles = profile.files?.filter((f: any) => f.kind === 'cert') ?? [];
+      },
+      error: (e) => {
+        console.error('שגיאה בטעינת פרטי הפרופיל', e);
+        this.showToast('שגיאה בטעינת פרטי הפרופיל', 'error');
+      },
+    });
+  }
+
+  // בעריכה אין צורך להעלות מחדש קורות חיים ותעודות
+  private makeFilesOptional(): void {
+    const cv = this.GuideForm.controls.CvFile;
+    const certs = this.GuideForm.controls.Certificates;
+    const password = this.GuideForm.controls.Password;
+
+    cv.setValidators([]);
+    certs.setValidators([]);
+    password.setValidators([]);
+
+    cv.updateValueAndValidity();
+    certs.updateValueAndValidity();
+    password.updateValueAndValidity();
   }
 
   GuideForm = new FormGroup({
@@ -202,6 +275,17 @@ export class LoginToGuide implements OnInit {
     const certificates = this.GuideForm.controls.Certificates.value;
     const trainingAreaIds = this.GuideForm.controls.TrainingAreas.value;
 
+    if (!trainingAreaIds || trainingAreaIds.length === 0) {
+      this.showToast('יש לבחור לפחות אזור הכשרה אחד', 'error');
+      return;
+    }
+
+    // במצב עריכה - הקבצים לאו דווקא מועלים מחדש
+    if (this.isEditMode) {
+      this.submitProfileUpdate();
+      return;
+    }
+
     if (!cvFile) {
       this.showToast('יש להעלות קורות חיים', 'error');
       return;
@@ -209,11 +293,6 @@ export class LoginToGuide implements OnInit {
 
     if (!certificates || certificates.length === 0) {
       this.showToast('יש להעלות לפחות תעודת הכשרה אחת', 'error');
-      return;
-    }
-
-    if (!trainingAreaIds || trainingAreaIds.length === 0) {
-      this.showToast('יש לבחור לפחות אזור הכשרה אחד', 'error');
       return;
     }
 
@@ -285,6 +364,77 @@ export class LoginToGuide implements OnInit {
             ? `${serverMessage} : ${detail}`
             : serverMessage
           : 'אירעה שגיאה בשליחת הטופס';
+        this.showToast(message, 'error');
+      },
+    });
+  }
+
+  // =========================
+  // שליחת עדכון הפרופיל (מצב עריכה)
+  // =========================
+  private submitProfileUpdate() {
+    if (this.guideId == null) {
+      this.showToast('מזהה המדריכה חסר', 'error');
+      return;
+    }
+
+    const trainingAreaIds = this.GuideForm.controls.TrainingAreas.value ?? [];
+    const password = this.GuideForm.controls.Password.value ?? '';
+    const cvFile = this.GuideForm.controls.CvFile.value;
+    const certificates = this.GuideForm.controls.Certificates.value;
+
+    const formData = new FormData();
+
+    // פרטים אישיים
+    formData.append('FirstName', this.GuideForm.controls.FirsName.value ?? '');
+    formData.append('LastName', this.GuideForm.controls.LastName.value ?? '');
+    formData.append('IdentityCard', this.GuideForm.controls.Id.value ?? '');
+    formData.append('CountryOfOrigin', this.GuideForm.controls.PCountryOfOriginhon.value ?? '');
+    formData.append('Religious', this.GuideForm.controls.ReligiousAffiliation.value ?? '');
+
+    // פרטי התחברות - סיסמה רק אם הוזנה חדשה
+    formData.append('UserName', this.GuideForm.controls.UserName.value ?? '');
+    formData.append('Password', password);
+
+    // פרטים נוספים
+    formData.append('City', this.GuideForm.controls.City.value ?? '');
+    formData.append('TrainingAreas', trainingAreaIds.join(','));
+
+    // פרטי קשר וניסיון
+    formData.append('Phone', this.GuideForm.controls.Phone.value ?? '');
+    formData.append('Email', this.GuideForm.controls.Email.value ?? '');
+    formData.append('YearsOfExperience', String(this.GuideForm.controls.YearsOfExperience.value ?? 0));
+
+    // קבצים אופציונליים - רק אם הועלו חדשים
+    if (cvFile) {
+      formData.append('CvFile', cvFile);
+    }
+    if (certificates && certificates.length > 0) {
+      certificates.forEach((file) => {
+        formData.append('Certificates', file);
+      });
+    }
+
+    this.enrollmentService.updateGuideProfile(this.guideId, formData).subscribe({
+      next: () => {
+        console.log('הפרופיל עודכן בהצלחה');
+        this.showToast('הפרטים נשמרו בהצלחה!', 'success');
+        // חזרה לעמוד הבית
+        setTimeout(() => this.router.navigate(['/home-page']), 1300);
+      },
+      error: (error) => {
+        console.error('שגיאה בעדכון הפרופיל', error);
+        // הדפסה מפורטת לעזרת דיבוג
+        console.error('תשובת השרת:', error?.error);
+        const serverMessage = error?.error?.message;
+        const detail = Array.isArray(error?.error?.errors)
+          ? error.error.errors[0]
+          : '';
+        const message = serverMessage
+          ? detail && !serverMessage.includes(detail)
+            ? `${serverMessage} : ${detail}`
+            : serverMessage
+          : 'אירעה שגיאה בעדכון הפרטים';
         this.showToast(message, 'error');
       },
     });

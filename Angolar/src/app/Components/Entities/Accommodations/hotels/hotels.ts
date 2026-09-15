@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Accommodation } from '../../../../Interfacess/accommodation';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { HotelService } from '../../../../Service/hotel-service';
@@ -23,6 +23,7 @@ import { RatingService } from '../../../../Service/rating-service';
 export class Hotels implements OnInit, OnDestroy {
 
   private _liveAnnouncer = inject(LiveAnnouncer);
+  private cdr = inject(ChangeDetectorRef);
 
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -47,6 +48,8 @@ export class Hotels implements OnInit, OnDestroy {
 
   private areasSub!: Subscription;
 
+  private avgSub!: Subscription;
+
   constructor(private hotelService: HotelService,
     private favoritesService: FavoriteService,
     private regions: Regions,
@@ -60,12 +63,14 @@ export class Hotels implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.accommodationSub?.unsubscribe();
     this.areasSub?.unsubscribe();
+    this.avgSub?.unsubscribe();
   }
 
   ngOnInit(): void {
     this.hotelService.GetTrail().subscribe({
       next: (data) => {
         this.allHotels = data;
+        this.ratingService.loadAverages('accommodation', data.map(h => h.id));
         this.applyFilters();
         this.dataSource.sort = this.sort;
 
@@ -85,6 +90,11 @@ export class Hotels implements OnInit, OnDestroy {
 
     this.accommodationSub = this.favoritesService.openAccommodation$.subscribe((hotel: Accommodation) => {
       this.selectedHotel = hotel;
+    });
+
+    // ✅ עדכון מיידי של עמודת הדירוג כשממוצע חדש נטען/משתנה
+    this.avgSub = this.ratingService.averagesChanged().subscribe(() => {
+      this.cdr.markForCheck();
     });
 
     this.areasSub = this.selectedAreas.valueChanges.subscribe(() => {

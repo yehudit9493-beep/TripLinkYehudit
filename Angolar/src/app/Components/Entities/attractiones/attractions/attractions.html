@@ -71,7 +71,7 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header>דירוג ממוצע</th>
         <td mat-cell *matCellDef="let e">
           <div class="stars-cell">
-            @for (star of getStarsArray(getAverageRating(e.id)); track $index) {
+            @for (star of getStarsArray(getAverageRating(e.attractionId)); track $index) {
             <span class="star-sm" [class.full]="star === 'full'">★</span>
             }
           </div>

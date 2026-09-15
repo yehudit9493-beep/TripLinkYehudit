@@ -17,6 +17,7 @@ export class RatingsList implements OnInit {
   entityId: number = 0;
   entityType: string = '';
   entityName: string = '';
+  loading: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -32,7 +33,12 @@ export class RatingsList implements OnInit {
 
     // טעינת כל הדירוגים של הישות מהשרת (לפי הסוג והמזהה שבנתיב)
     this.ratingService.getRatings(this.entityType, this.entityId).subscribe({
-      next: ratings => this.ratings = ratings
+      next: ratings => {
+        this.ratings = ratings;
+        this.loading = false;
+      },
+      error: () => this.loading = false,
+      complete: () => this.loading = false
     });
   }
 

@@ -3,8 +3,8 @@
     <!-- רקע -->
     <div class="page-overlay"></div>
 
-    <!-- כפתור חזרה -->
-    <button routerLink="/" class="back-button">
+    <!-- כפתור חזרה - בזמני עריכה חוזר לעמוד הבית -->
+    <button [routerLink]="isEditMode ? '/home-page' : '/'" class="back-button">
         <span class="back-arrow">→</span>
         חזרה
     </button>
@@ -21,12 +21,16 @@
             <div>
                 <span class="header-small-title">TRIPLINK</span>
 
+                @if (isEditMode) {
+                <h1>עריכת פרטים</h1>
+                <p>עדכני את פרטי הפרופיל שלך ושמרי את השינויים</p>
+                } @else {
                 <h1>הצטרפות כמדריכת טיולים</h1>
-
                 <p>
                     הצטרפי לקהילת מדריכות הטיולים שלנו
                     והתחילי ליצור חוויות בלתי נשכחות
                 </p>
+                }
             </div>
 
         </div>
@@ -261,7 +265,18 @@
                                 <input type="file" accept=".pdf,.doc,.docx" (change)="onCvSelected($event)">
                             </label>
 
-                            <!-- שם הקובץ -->
+                            <!-- קורות חיים קיימים (בעריכה) -->
+                            @if (isEditMode && existingCvFiles.length > 0) {
+                            <div class="selected-file">
+                                <span class="file-icon">📄</span>
+                                <a class="file-name file-link" [href]="fileBaseUrl + '/' + existingCvFiles[0].filePath"
+                                    target="_blank">
+                                    {{ existingCvFiles[0].fileName }}
+                                </a>
+                            </div>
+                            }
+
+                            <!-- קובץ חדש שנבחר (מחליף / מוסיף) -->
                             @if (selectedCvName) {
                             <div class="selected-file">
 
@@ -315,7 +330,22 @@
                             </label>
 
 
-                            <!-- רשימת הקבצים -->
+                            <!-- תעודות קיימות (בעריכה) -->
+                            @if (isEditMode && existingCertFiles.length > 0) {
+                            <div class="selected-files">
+                                @for (file of existingCertFiles; track file.fileId) {
+                                <div class="selected-file">
+                                    <span class="file-icon">🎓</span>
+                                    <a class="file-name file-link" [href]="fileBaseUrl + '/' + file.filePath"
+                                        target="_blank">
+                                        {{ file.fileName }}
+                                    </a>
+                                </div>
+                                }
+                            </div>
+                            }
+
+                            <!-- תעודות חדשות שנבחרו -->
                             @if (selectedCertificateNames.length > 0) {
                             <div class="selected-files">
 
@@ -366,8 +396,13 @@
 
                 <button type="submit" class="submit-button" [disabled]="GuideForm.invalid">
 
+                    @if (isEditMode) {
+                    <span>שמירת השינויים</span>
+                    <span class="submit-arrow">←</span>
+                    } @else {
                     <span>שליחת בקשת הצטרפות</span>
                     <span class="submit-arrow">←</span>
+                    }
 
                 </button>
 

@@ -826,6 +826,28 @@
     transform: scale(1.1);
 }
 
+/* קישור להורדת קובץ קיים (עריכת פרופיל) */
+.file-link {
+    flex: 1;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    color: #0d7a8c;
+
+    text-decoration: none;
+
+    transition: color 0.2s ease;
+}
+
+.file-link:hover {
+    color: #00bcd4;
+
+    text-decoration: underline;
+}
+
 
 /* =========================================
    אזורי הכשרה - בחירה מרובה
