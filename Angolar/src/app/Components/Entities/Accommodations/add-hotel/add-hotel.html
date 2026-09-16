@@ -22,6 +22,31 @@
             </div>
 
             <div class="form-field">
+                <label class="form-label fw-bold">תמונות</label>
+
+                @if (previewUrls.length > 0) {
+                <div class="new-images">
+                    <div class="images-title">תמונות נבחרות ({{ previewUrls.length }})</div>
+                    <div class="images-container">
+                        @for (preview of previewUrls; track $index; let i = $index) {
+                        <div class="image-item new">
+                            <img [src]="preview" alt="preview">
+                            <button type="button" class="btn-remove" (click)="removeNewImage(i)"
+                                [disabled]="isSaving">×</button>
+                        </div>
+                        }
+                    </div>
+                </div>
+                }
+
+                <div class="input-wrapper">
+                    <input #fileInput type="file" class="form-control" accept="image/*" multiple
+                        (change)="onImagesSelected($event)">
+                    <small class="text-muted">בחר תמונות למקום הלינה</small>
+                </div>
+            </div>
+
+            <div class="form-field">
                 <label>כתובת</label>
                 <input formControlName="address" />
             </div>

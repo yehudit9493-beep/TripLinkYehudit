@@ -89,6 +89,10 @@ getMessagesByForumId(forumId: number): Observable<Message[]> {
     );
   }
 
+  deleteMessage(messageId: number): Observable<{ isSuccess: boolean; message: string }> {
+    return this.httpClient.delete<any>(`${this.API_URL}/forum/${messageId}`);
+  }
+
   // --------------------------------------------------------------------------
   // מיפוי מהשרת לאנגולר
   // --------------------------------------------------------------------------

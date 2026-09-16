@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { RatingService } from '../../../../Service/rating-service';
 import { FormsModule } from '@angular/forms';
 import { Auth } from '../../../../Service/auth';
+import { ApiUrl } from '../../../../Service/api-url';
 
 @Component({
   selector: 'app-trail-sidebar',
@@ -41,7 +42,12 @@ export class TrailSidebar implements OnChanges, OnDestroy {
     private router: Router,
     private ratingService: RatingService,
     private auth: Auth,
-    private cdr: ChangeDetectorRef) { }
+    private cdr: ChangeDetectorRef,
+    private apiUrl: ApiUrl) { }
+
+  getImageUrl(image: string): string {
+    return this.apiUrl.getImageUrl(image);
+  }
 
 
   // ✅ ריענון הדירוגים כשהמסלול משתנה

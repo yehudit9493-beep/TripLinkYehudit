@@ -69,6 +69,11 @@ export class HotelService {
     );
   }
 
+  // ✅ העלאת תמונות למקום לינה
+  uploadImages(formData: FormData): Observable<any> {
+    return this.httpClient.post<any>(`${this.API_URL}/Hotels/upload-images`, formData);
+  }
+
   // --- פונקציות המיפוי ---
 
   private mapToAngular(server: any): Accommodation {
@@ -84,7 +89,7 @@ export class HotelService {
       phoneNumber: server.phonNumber,
       Auditorium: server.auditorium,
       Kashrut: server.kashrut,
-      images: [],
+      images: server.images || [],
       city : server.city
     };
   }
@@ -103,7 +108,8 @@ export class HotelService {
       phonNumber: hotel.phoneNumber,
       auditorium: hotel.Auditorium,
       kashrut: hotel.Kashrut,
-      city : hotel.city
+      city : hotel.city,
+      images: hotel.images || []
     };
   }
 }

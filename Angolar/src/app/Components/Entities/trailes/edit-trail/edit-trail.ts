@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, S
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Trail } from '../../../../Interfacess/Trail';
 import { DeleteTrailResponse, TrailsService } from '../../../../Service/TrailsService';
+import { ApiUrl } from '../../../../Service/api-url';
 
 @Component({
   selector: 'app-edit-trail',
@@ -39,7 +40,13 @@ export class EditTrail implements OnChanges {
     season: new FormControl<string[]>([], Validators.required),
   })
 
-  constructor(private trailsService: TrailsService, private cdr: ChangeDetectorRef) { }
+  constructor(private trailsService: TrailsService,
+    private cdr: ChangeDetectorRef,
+    private apiUrl: ApiUrl) { }
+
+  getImageUrl(image: string): string {
+    return this.apiUrl.getImageUrl(image);
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['trail'] && this.trail) {

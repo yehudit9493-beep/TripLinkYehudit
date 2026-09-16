@@ -4,6 +4,7 @@ import { TrailsService } from '../../../../Service/TrailsService';
 import { TrailWithoutId } from '../../../../Interfacess/Trail';
 import { CommonModule } from '@angular/common';
 import { Regions } from '../../../../Service/regions';
+import { ApiUrl } from '../../../../Service/api-url';
 
 @Component({
   selector: 'app-add-trail',
@@ -24,8 +25,13 @@ export class AddTrail {
   areaList: { id: number, name: string }[] = [];
 
   constructor(private trailService: TrailsService,
-    private regions: Regions, private cdr: ChangeDetectorRef
+    private regions: Regions, private cdr: ChangeDetectorRef,
+    private apiUrl: ApiUrl
   ) { this.areaList = this.regions.getAllAreas(); }
+
+  getImageUrl(image: string): string {
+    return this.apiUrl.getImageUrl(image);
+  }
 
   addTrailForm = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -157,20 +163,100 @@ export class AddTrail {
 
   onSubmit() {
     if (this.addTrailForm.valid) {
-      this.trailService.addTrail(this.addTrailForm.value as TrailWithoutId).subscribe({
-        next: (response) => {
-          console.log('מסלול נוסף בהצלחה:');
-          this.addTrailForm.reset();
-          this.updated.emit(this.addTrailForm.value as TrailWithoutId);
-          this.closed.emit();
-        },
-        error: (error) => {
-          console.error('שגיאה בהוספת המסלול:', error);
-        }
-      });
+      if (this.newImageFiles.length > 0) {
+        this.uploadNewImages();
+      } else {
+        this.saveTrail();
+      }
     } else {
       console.warn('הטופס אינו תקין; אנא בדוק את השדות');
     }
+  }
+
+  uploadNewImages(): void {
+    this.isSaving = true;
+    const formData = new FormData();
+
+    this.newImageFiles.forEach((file) => {
+      formData.append('images', file);
+    });
+
+    this.trailService.uploadImages(formData).subscribe({
+      next: (response: any) => {
+        const trailData = {
+          ...this.addTrailForm.value as TrailWithoutId,
+          images: response.imagePaths ?? []
+        };
+        this.saveTrailWithImages(trailData);
+      },
+      error: (error) => {
+        console.error('שגיאה בהעלאת תמונות:', error);
+        this.isSaving = false;
+      }
+    });
+  }
+
+  saveTrailWithImages(trailData: any): void {
+    const trail = {
+      ...this.addTrailForm.value as TrailWithoutId,
+      images: trailData?.images ?? this.previewUrls
+    };
+    this.trailService.addTrail(trail).subscribe({
+      next: (response) => {
+        console.log('מסלול נוסף בהצלחה עם תמונות');
+        this.addTrailForm.reset();
+        this.newImageFiles = [];
+        this.previewUrls = [];
+        this.isSaving = false;
+        this.updated.emit(response);
+        this.closed.emit();
+      },
+      error: (error) => {
+        console.error('שגיאה בהוספת המסלול:', error);
+        this.isSaving = false;
+      }
+    });
+  }
+
+  saveTrail(): void {
+    this.isSaving = true;
+    this.trailService.addTrail(this.addTrailForm.value as TrailWithoutId).subscribe({
+      next: (response) => {
+        console.log('מסלול נוסף בהצלחה');
+        this.addTrailForm.reset();
+        this.isSaving = false;
+        this.updated.emit(response);
+        this.closed.emit();
+      },
+      error: (error) => {
+        console.error('שגיאה בהוספת המסלול:', error);
+        this.isSaving = false;
+      }
+    });
+  }
+
+  onImagesSelected(event: any): void {
+    const files: FileList = event.target.files;
+
+    if (files && files.length > 0) {
+      this.newImageFiles = Array.from(files);
+
+      this.previewUrls = [];
+      this.newImageFiles.forEach((file) => {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.previewUrls.push(e.target.result);
+          this.cdr.detectChanges();
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  }
+
+  removeNewImage(index: number): void {
+    this.newImageFiles.splice(index, 1);
+    this.previewUrls.splice(index, 1);
+    this.cdr.detectChanges();
   }
 
   onSeasonChange(event: Event) {

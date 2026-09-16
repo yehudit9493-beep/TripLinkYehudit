@@ -25,4 +25,14 @@ export class CoordinatorEnrollment {
     return this.http.get<string[]>(`${this.apiUrl}/cities`);
   }
 
+  // שליפת פרופיל רכזת לפי UserId (למילוי טופס העריכה)
+  getProfile(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/profile/${userId}`);
+  }
+
+  // עדכון פרופיל הרכזת (עריכה)
+  updateProfile(userId: number, formData: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/profile/${userId}`, formData);
+  }
+
 }

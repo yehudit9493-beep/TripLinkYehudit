@@ -6,9 +6,10 @@ import {
   Validators
 } from '@angular/forms';
 
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 import { CoordinatorEnrollment } from '../../Service/coordinator-enrollment';
+import { Auth } from '../../Service/auth';
 
 
 @Component({
@@ -27,6 +28,9 @@ import { CoordinatorEnrollment } from '../../Service/coordinator-enrollment';
 export class LoginToCoordinator implements OnInit {
 
   showPassword = false;
+
+  // האם הגענו דרך "עריכת פרופיל" בהדר (לעומת הרשמה חדשה)
+  isEditMode = false;
 
   // רשימת הערים למילוי שדה העיר (נטען מהשרת)
   citiesList: string[] = [];
@@ -51,6 +55,8 @@ export class LoginToCoordinator implements OnInit {
 
   constructor(
     private coordinatorService: CoordinatorEnrollment,
+    private authService: Auth,
+    private route: ActivatedRoute,
     private router: Router
   ) { }
 
@@ -59,6 +65,45 @@ export class LoginToCoordinator implements OnInit {
     this.coordinatorService.getCities().subscribe({
       next: (data) => (this.citiesList = data),
       error: (e) => console.error('שגיאה בטעינת ערים', e),
+    });
+
+    // זיהוי מצב עריכה: הגענו עם param mode=edit (מההדר)
+    this.isEditMode = this.route.snapshot.queryParamMap.get('mode') === 'edit';
+
+    if (this.isEditMode) {
+      this.loadProfile();
+    }
+  }
+
+  // =========================================
+  // טעינת פרופיל הרכזת ומילוי הטופס (מצב עריכה)
+  // =========================================
+  private loadProfile(): void {
+    const userId = this.authService.getCurrentUserId();
+
+    this.coordinatorService.getProfile(userId).subscribe({
+      next: (profile) => {
+        this.CoordinatorForm.patchValue({
+          FirsName: profile.firstName,
+          LastName: profile.lastName,
+          Title: profile.title,
+          Phone: profile.phone,
+          Email: profile.email,
+          UserName: profile.userName,
+          Password: profile.password,
+          InstitutionName: profile.institutionName,
+          InstitutionCity: profile.institutionCity,
+          InstitutionPhon: profile.institutionPhone,
+          PrincipalName: profile.principalName,
+          InstitutionType: profile.institutionType,
+          AgeGroup: profile.ageGroup,
+          Gender: profile.gender
+        });
+      },
+      error: (e) => {
+        console.error('שגיאה בטעינת פרופיל הרכזת', e);
+        this.showToast('אירעה שגיאה בטעינת הפרטים', 'error');
+      }
     });
   }
 
@@ -149,20 +194,10 @@ export class LoginToCoordinator implements OnInit {
 
 
   // =========================================
-  // שליחת הטופס
+  // בניית FormData מערכי הטופס
   // =========================================
 
-  submitCoordinatorForm() {
-
-    if (this.CoordinatorForm.invalid) {
-
-      this.showToast('יש למלא את כל שדות החובה', 'error');
-
-      this.CoordinatorForm.markAllAsTouched();
-
-      return;
-    }
-
+  private buildFormData(): FormData {
 
     const formData = new FormData();
 
@@ -251,49 +286,105 @@ export class LoginToCoordinator implements OnInit {
       this.CoordinatorForm.controls.Gender.value ?? ''
     );
 
+    return formData;
+  }
+
+
+  // =========================================
+  // שליחת הטופס (הרשמה חדשה או עריכה)
+  // =========================================
+
+  // תוויות עבריות לשדות - להצגת הודעות תקינות ברורות
+  private readonly fieldLabels: Record<string, string> = {
+    FirsName: 'שם פרטי',
+    LastName: 'שם משפחה',
+    Title: 'תפקיד במוסד',
+    Phone: 'טלפון',
+    Email: 'כתובת אימייל',
+    UserName: 'שם משתמש',
+    Password: 'סיסמה',
+    InstitutionName: 'שם המוסד',
+    InstitutionCity: 'עיר',
+    InstitutionPhon: 'טלפון מזכירות',
+    PrincipalName: 'שם מנהל/ת',
+    InstitutionType: 'סוג מוסד',
+    AgeGroup: 'שכבת גיל',
+    Gender: 'מגדר'
+  };
+
+  submitCoordinatorForm() {
+
+    if (this.CoordinatorForm.invalid) {
+
+      // איתור השדות הבעייתיים להצגה מדויקת
+      const invalidFields = Object.keys(this.CoordinatorForm.controls)
+        .filter(key => this.CoordinatorForm.get(key)?.invalid)
+        .map(key => this.fieldLabels[key] ?? key);
+
+      this.showToast(
+        invalidFields.length > 0
+          ? 'יש לתקן את השדות: ' + invalidFields.join(', ')
+          : 'יש למלא את כל שדות החובה',
+        'error'
+      );
+
+      this.CoordinatorForm.markAllAsTouched();
+
+      return;
+    }
+
+    const formData = this.buildFormData();
+
+    const userId = this.authService.getCurrentUserId();
+
+    const request = this.isEditMode
+      ? this.coordinatorService.updateProfile(userId, formData)
+      : this.coordinatorService.registerCoordinator(formData);
 
     // =========================================
     // שליחה לשרת
     // =========================================
 
-    this.coordinatorService
-      .registerCoordinator(formData)
-      .subscribe({
+    request.subscribe({
 
-        next: response => {
+      next: response => {
 
-          console.log(
-            'הרכזת נרשמה בהצלחה',
-            response
-          );
+        console.log(
+          this.isEditMode ? 'הפרופיל עודכן בהצלחה' : 'הרכזת נרשמה בהצלחה',
+          response
+        );
 
-          this.showToast('ההרשמה נשלחה בהצלחה!', 'success');
+        this.showToast(
+          this.isEditMode ? 'הפרטים נשמרו בהצלחה!' : 'ההרשמה נשלחה בהצלחה!',
+          'success'
+        );
 
-          this.CoordinatorForm.reset();
+        this.CoordinatorForm.reset();
 
-          // חזרה לדף הנחיתה
-          setTimeout(() => this.router.navigate(['/']), 1300);
+        // במצב עריכה נחזור לדף הבית, אחרת לדף הנחיתה
+        const target = this.isEditMode ? ['/home-page'] : ['/'];
+        setTimeout(() => this.router.navigate(target), 1300);
 
-        },
+      },
 
 
-        error: error => {
+      error: error => {
 
-          console.error(
-            'שגיאה בהרשמת הרכזת',
-            error
-          );
+        console.error(
+          this.isEditMode ? 'שגיאה בעדכון הפרופיל' : 'שגיאה בהרשמת הרכזת',
+          error
+        );
 
-          // הודעת השגיאה האמיתית מהשרת (אם קיימת)
-          const serverMessage = error?.error?.message;
-          this.showToast(
-            serverMessage ? serverMessage : 'אירעה שגיאה בשליחת הטופס',
-            'error'
-          );
+        // הודעת השגיאה האמיתית מהשרת (אם קיימת)
+        const serverMessage = error?.error?.message;
+        this.showToast(
+          serverMessage ? serverMessage : 'אירעה שגיאה בשליחת הטופס',
+          'error'
+        );
 
-        }
+      }
 
-      });
+    });
 
   }
 

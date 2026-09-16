@@ -95,6 +95,46 @@
         </div>
       </div>
 
+      <div class="form-field">
+        <label class="form-label fw-bold">תמונות קיימות</label>
+
+        @if (existingImages.length > 0) {
+        <div class="images-container">
+          @for (image of existingImages; track image; let i = $index) {
+          <div class="image-item existing">
+            <img [src]="getImageUrl(image)" alt="existing">
+            <button type="button" class="btn-remove" (click)="removeExistingImage(i)" [disabled]="isSaving">×</button>
+          </div>
+          }
+        </div>
+        } @else {
+        <small class="text-muted">אין תמונות קיימות</small>
+        }
+      </div>
+
+      <div class="form-field">
+        <label class="form-label fw-bold">הוספת תמונות חדשות</label>
+
+        @if (previewUrls.length > 0) {
+        <div class="new-images">
+          <div class="images-title">תמונות נבחרות ({{ previewUrls.length }})</div>
+          <div class="images-container">
+            @for (preview of previewUrls; track $index; let i = $index) {
+            <div class="image-item new">
+              <img [src]="preview" alt="preview">
+              <button type="button" class="btn-remove" (click)="removeNewImage(i)" [disabled]="isSaving">×</button>
+            </div>
+            }
+          </div>
+        </div>
+        }
+
+        <div class="input-wrapper">
+          <input #fileInput type="file" class="form-control" accept="image/*" multiple (change)="onImagesSelected($event)">
+          <small class="text-muted">בחר תמונות חדשות למקום הלינה</small>
+        </div>
+      </div>
+
       <div class="action-buttons">
         <button type="button" class="btn-cancel" (click)="closed.emit()">ביטול</button>
         <button type="submit" class="btn-save" [disabled]="editAccommodationForm.invalid">שמור שינויים</button>

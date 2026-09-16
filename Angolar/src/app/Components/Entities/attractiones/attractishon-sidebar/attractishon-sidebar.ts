@@ -228,6 +228,7 @@ import { Auth } from '../../../../Service/auth';
 import { getCity } from '../../../../Service/city';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ApiUrl } from '../../../../Service/api-url';
 
 @Component({
   selector: 'app-attractishon-sidebar',
@@ -268,8 +269,13 @@ export class AttractishonSidebar implements OnInit, OnChanges, OnDestroy {
     private router: Router,
     private ratingService: RatingService,
     private auth: Auth,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private apiUrl: ApiUrl
   ) { }
+
+  getImageUrl(image: string): string {
+    return this.apiUrl.getImageUrl(image);
+  }
 
   ngOnInit() {
     this.currentImageIndex = 0;

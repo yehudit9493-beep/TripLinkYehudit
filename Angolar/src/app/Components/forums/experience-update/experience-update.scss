@@ -158,6 +158,36 @@
             background: #f0f0f0;
         }
     }
+
+    .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+    }
+
+    // כפתור מחיקת הודעה (פח)
+    .trash-btn {
+        background: none;
+        border: none;
+        color: #b0b0b0;
+        cursor: pointer;
+        padding: 4px 8px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+
+        &:hover {
+            color: #e53935;
+            background: #fdecea;
+            transform: scale(1.08);
+        }
+
+        &:active {
+            transform: scale(0.95);
+        }
+    }
 }
 
 .message-content {

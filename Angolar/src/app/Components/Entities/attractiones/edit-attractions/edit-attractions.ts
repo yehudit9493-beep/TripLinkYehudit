@@ -4,6 +4,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Attraction } from '../../../../Interfacess/attraction';
 import { AttractionService } from '../../../../Service/attraction-service';
 import { getCity } from '../../../../Service/city';
+import { ApiUrl } from '../../../../Service/api-url';
 
 @Component({
   selector: 'app-edit-attractions',
@@ -48,7 +49,13 @@ export class EditAttractions implements OnChanges, OnInit {
     city: new FormControl(''),
   });
 
-  constructor(private attractionService: AttractionService, private cdr: ChangeDetectorRef) { }
+  constructor(private attractionService: AttractionService,
+    private cdr: ChangeDetectorRef,
+    private apiUrl: ApiUrl) { }
+
+  getImageUrl(image: string): string {
+    return this.apiUrl.getImageUrl(image);
+  }
 
   ngOnInit() {
     this.attractionService.GetAreas().subscribe({
@@ -120,14 +127,18 @@ export class EditAttractions implements OnChanges, OnInit {
     });
 
     this.attractionService.uploadImages(formData).subscribe({
-      // next: (response: any) => {
-      //   // ז
-      //   this.saveAttractionWithImages(updatedAttraction);
-      // },
-      // error: (error) => {
-      //   console.error('שגיאה בהעלאת תמונות:', error);
-      //   this.isSaving = false;
-      // }
+      next: (response: any) => {
+        const newPaths: string[] = response?.imagePaths ?? [];
+        // צירוף התמונות החדשות לקיימות - המערך שנשלח לשרת כולל את כולן
+        this.existingImages = [...this.existingImages, ...newPaths];
+        this.newImageFiles = [];
+        this.previewUrls = [];
+        this.saveAttraction();
+      },
+      error: (error) => {
+        console.error('שגיאה בהעלאת תמונות:', error);
+        this.isSaving = false;
+      }
     });
   }
 

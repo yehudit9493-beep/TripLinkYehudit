@@ -11,7 +11,6 @@ import { Guide } from './Components/Entities/guides/guide/guide';
 import { Hotels } from './Components/Entities/Accommodations/hotels/hotels';
 import { Attractions } from './Components/Entities/attractiones/attractions/attractions';
 import { Trails } from './Components/Entities/trailes/trails/trails';
-import { EditUser } from './Components/edit-user/edit-user';
 import { EditTrail } from './Components/Entities/trailes/edit-trail/edit-trail';
 import { ExperienceUpdate } from './Components/forums/experience-update/experience-update';
 import { Forum } from './Components/forums/forum/forum';
@@ -30,7 +29,6 @@ export const routes: Routes = [
     { path: 'hotels', component: Hotels },
     { path: 'attractions', component: Attractions },
     { path: 'trails', component: Trails },
-    { path: 'editUser', component: EditUser },
     { path: 'editTrail', component: EditTrail },
     { path: 'forum/:forumId', component: ExperienceUpdate },
     { path: 'addbForum/:forumId', component: Forum },

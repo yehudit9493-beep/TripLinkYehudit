@@ -3,8 +3,8 @@
     <!-- שכבת רקע -->
     <div class="page-overlay"></div>
 
-    <!-- כפתור חזרה -->
-    <button routerLink="/" class="back-button">
+    <!-- כפתור חזרה (במצב עריכה - חזרה לדף הבית) -->
+    <button [routerLink]="isEditMode ? '/home-page' : '/'" class="back-button">
         <span class="back-arrow">→</span>
         חזרה
     </button>
@@ -29,12 +29,16 @@
                 </span>
 
                 <h1>
-                    הצטרפות כרכזת טיולים
+                    {{ isEditMode ? 'עריכת פרטים' : 'הצטרפות כרכזת טיולים' }}
                 </h1>
 
                 <p>
+                    @if (isEditMode) {
+                    ערכי את הפרטים שלך ושמרי את השינויים
+                    } @else {
                     הצטרפי לקהילת רכזות הטיולים שלנו
                     והתחילי לנהל חוויות טיול בצורה פשוטה וחכמה
+                    }
                 </p>
 
             </div>
@@ -560,7 +564,7 @@
 
                 <button type="submit" class="submit-button" [disabled]="!CoordinatorForm.valid">
 
-                    <span>שליחת בקשת הצטרפות</span>
+                    <span>{{ isEditMode ? 'שמירת הפרטים' : 'שליחת בקשת הצטרפות' }}</span>
                     <span class="submit-arrow">←</span>
 
                 </button>
@@ -571,7 +575,6 @@
 
     </div>
 
-    <!-- הודעה מעוצבת (במקום alert) -->
     @if (toastVisible) {
     <div class="toast toast-{{ toastType }}" role="alert">
         <span class="toast-icon">

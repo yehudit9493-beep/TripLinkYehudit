@@ -264,3 +264,35 @@ body.home-bg {
     box-shadow:
         0 25px 70px rgba(24, 91, 98, 0.25) !important;
 }
+
+
+/* =========================================================
+   SNACKBAR (פורום - הודעות מערכת)
+========================================================= */
+
+.mat-mdc-snack-bar-container.success-snackbar {
+    --mdc-snackbar-container-color: #2e7d32;
+
+    .mat-mdc-snackbar-surface {
+        color: #fff;
+        font-weight: 500;
+    }
+}
+
+.mat-mdc-snack-bar-container.error-snackbar {
+    --mdc-snackbar-container-color: #d32f2f;
+
+    .mat-mdc-snackbar-surface {
+        color: #fff;
+        font-weight: 500;
+    }
+}
+
+.mat-mdc-snack-bar-container.info-snackbar {
+    --mdc-snackbar-container-color: #0990d4;
+
+    .mat-mdc-snackbar-surface {
+        color: #fff;
+        font-weight: 500;
+    }
+}

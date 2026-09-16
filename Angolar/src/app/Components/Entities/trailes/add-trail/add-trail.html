@@ -27,13 +27,12 @@
                 </select>
             </div>
 
-            <!-- <div class="form-field">
-                <label class="form-label fw-bold">תמונות</label> -->
+            <div class="form-field">
+                <label class="form-label fw-bold">תמונות</label>
 
-                <!-- 🔑 תמונות חדשות - preview -->
-                <!-- @if (previewUrls.length > 0) {
+                @if (previewUrls.length > 0) {
                 <div class="new-images">
-                    <div class="images-title">תמונות חדשות ({{ previewUrls.length }})</div>
+                    <div class="images-title">תמונות נבחרות ({{ previewUrls.length }})</div>
                     <div class="images-container">
                         @for (preview of previewUrls; track $index; let i = $index) {
                         <div class="image-item new">
@@ -51,7 +50,7 @@
                         (change)="onImagesSelected($event)">
                     <small class="text-muted">בחר תמונות למסלול</small>
                 </div>
-            </div> -->
+            </div>
 
             <div class="form-field">
                 <label>דרכי הגעה</label>

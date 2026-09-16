@@ -287,7 +287,7 @@ export class AttractionService {
       phoneNumber: attraction.phoneNumber,
       description: attraction.description,
       suitableForKids: attraction.suitableForKids,
-      
+      images: attraction.images || []
     };
   }
 }

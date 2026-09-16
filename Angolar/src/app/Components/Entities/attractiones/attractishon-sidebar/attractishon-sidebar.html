@@ -41,7 +41,7 @@
                 <div class="carousel-inner">
                     @for (image of attraction.images; track $index; let i = $index) {
                     <div class="carousel-item" [class.active]="currentImageIndex === i">
-                        <img [src]="image" [alt]="attraction.attractionName + ' - תמונה ' + (i + 1)"
+                        <img [src]="getImageUrl(image)" [alt]="attraction.attractionName + ' - תמונה ' + (i + 1)"
                             class="carousel-image">
                     </div>
                     }

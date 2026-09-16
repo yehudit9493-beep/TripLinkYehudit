@@ -59,7 +59,13 @@
       "Bash(echo \"EXIT: $?\")",
       "Bash(echo \"TSC-EXIT: $?\")",
       "Bash(curl -sk -m 5 \"https://localhost:7216/api/Guide/profile/17\" -o /tmp/prof.json -w \"HTTP:%{http_code}\\\\n\")",
-      "Bash(echo \"TSC EXIT: $?\")"
+      "Bash(echo \"TSC EXIT: $?\")",
+      "Bash(grep -rn \"PermissionId\\\\|PermissionType\\\\|Permission\" \"c:/פרויקט גמר/Server/project/project\" 2>/dev/null | grep -iv \"using\\\\|namespace\" | head -40)",
+      "Bash(grep -rn \"PermissionId\\\\|Permission\" \"c:/פרויקט גמר/Server/project/project\" --include=\"*.cs\" 2>/dev/null | head -40)",
+      "Bash(find \"c:/פרויקט גמר/Server/project/project\" -iname \"GuideController.cs\" -o -iname \"GuideService.cs\" -o -iname \"GuideRepository.cs\" 2>/dev/null)",
+      "Bash(grep -n \"GetGuideProfile\\\\|UpdateGuideProfileAsync\\\\|GetGuideProfile\\\\|helper\\\\|ReverseMap\\\\|ToProfile\" \"c:/פרויקט גמר/Server/project/project/Service/GuideService.cs\" \"c:/פרויקט גמר/Server/project/project/Repository/GuideRepository.cs\" 2>/dev/null)",
+      "Bash(grep -rn \"DbSet<Titel>\\\\|DbSet<InstitutionsType>\\\\|DbSet<AgesGroup>\\\\|DbSet<Gender>\\\\|DbSet<InstitutionDetail>\\\\|DbSet<Coordinator>\\\\|DbSet<City>\\\\|DbSet<User>\" \"c:/פרויקט גמר/Server/project/project/Entities/YehuditTripsContext.cs\" 2>/dev/null)",
+      "Bash(cat \"c:/פרויקט גמר/Server/project/project/Entities/AgesGroup.cs\" \"c:/פרויקט גמר/Server/project/project/Entities/Gender.cs\" \"c:/פרויקט גמר/Server/project/project/Entities/InstitutionsType.cs\" 2>/dev/null | grep -n \"public\\\\|class\\\\|namespace\")"
     ],
     "additionalDirectories": [
       "C:\\פרויקט גמר\\Server\\project\\project\\DTOs",

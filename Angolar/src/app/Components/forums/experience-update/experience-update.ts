@@ -123,6 +123,13 @@ private loadMessages() {
 
   addLike(messageId: number) {
     this.forums.toggleLike(messageId, this.currentUserId).subscribe(liked => {
+      // עדכון מקומי מיידי של ספירת הלייקים לפי תוצאת השרת
+      const msg = this.message.find(m => m.idMessage === messageId);
+      if (msg) {
+        const newCount = (msg.likes ?? 0) + (liked ? 1 : -1);
+        msg.likes = newCount < 0 ? 0 : newCount;
+      }
+
       if (!liked) {
         this.snackBar.open('הסרת לייק ❤️', '', {
           duration: 2000,
@@ -138,7 +145,9 @@ private loadMessages() {
           panelClass: ['success-snackbar']
         });
       }
-      this.updateLikesDisplay(messageId);
+
+      // רנדור מחדש בגלל OnPush
+      this.cdr.markForCheck();
     });
   }
 
@@ -155,6 +164,32 @@ private loadMessages() {
   getLikesCount(messageId: number): number {
     const msg = this.message.find(m => m.idMessage === messageId);
     return msg?.likes ?? 0;
+  }
+
+  deleteMessage(messageId: number) {
+    if (!confirm('האם למחוק את ההודעה ואת כל התגובות שלה?')) {
+      return;
+    }
+
+    this.forums.deleteMessage(messageId).subscribe({
+      next: () => {
+        this.snackBar.open('ההודעה נמחקה 🗑️', '', {
+          duration: 2000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['success-snackbar']
+        });
+        this.loadMessages();
+      },
+      error: () => {
+        this.snackBar.open('אירעה שגיאה במחיקת ההודעה 🙁', '', {
+          duration: 3000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['error-snackbar']
+        });
+      }
+    });
   }
 
 }
