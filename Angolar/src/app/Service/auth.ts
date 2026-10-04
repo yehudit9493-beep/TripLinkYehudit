@@ -283,12 +283,12 @@ export class Auth {
   }
 
 
-  // קבל הרשאה
-  getCurrentUserPermission(): number {
+  // קבל הרשאות (כל ההרשאות של המשתמש)
+  getCurrentUserPermission(): number[] {
 
     const user = this.getCurrentUser();
 
-    return user?.PermissionId ?? 0;
+    return user?.permissionIds ?? [];
 
   }
 

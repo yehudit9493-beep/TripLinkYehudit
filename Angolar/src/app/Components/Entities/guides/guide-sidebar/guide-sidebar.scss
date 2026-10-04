@@ -397,3 +397,110 @@
     text-align: center;
     margin: 0;
 }
+
+.files-section {
+    h3 {
+        font-size: 13px;
+        font-weight: 600;
+        color: #888;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+}
+
+.file-group {
+    margin-bottom: 1rem;
+
+    .file-group-label {
+        display: block;
+        font-size: 12px;
+        color: #aaa;
+        font-weight: 500;
+        margin-bottom: 6px;
+    }
+
+    .file-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .file-chip {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #eee;
+        border-radius: 10px;
+        background: #fafafa;
+        cursor: pointer;
+        text-align: right;
+        transition: all 0.2s;
+
+        &:hover {
+            background: #e6f1fb;
+            border-color: #378ADD;
+        }
+
+        .file-chip-icon {
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .file-chip-name {
+            flex: 1;
+            font-size: 13px;
+            color: #1a1a1a;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .file-chip-open {
+            flex-shrink: 0;
+            font-size: 12px;
+            color: #378ADD;
+            font-weight: 500;
+        }
+    }
+}
+
+.lightbox-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 1200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-out;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 1.2rem;
+    left: 1.2rem;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: #fff;
+    font-size: 22px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+}
+
+.lightbox-image {
+    max-width: 92vw;
+    max-height: 92vh;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+}

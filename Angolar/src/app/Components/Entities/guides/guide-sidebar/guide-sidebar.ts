@@ -14,6 +14,8 @@ import { FormControl, FormGroup, FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { RatingService } from '../../../../Service/rating-service';
 import { Auth } from '../../../../Service/auth';
+import { Enrollment } from '../../../../Service/enrollment';
+import { GuideFile } from '../../../../Interfacess/guides';
 
 @Component({
   selector: 'app-guide-sidebar',
@@ -32,7 +34,23 @@ export class GuideSidebar implements OnInit, OnChanges, OnDestroy {
     private router: Router,
     private ratingService: RatingService,
     private auth: Auth,
-    private cdr: ChangeDetectorRef) { }
+    private cdr: ChangeDetectorRef,
+    private enrollment: Enrollment) { }
+
+  // בסיס ה-URL לגישה לקבצים (זהה לרישום/עריכת פרופיל)
+  readonly fileBaseUrl = 'https://localhost:7216';
+
+  // הקבצים של המדריכה: קורות חיים ותעודות
+  cvFiles: GuideFile[] = [];
+  certFiles: GuideFile[] = [];
+
+  // תצוגת תמונה בגדול (lightbox)
+  lightboxSrc: string | null = null;
+
+  ngOnInit() {
+    this.loadRating();
+    this.loadFiles();
+  }
 
   @Input() guide: Guides | null = null;
 
@@ -52,17 +70,14 @@ export class GuideSidebar implements OnInit, OnChanges, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  ngOnInit() {
-    this.loadRating();
-  }
-
-  // ✅ ריענון הדירוגים כשהמדריכה משתנה
+  // ✅ ריענון הדירוגים והקבצים כשהמדריכה משתנה
   ngOnChanges(changes: SimpleChanges) {
     if (changes['guide'] && this.guide) {
       this.userRating = 0;
       this.userComment = '';
       this.ratingError = '';
       this.loadRating();
+      this.loadFiles();
     }
   }
 
@@ -153,6 +168,45 @@ export class GuideSidebar implements OnInit, OnChanges, OnDestroy {
 
   getRegionName(regionId: number): string {
     return this.regions.getAreasById(regionId);
+  }
+
+  // טעינת קבצי המדריכה (קורות חיים ותעודות) דרך פרופיל המדריכה
+  loadFiles() {
+    if (!this.guide) return;
+    this.enrollment.getGuideProfile(this.guide.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (profile: any) => {
+          const all = (profile?.files ?? []) as GuideFile[];
+          this.cvFiles = all.filter(f => f.kind === 'cv');
+          this.certFiles = all.filter(f => f.kind === 'cert');
+          this.cdr.markForCheck();
+        },
+        error: (err) => console.error('Error loading guide files:', err)
+      });
+  }
+
+  // כתובת מלאה לגישה לקובץ
+  getFileUrl(file: GuideFile): string {
+    return this.fileBaseUrl + '/' + file.filePath;
+  }
+
+  // בדיקה אם הקובץ הוא תמונה (נפתח בתצוגת lightbox)
+  isImageFile(file: GuideFile): boolean {
+    return /\.(jpg|jpeg|png|gif|webp|bmp)$/i.test(file.filePath);
+  }
+
+  // פתיחת קובץ בגדול: תמונה נפתחת בתצוגת lightbox, מסמך בטאב חדש
+  openLarge(file: GuideFile) {
+    if (this.isImageFile(file)) {
+      this.lightboxSrc = this.getFileUrl(file);
+    } else {
+      window.open(this.getFileUrl(file), '_blank');
+    }
+  }
+
+  closeLightbox() {
+    this.lightboxSrc = null;
   }
 
   readonly range = new FormGroup({

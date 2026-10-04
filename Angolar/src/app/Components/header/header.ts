@@ -25,6 +25,8 @@ export class Header {
 
   loggedInUser: User | null = null;
 
+  isAdmin: boolean = false;
+
   constructor(private authService: Auth,
     private favoritesService: FavoriteService,
     private getDate: GetDate,
@@ -35,6 +37,7 @@ export class Header {
     if (savedData) {
       this.loggedInUser = JSON.parse(savedData) as User;
     }
+    this.isAdmin = this.hasPermission(1) || this.hasPermission(2);
     this.message = this.Hours()
 
 
@@ -43,6 +46,10 @@ export class Header {
         this.hebrewDate = data.hebrew;
         this.cdr.detectChanges();
       });
+  }
+
+  hasPermission(permissionId: number): boolean {
+    return !!this.loggedInUser && (this.loggedInUser.permissionIds ?? []).includes(permissionId);
   }
 
   Hours(): string {

@@ -65,7 +65,23 @@
       "Bash(find \"c:/פרויקט גמר/Server/project/project\" -iname \"GuideController.cs\" -o -iname \"GuideService.cs\" -o -iname \"GuideRepository.cs\" 2>/dev/null)",
       "Bash(grep -n \"GetGuideProfile\\\\|UpdateGuideProfileAsync\\\\|GetGuideProfile\\\\|helper\\\\|ReverseMap\\\\|ToProfile\" \"c:/פרויקט גמר/Server/project/project/Service/GuideService.cs\" \"c:/פרויקט גמר/Server/project/project/Repository/GuideRepository.cs\" 2>/dev/null)",
       "Bash(grep -rn \"DbSet<Titel>\\\\|DbSet<InstitutionsType>\\\\|DbSet<AgesGroup>\\\\|DbSet<Gender>\\\\|DbSet<InstitutionDetail>\\\\|DbSet<Coordinator>\\\\|DbSet<City>\\\\|DbSet<User>\" \"c:/פרויקט גמר/Server/project/project/Entities/YehuditTripsContext.cs\" 2>/dev/null)",
-      "Bash(cat \"c:/פרויקט גמר/Server/project/project/Entities/AgesGroup.cs\" \"c:/פרויקט גמר/Server/project/project/Entities/Gender.cs\" \"c:/פרויקט גמר/Server/project/project/Entities/InstitutionsType.cs\" 2>/dev/null | grep -n \"public\\\\|class\\\\|namespace\")"
+      "Bash(cat \"c:/פרויקט גמר/Server/project/project/Entities/AgesGroup.cs\" \"c:/פרויקט גמר/Server/project/project/Entities/Gender.cs\" \"c:/פרויקט גמר/Server/project/project/Entities/InstitutionsType.cs\" 2>/dev/null | grep -n \"public\\\\|class\\\\|namespace\")",
+      "Bash(ls \"C:/פרויקט גמר/Server/project\")",
+      "Bash(find \"C:/פרויקט גמר/Server/project/project\" -type f -name \"*.cs\" | head -100)",
+      "Bash(grep -rln \"permissionId\" \"C:/פרויקט גמר/Progect\" 2>/dev/null | head -30)",
+      "Bash(cd \"C:/פרויקט גמר/Server/project\" && ls -la && find . -iname \"*Guide*\" -type f 2>/dev/null | head -50)",
+      "Bash(./node_modules/.bin/ng build *)",
+      "Bash(export NG_CLI_ANALYTICS=false)",
+      "Bash(ls -la \"c:/פרויקט גמר/Progect/Angolar/src/app\" && echo \"---SERVER---\" && ls -la \"c:/פרויקט גמר/Server/project\")",
+      "Bash(cd \"c:/פרויקט גמר/Server/project\" && echo \"===ROOT===\" && ls && echo \"===project subdir===\" && ls project && echo \"===find csproj/sln===\" && find . -name \"*.csproj\" -o -name \"*Controller*.cs\" | head -50)",
+      "Bash(netstat -ano)",
+      "Bash(awk '{print $NF}')",
+      "Bash(cd \"c:/פרויקט גמר/Server/project/project\" && grep -n \"IsBlocked\\\\|modelBuilder.Entity<User>\" Entities/YehuditTripsContext.cs)",
+      "Bash(curl -sk https://localhost:7216/api/UserAdmin/guides -w \"\\\\nHTTP:%{http_code} time:%{time_total}s\\\\n\")",
+      "Bash(curl -sk https://localhost:7216/api/UserAdmin/permission-types -w \"\\\\nHTTP:%{http_code}\\\\n\")",
+      "Bash(curl -sk https://localhost:7216/api/UserAdmin/admins -w \"\\\\nHTTP:%{http_code}\\\\n\")",
+      "Bash(curl -sk https://localhost:7216/api/UserAdmin/coordinators -w \"\\\\nHTTP:%{http_code}\\\\n\")",
+      "Bash(curl -sk -H \"Origin: http://localhost:4200\" https://localhost:7216/api/UserAdmin/guides -D - -o /dev/null)"
     ],
     "additionalDirectories": [
       "C:\\פרויקט גמר\\Server\\project\\project\\DTOs",
@@ -76,7 +92,10 @@
       "c:\\פרויקט גמר\\Server\\project\\project\\DTOs",
       "c:\\פרויקט גמר\\Server\\project\\project\\Repository",
       "c:\\פרויקט גמר\\Server\\project\\project\\Service",
-      "c:\\פרויקט גמר\\Server\\project\\project\\Controllers"
+      "c:\\פרויקט גמר\\Server\\project\\project\\Controllers",
+      "C:\\פרויקט גמר\\Server\\project\\project\\Entities",
+      "c:\\פרויקט גמר\\Server\\project\\project\\Entities",
+      "c:\\פרויקט גמר\\Server\\project\\project"
     ]
   }
 }

@@ -1,3 +1,10 @@
+export interface GuideFile {
+  fileId: number;
+  fileName: string;
+  filePath: string;
+  kind: 'cv' | 'cert';
+}
+
 export interface Guides {
   id: number;
   name: string;
@@ -9,6 +16,7 @@ export interface Guides {
   yearsOfExperience: number;
   status : boolean;
   ReligiousAffiliation : string;
+  files?: GuideFile[];
 }
 
 export type GuideWithoutId = Omit<Guides, 'id'>;

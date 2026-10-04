@@ -7,5 +7,6 @@ export interface User {
 	Adress : string
 	Email : string
 	PhonNumber : string
-	PermissionId : number
+	permissionIds : number[]
+	isBlocked? : boolean
 }

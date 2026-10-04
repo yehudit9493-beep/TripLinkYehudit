@@ -75,6 +75,43 @@
         </div>
         <br>
 
+        @if (cvFiles.length > 0 || certFiles.length > 0) {
+        <div class="files-section">
+            <h3>מסמכים</h3>
+
+            @if (certFiles.length > 0) {
+            <div class="file-group">
+                <span class="file-group-label">תעודות הכשרה</span>
+                <div class="file-list">
+                    @for (file of certFiles; track file.fileId) {
+                    <button type="button" class="file-chip" (click)="openLarge(file)">
+                        <span class="file-chip-icon">📄</span>
+                        <span class="file-chip-name">{{ file.fileName }}</span>
+                        <span class="file-chip-open">בגדול</span>
+                    </button>
+                    }
+                </div>
+            </div>
+            }
+
+            @if (cvFiles.length > 0) {
+            <div class="file-group">
+                <span class="file-group-label">קורות חיים</span>
+                <div class="file-list">
+                    @for (file of cvFiles; track file.fileId) {
+                    <button type="button" class="file-chip" (click)="openLarge(file)">
+                        <span class="file-chip-icon">📄</span>
+                        <span class="file-chip-name">{{ file.fileName }}</span>
+                        <span class="file-chip-open">בגדול</span>
+                    </button>
+                    }
+                </div>
+            </div>
+            }
+        </div>
+        <br>
+        }
+
         <div class="detail-card">
             <span class="detail-label">דירוג ממוצע</span>
             <button class="stars-btn" (click)="goToRatings()" title="לחץ לצפייה בכל הדירוגים">
@@ -115,6 +152,13 @@
 @if (showEdit) {
 <app-edit-guide [guide]="guide" (closed)="showEdit = false" (updated)="onUpdated($event)">
 </app-edit-guide>
+}
+
+@if (lightboxSrc) {
+<div class="lightbox-overlay" (click)="closeLightbox()">
+    <button class="lightbox-close" (click)="closeLightbox()">✕</button>
+    <img class="lightbox-image" [src]="lightboxSrc" alt="תצוגת קובץ">
+</div>
 }
 
 }

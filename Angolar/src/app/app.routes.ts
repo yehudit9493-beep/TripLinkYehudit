@@ -16,6 +16,7 @@ import { ExperienceUpdate } from './Components/forums/experience-update/experien
 import { Forum } from './Components/forums/forum/forum';
 import { Availability } from './Components/Entities/guides/availability/availability';
 import { RatingsList } from './Components/ratings-list/ratings-list';
+import { UserManagement } from './Components/user-management/user-management';
 
 export const routes: Routes = [
     { path: '', component: Home },
@@ -34,6 +35,7 @@ export const routes: Routes = [
     { path: 'addbForum/:forumId', component: Forum },
     {path: 'availability', component :Availability},
     { path: 'ratings/:type/:id', component: RatingsList },
+    { path: 'user-management', component: UserManagement },
 
 
 ];

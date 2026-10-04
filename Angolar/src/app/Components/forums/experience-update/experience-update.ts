@@ -49,7 +49,7 @@ export class ExperienceUpdate {
   ngOnInit() {
     this.currentUserId = this.auth.getCurrentUserId();
     this.currentUserName = this.auth.getCurrentUserName();
-    const userPermission = this.auth.getCurrentUserPermission();
+    const userPermissions = this.auth.getCurrentUserPermission();
 
     const forumId = this.route.snapshot.paramMap.get('forumId');
     this.currentForumId = forumId ? +forumId : 1;
@@ -58,8 +58,8 @@ export class ExperienceUpdate {
     if (config) {
       this.forumTitle = config.title;
       this.forumSubtitle = config.subtitle;
-      this.canPost = config.canPost.includes(userPermission);
-      this.canReply = config.canReply.includes(userPermission);
+      this.canPost = config.canPost.some(p => userPermissions.includes(p));
+      this.canReply = config.canReply.some(p => userPermissions.includes(p));
     }
 
     this.loadMessages();

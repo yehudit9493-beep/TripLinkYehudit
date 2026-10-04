@@ -1,0 +1,111 @@
+<div dir="rtl" class="um-page">
+
+  <div class="um-header">
+    <h1>ניהול משתמשים</h1>
+    <p>ניהול מדריכות, רכזות ומנהלי מערכת</p>
+  </div>
+
+  <!-- לשוניות -->
+  <div class="um-tabs">
+    <button
+      class="um-tab"
+      [class.active]="activeTab === 'guides'"
+      (click)="selectTab('guides')"
+    >מדריכות</button>
+
+    <button
+      class="um-tab"
+      [class.active]="activeTab === 'coordinators'"
+      (click)="selectTab('coordinators')"
+    >רכזות</button>
+
+    <!-- לשונית מנהלים: רק למנהל-על (הרשאת 1) -->
+    @if (isSuperAdmin) {
+      <button
+        class="um-tab"
+        [class.active]="activeTab === 'admins'"
+        (click)="selectTab('admins')"
+      >מנהלי מערכת</button>
+    }
+  </div>
+
+  <!-- טבלה -->
+  <div class="um-table-wrap">
+    @if (loading) {
+      <div class="um-loading">טוען...</div>
+    } @else if (users.length === 0) {
+      <div class="um-empty">אין משתמשים להצגה בקטגוריה זו</div>
+    } @else {
+      <table class="um-table">
+        <thead>
+          <tr>
+            <th>שם</th>
+            <th>שם משתמש</th>
+            <th>סטטוס</th>
+            <th>פעולה</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (user of users; track user.userId) {
+            <!-- שורת נתונים -->
+            <tr
+              class="um-row"
+              [class.expanded]="expandedUser?.userId === user.userId"
+              (click)="toggleExpand(user)"
+            >
+              <td class="um-name">{{ getFullName(user) }}</td>
+              <td>{{ user.userName }}</td>
+              <td>
+                <span
+                  class="um-badge"
+                  [class.blocked]="user.isBlocked"
+                  [class.approved]="!user.isBlocked"
+                >
+                  {{ user.isBlocked ? 'חסום' : 'מאושר' }}
+                </span>
+              </td>
+              <td (click)="$event.stopPropagation()">
+                <button
+                  class="um-action"
+                  [class.block]="!user.isBlocked"
+                  [class.approve]="user.isBlocked"
+                  (click)="toggleBlock(user)"
+                >
+                  {{ user.isBlocked ? 'אישור' : 'חסימה' }}
+                </button>
+              </td>
+            </tr>
+
+            <!-- שורת הרחבה - הרשאות -->
+            @if (expandedUser?.userId === user.userId) {
+              <tr class="um-expand-row">
+                <td colspan="4">
+                  <div class="um-permissions">
+                    <div class="um-perm-title">הרשאות המשתמש</div>
+                    <div class="um-perm-grid">
+                      @for (perm of permissions; track perm.permissionId) {
+                        <label class="um-perm-item">
+                          <input
+                            type="checkbox"
+                            [checked]="isPermissionSelected(perm.permissionId)"
+                            (change)="togglePermission(perm.permissionId)"
+                          />
+                          <span>{{ perm.permissionName }}</span>
+                        </label>
+                      }
+                    </div>
+                    <div class="um-perm-actions">
+                      <button class="um-save" (click)="savePermissions()">שמירה</button>
+                      <button class="um-cancel" (click)="expandedUser = null">ביטול</button>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+
+</div>
