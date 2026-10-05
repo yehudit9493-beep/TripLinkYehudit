@@ -2,10 +2,11 @@
     display: block;
     min-height: 100vh;
     background: #f5f5f5;
+    font-family: 'calibri', sans-serif;
 }
 
 .forum-page {
-    max-width: 700px;
+    max-width: 900px;
     margin: 0 auto;
     padding: 32px 16px;
 }
@@ -15,7 +16,7 @@
 
     h1 {
         font-size: 1.8rem;
-        font-weight: 700;
+        font-weight: 600;
         color: #1a1a2e;
         margin: 0 0 6px;
         border-right: 4px solid #0990d4;
@@ -34,6 +35,19 @@
     display: flex;
     flex-direction: column;
     gap: 32px;
+}
+
+// אזור קבוע שנותר בראש גם בגלילה (מתחת להדר האתר שגובהו 70px)
+.sticky-header {
+    position: sticky;
+    top: 70px;
+    z-index: 10;
+    background: linear-gradient(to bottom, #f5f5f5 85%, rgba(245, 245, 245, 0));
+    padding-top: 32px;
+    margin: -32px -16px 0;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 8px;
 }
 
 // כפתור הוספת הודעה
@@ -134,9 +148,9 @@
         flex-direction: column;
 
         .username {
-            font-weight: 600;
+            font-weight: 400;
             font-size: 0.95rem;
-            color: #1a1a2e;
+            color: #424244;
         }
 
         .date {
@@ -260,7 +274,7 @@
         border: 1px solid #e0e0e0;
         border-radius: 8px;
         font-size: 0.95rem;
-        font-family: inherit;
+        font-family: 'calibri', sans-serif;
         direction: rtl;
         outline: none;
         transition: border 0.2s, box-shadow 0.2s;

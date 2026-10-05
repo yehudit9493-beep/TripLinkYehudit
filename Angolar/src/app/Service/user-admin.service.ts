@@ -31,6 +31,11 @@ export class UserAdminService {
     return this.http.get<PermissionType[]>(`${this.API_URL}/permission-types`);
   }
 
+  // סוג הפרופיל של משתמש לפי userId ("coordinator" / "guide" / "none")
+  getProfileType(userId: number): Observable<{ profileType: string }> {
+    return this.http.get<{ profileType: string }>(`${this.API_URL}/profile-type/${userId}`);
+  }
+
   // עדכון סטטוס חסימה של משתמש
   setBlocked(userId: number, isBlocked: boolean): Observable<any> {
     return this.http.put<any>(`${this.API_URL}/${userId}/block`, { isBlocked });

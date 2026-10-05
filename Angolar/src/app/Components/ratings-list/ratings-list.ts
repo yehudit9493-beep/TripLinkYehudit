@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Rating, RatingService } from '../../Service/rating-service';
@@ -9,7 +9,8 @@ import { Location } from '@angular/common';
   standalone: true,
   imports: [CommonModule, DatePipe],
   templateUrl: './ratings-list.html',
-  styleUrl: './ratings-list.scss'
+  styleUrl: './ratings-list.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RatingsList implements OnInit {
 
@@ -23,7 +24,8 @@ export class RatingsList implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private ratingService: RatingService,
-    private location: Location
+    private location: Location,
+    private cdr: ChangeDetectorRef 
   ) {}
 
   ngOnInit() {
@@ -36,9 +38,16 @@ export class RatingsList implements OnInit {
       next: ratings => {
         this.ratings = ratings;
         this.loading = false;
+        this.cdr.markForCheck(); 
       },
-      error: () => this.loading = false,
-      complete: () => this.loading = false
+      error: () => {
+        this.loading = false;
+        this.cdr.markForCheck();  
+      },
+      complete: () => {
+        this.loading = false;
+        this.cdr.markForCheck(); 
+      }
     });
   }
 

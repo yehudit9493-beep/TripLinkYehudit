@@ -18,7 +18,8 @@
     <div class="user-info">
       <span class="user-greeting">👋 {{message }}, <strong>{{ loggedInUser.firstName }}</strong></span>
       <span class="hebrew-date">{{ hebrewDate }}</span>
-      <button routerLink="/login-to-coordinator" [queryParams]="{ mode: 'edit' }" class="btn-update">עריכת פרופיל</button>
+      <button (click)="goToEditProfile()" class="btn-update">עריכת פרופיל</button>
+      
       @if (isAdmin) {
       <button routerLink="/user-management" class="btn-admin">ניהול</button>
       }

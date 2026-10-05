@@ -68,7 +68,6 @@ export class UserManagement implements OnInit {
         }
       },
       error: () => {
-        this.cdr.markForCheck();
         // נשאר עם רשימת ברירת המחדל
       },
     });
@@ -144,12 +143,38 @@ export class UserManagement implements OnInit {
     });
   }
 
-  // חסימה / אישור של משתמש
-  toggleBlock(user: AdminUser) {
-    const newValue = !user.isBlocked;
-    this.adminService.setBlocked(user.userId, newValue).subscribe({
+  // משתמש המיועד לחסימה (להצגת הפופ-אפ)
+  userToBlock: AdminUser | null = null;
+
+  // לחיצה על עמודת הסטטוס — בחסימה נפתח פופ-אפ, באישור שינוי מיידי
+  onStatusClick(user: AdminUser) {
+    if (user.isBlocked) {
+      // משבירות למאושר — שינוי מיידי ללא אישור
+      this.applyStatusChange(user, false);
+    } else {
+      // ממאושר לחסום — פופ-אפ אזהרה
+      this.userToBlock = user;
+    }
+  }
+
+  // אישור החסימה מהפופ-אפ
+  confirmBlock() {
+    if (this.userToBlock) {
+      this.applyStatusChange(this.userToBlock, true);
+    }
+    this.userToBlock = null;
+  }
+
+  // ביטול הפופ-אפ
+  cancelBlock() {
+    this.userToBlock = null;
+  }
+
+  // ביצוע בפועל של שינוי הסטטוס
+  private applyStatusChange(user: AdminUser, blocked: boolean) {
+    this.adminService.setBlocked(user.userId, blocked).subscribe({
       next: () => {
-        user.isBlocked = newValue;
+        user.isBlocked = blocked;
         this.syncUser(user);
         this.cdr.markForCheck();
       },

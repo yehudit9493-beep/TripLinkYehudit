@@ -35,9 +35,6 @@ export class LoginToCoordinator implements OnInit {
   // רשימת הערים למילוי שדה העיר (נטען מהשרת)
   citiesList: string[] = [];
 
-  // =========================
-  // הודעות (טוסט) - מוחלפות במקום alert
-  // =========================
   toastMessage: string = '';
   toastType: 'success' | 'error' | 'info' = 'info';
   toastVisible = false;

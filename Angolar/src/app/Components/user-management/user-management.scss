@@ -16,9 +16,9 @@
   margin-bottom: 1.5rem;
 
   h1 {
-    font-size: 26px;
-    font-weight: 600;
-    color: #1a1a1a;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1a3c5e;
     margin: 0;
   }
 
@@ -121,6 +121,22 @@
     background: #E8F5E9;
     color: #1e7d32;
   }
+
+  // הסטטוס ניתן ללחיצה — במעבר ישנה סטטוס
+  &.um-badge-btn {
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+
+    &:hover {
+      transform: scale(1.04);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+    }
+
+    &:active {
+      transform: scale(0.96);
+    }
+  }
 }
 
 // ===== פעולות =====
@@ -152,6 +168,27 @@
   }
 }
 
+// כפתור פתיחת ההרשאות
+.um-action-perms {
+  background: #EDF2FA;
+  color: #378ADD;
+  border: 1px solid #d3e2f5;
+
+  &:hover {
+    background: #dbe8fa;
+  }
+
+  &.open {
+    background: #378ADD;
+    color: #fff;
+    border-color: #378ADD;
+
+    &:hover {
+      background: #2f76bd;
+    }
+  }
+}
+
 // ===== שורת הרחבה =====
 .um-expand-row td {
   padding: 0;
@@ -171,9 +208,9 @@
 }
 
 .um-perm-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 24px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px 20px;
 }
 
 .um-perm-item {
@@ -183,6 +220,16 @@
   font-size: 14px;
   cursor: pointer;
   user-select: none;
+  padding: 8px 12px;
+  background: #f9fbfe;
+  border: 1px solid #eef2f7;
+  border-radius: 8px;
+  transition: all 0.15s;
+
+  &:hover {
+    background: #f0f6ff;
+    border-color: #d3e2f5;
+  }
 
   input[type='checkbox'] {
     width: 17px;
@@ -237,4 +284,89 @@
   text-align: center;
   color: #888;
   font-size: 15px;
+}
+
+// ===== פופ-אפ אזהרה =====
+.um-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.um-modal {
+  background: #fff;
+  border-radius: 14px;
+  padding: 28px 34px;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  animation: um-pop 0.18s ease-out;
+}
+
+.um-modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #791F1F;
+  margin-bottom: 12px;
+}
+
+.um-modal-text {
+  font-size: 15px;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 22px;
+
+  strong {
+    color: #1a1a1a;
+  }
+}
+
+.um-modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.um-modal-btn {
+  padding: 9px 30px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &.um-modal-cancel {
+    background: #f0f0f0;
+    color: #555;
+
+    &:hover {
+      background: #e2e2e2;
+    }
+  }
+
+  &.um-modal-confirm {
+    background: #e53935;
+    color: #fff;
+
+    &:hover {
+      background: #c62828;
+    }
+  }
+}
+
+@keyframes um-pop {
+  from {
+    transform: scale(0.92);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }

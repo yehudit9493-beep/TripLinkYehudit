@@ -1,12 +1,13 @@
 import { CommonModule, Time } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Auth } from '../../Service/auth';
 import { User } from '../../Interfacess/user';
 import { MatIconModule } from '@angular/material/icon';
 import { FavoritesPanel } from '../favorites-panel/favorites-panel';
 import { FavoriteService } from '../../Service/favorite-service';
 import { GetDate } from '../../Service/get-date';
+import { UserAdminService } from '../../Service/user-admin.service';
 
 @Component({
   selector: 'app-header',
@@ -30,6 +31,8 @@ export class Header {
   constructor(private authService: Auth,
     private favoritesService: FavoriteService,
     private getDate: GetDate,
+    private userAdminService: UserAdminService,
+    private router: Router,
     private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
@@ -71,6 +74,31 @@ export class Header {
 
   toggleFavorites() {
     this.showFavorites = !this.showFavorites;
+  }
+
+  // הפנייה לעריכת הפרופיל לפי סוג המשתמש (רכזת / מדריכה)
+  goToEditProfile() {
+    const userId = this.authService.getCurrentUserId();
+
+    // בדיקת הסוג מול השרת לפי ה-UserId של המשתמש המחובר
+    this.userAdminService.getProfileType(userId).subscribe({
+      next: (res) => {
+        if (res.profileType === 'guide') {
+          this.router.navigate(['/login-to-guide']);
+        } else {
+          // רכזת (או ברירת מחדל) - עם פרמטר edit למצב עריכה
+          this.router.navigate(['/login-to-coordinator'], {
+            queryParams: { mode: 'edit' },
+          });
+        }
+      },
+      error: () => {
+        // במקרה של שגיאה נחזור להתנהגות הקודמת: קומפוננטת הרכזת
+        this.router.navigate(['/login-to-coordinator'], {
+          queryParams: { mode: 'edit' },
+        });
+      },
+    });
   }
 
 }

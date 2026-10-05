@@ -1,14 +1,12 @@
 <div class="forum-page" dir="rtl">
 
-    <div class="forum-header">
-        <h1>{{ forumTitle }}</h1>
-        <p class="forum-subtitle">{{ forumSubtitle }}</p>
-    </div>
+    <div class="sticky-header">
+        <div class="forum-header">
+            <h1>{{ forumTitle }}</h1>
+            <p class="forum-subtitle">{{ forumSubtitle }}</p>
+        </div>
 
-    <div class="forum-container">
-
-
-        @if (!canPost) {
+        @if (canPost) {
         <div class="new-message-prompt" (click)="goToAdd()">
             <div class="prompt-avatar">👤</div>
             <div class="prompt-text">
@@ -17,6 +15,9 @@
             <button class="prompt-btn">✏️ כתוב הודעה</button>
         </div>
         }
+    </div>
+
+    <div class="forum-container">
 
         <!-- רשימת הודעות -->
         <div class="messages-list">

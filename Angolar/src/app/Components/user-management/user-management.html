@@ -42,7 +42,7 @@
             <th>שם</th>
             <th>שם משתמש</th>
             <th>סטטוס</th>
-            <th>פעולה</th>
+            <th>הרשאות</th>
           </tr>
         </thead>
         <tbody>
@@ -55,23 +55,21 @@
             >
               <td class="um-name">{{ getFullName(user) }}</td>
               <td>{{ user.userName }}</td>
-              <td>
+              <td (click)="$event.stopPropagation(); onStatusClick(user)">
                 <span
-                  class="um-badge"
+                  class="um-badge um-badge-btn"
                   [class.blocked]="user.isBlocked"
                   [class.approved]="!user.isBlocked"
                 >
                   {{ user.isBlocked ? 'חסום' : 'מאושר' }}
                 </span>
               </td>
-              <td (click)="$event.stopPropagation()">
+              <td (click)="$event.stopPropagation(); toggleExpand(user)">
                 <button
-                  class="um-action"
-                  [class.block]="!user.isBlocked"
-                  [class.approve]="user.isBlocked"
-                  (click)="toggleBlock(user)"
+                  class="um-action um-action-perms"
+                  [class.open]="expandedUser?.userId === user.userId"
                 >
-                  {{ user.isBlocked ? 'אישור' : 'חסימה' }}
+                  {{ expandedUser?.userId === user.userId ? 'סגירת הרשאות' : 'הרשאות' }}
                 </button>
               </td>
             </tr>
@@ -107,5 +105,22 @@
       </table>
     }
   </div>
+
+  <!-- פופ-אפ אזהרה: חסימת משתמש -->
+  @if (userToBlock) {
+    <div class="um-modal-overlay" (click)="cancelBlock()">
+      <div class="um-modal" (click)="$event.stopPropagation()">
+        <div class="um-modal-title">אזהרה</div>
+        <div class="um-modal-text">
+          האם אתה בטוח שברצונך לחסום את
+          <strong>{{ getFullName(userToBlock) }}</strong>?
+        </div>
+        <div class="um-modal-actions">
+          <button class="um-modal-btn um-modal-cancel" (click)="cancelBlock()">ביטול</button>
+          <button class="um-modal-btn um-modal-confirm" (click)="confirmBlock()">אישור</button>
+        </div>
+      </div>
+    </div>
+  }
 
 </div>
