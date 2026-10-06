@@ -243,6 +243,12 @@ export class AttractishonSidebar implements OnInit, OnChanges, OnDestroy {
   @Output() closed = new EventEmitter<void>();
   @Output() attractionUpdated = new EventEmitter<Attraction>();
 
+  // האם המשתמש רשאי לנהל אטרקציות (הרשאת "ניהול אטרקציות" = 4)
+  canManageAttraction: boolean = false;
+
+  // דירוג פתוח רק למאשרות דירוג (הרשאת "מרכזת בסיסית" = 9)
+  canRate: boolean = false;
+
   private cityService = inject(getCity);
   cities: any[] = [];
 
@@ -271,7 +277,10 @@ export class AttractishonSidebar implements OnInit, OnChanges, OnDestroy {
     private auth: Auth,
     private cdr: ChangeDetectorRef,
     private apiUrl: ApiUrl
-  ) { }
+  ) {
+    this.canManageAttraction = this.auth.getCurrentUserPermission().includes(4);
+    this.canRate = this.auth.getCurrentUserPermission().includes(9);
+  }
 
   getImageUrl(image: string): string {
     return this.apiUrl.getImageUrl(image);

@@ -30,6 +30,12 @@ export class HotelSidebar implements OnChanges, OnDestroy {
 
   showEdit: boolean = false;
 
+  // האם המשתמש רשאי לנהל מקומות לינה (הרשאת "ניהול מקומות לינה" = 5)
+  canManageLodging: boolean = false;
+
+  // דירוג פתוח רק למאשרות דירוג (הרשאת "מרכזת בסיסית" = 9)
+  canRate: boolean = false;
+
   currentImageIndex: number = 0;
 
   userRating: number = 0;
@@ -106,7 +112,10 @@ export class HotelSidebar implements OnChanges, OnDestroy {
     private auth: Auth,
     private cdr: ChangeDetectorRef,
     private apiUrl: ApiUrl
-  ) { }
+  ) {
+    this.canManageLodging = this.auth.getCurrentUserPermission().includes(5);
+    this.canRate = this.auth.getCurrentUserPermission().includes(9);
+  }
 
   getImageUrl(image: string): string {
     return this.apiUrl.getImageUrl(image);

@@ -126,7 +126,7 @@
             </button>
         </div>
 
-        @if (!alreadyRated()) {
+        @if (canRate && !alreadyRated()) {
         <div class="rating-form">
             <h4>דרגי את מקום הלינה</h4>
             <div class="rating-stars-input">
@@ -141,14 +141,16 @@
             }
             <button class="btn-submit-rating" (click)="submitRating()">שמור דירוג</button>
         </div>
-        } @else {
+        } @else if (canRate && alreadyRated()) {
         <p class="already-rated">✓ כבר דירגת מקום לינה זה</p>
         }
 
+        @if (canManageLodging) {
         <div class="action-buttons">
             <button class="btn-edit" (click)="showEdit = true">✏️ עריכה</button>
             <button class="btn-delete" (click)="deleteHotel()">🗑️ מחיקה</button>
         </div>
+        }
     </div>
 </div>
 }

@@ -29,7 +29,9 @@
             </div>
         </div>
 
+        @if (canManageLodging) {
         <button class="add-trail-btn" (click)="onAddHotel()">הוסף מקום לינה חדש</button>
+        }
     </div>
 
     <div class="trails-table-wrapper">

@@ -15,30 +15,34 @@ export class Forums {
   readonly forumConfig: Record<number, {
     title: string;
     subtitle: string;
-    canPost: number[];   // PermissionId שיכולים לפרסם
-    canReply: number[];  // PermissionId שיכולים לענות
+    canPost: number[];   // ריק = כולם יכולים לפרסם; אחרת רק בעלי ההרשאות
+    canReply: number[];  // ריק = כולם יכולים לענות; אחרת רק בעלי ההרשאות
+    canDelete: number[]; // מי יכול למחוק הודעות
     sortDesc: boolean;
   }> = {
       1: {
         title: '💬 חוויות והמלצות',
         subtitle: 'שתפו חוויות, המלצות ורשמים מהטיולים שלכם',
-        canPost: [1, 2],    // כולם
-        canReply: [1, 2],   // כולם
-        sortDesc: false     // מהישן לחדש
+        canPost: [],          // כולם
+        canReply: [],         // כולם
+        canDelete: [1, 2],    // רק מנהלים
+        sortDesc: false       // מהישן לחדש
       },
       2: {
         title: '❓ שאלות ותשובות',
         subtitle: 'שאלות שחוזרות על עצמן',
-        canPost: [1, 2],    // כולם יכולים לשאול
-        canReply: [2],      // רק מדריכות עם הרשאה
+        canPost: [],          // כולם יכולים לשאול
+        canReply: [1, 2, 6],  // מנהלים + בעלי הרשאת מענה בשאלות
+        canDelete: [1, 2],    // רק מנהלים
         sortDesc: false
       },
       3: {
         title: '⚠️ פורום בטיחות',
         subtitle: 'שאלות ומידע בנושאי בטיחות',
-        canPost: [1, 2],
-        canReply: [3],      // הרשאה נפרדת לבטיחות
-        sortDesc: true      // מהחדש לישן
+        canPost: [1, 2, 7],   // מנהלים + בעלי הרשאת מענה בבטיחות
+        canReply: [1, 2, 7],
+        canDelete: [1, 2],    // רק מנהלים
+        sortDesc: true        // מהחדש לישן
       }
     };
 

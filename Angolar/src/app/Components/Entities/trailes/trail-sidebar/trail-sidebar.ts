@@ -31,6 +31,12 @@ export class TrailSidebar implements OnChanges, OnDestroy {
 
   showEdit: boolean = false;
 
+  // האם המשתמש רשאי לנהל מסלולים (הרשאת "ניהול מסלולים" = 3)
+  canManageTrail: boolean = false;
+
+  // דירוג פתוח רק למרכזות/מאשרות דירוג (הרשאת "מרכזת בסיסית" = 9)
+  canRate: boolean = false;
+
   currentImageIndex: number = 0;
 
   private destroy$ = new Subject<void>();
@@ -43,7 +49,10 @@ export class TrailSidebar implements OnChanges, OnDestroy {
     private ratingService: RatingService,
     private auth: Auth,
     private cdr: ChangeDetectorRef,
-    private apiUrl: ApiUrl) { }
+    private apiUrl: ApiUrl) {
+    this.canManageTrail = this.auth.getCurrentUserPermission().includes(3);
+    this.canRate = this.auth.getCurrentUserPermission().includes(9);
+  }
 
   getImageUrl(image: string): string {
     return this.apiUrl.getImageUrl(image);

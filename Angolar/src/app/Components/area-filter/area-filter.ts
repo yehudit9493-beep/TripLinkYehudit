@@ -280,11 +280,10 @@
 
 
 
-import { Component, inject, OnDestroy, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatDrawer, MatDrawerContainer, MatDrawerContent, MatSidenavModule } from '@angular/material/sidenav';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser'; // ✅ ללא SecurityContext
+import { Router } from '@angular/router';
 import { Regions } from '../../Service/regions';
 import { AttractionService } from '../../Service/attraction-service';
 import { HotelService } from '../../Service/hotel-service';
@@ -295,6 +294,10 @@ import { Accommodation } from '../../Interfacess/accommodation';
 import { Guides } from '../../Interfacess/guides';
 import { Trail } from '../../Interfacess/Trail';
 import { Subscription } from 'rxjs';
+import { HotelSidebar } from '../Entities/Accommodations/hotel-sidebar/hotel-sidebar';
+import { AttractishonSidebar } from '../Entities/attractiones/attractishon-sidebar/attractishon-sidebar';
+import { GuideSidebar } from '../Entities/guides/guide-sidebar/guide-sidebar';
+import { TrailSidebar } from '../Entities/trailes/trail-sidebar/trail-sidebar';
 
 export type FilterEntityType = 'attraction' | 'accommodation' | 'guide' | 'trail';
 
@@ -310,7 +313,7 @@ export interface AreaFilterItem {
 
 @Component({
   selector: 'app-area-filter',
-  imports: [CommonModule, FormsModule, MatSidenavModule],
+  imports: [CommonModule, FormsModule, HotelSidebar, AttractishonSidebar, GuideSidebar, TrailSidebar],
   templateUrl: './area-filter.html',
   styleUrl: './area-filter.scss',
   standalone: true,
@@ -318,20 +321,18 @@ export interface AreaFilterItem {
 })
 export class AreaFilter implements OnInit, OnDestroy {
 
-  private readonly sanitizer = inject(DomSanitizer);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly router = inject(Router);
 
-  // ✅ SVG בטוח ללא SecurityContext
-  infoIconSvg: SafeHtml = this.sanitizer.bypassSecurityTrustHtml(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
-      <path d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14m0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16"/>
-      <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588M9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
-    </svg>`
-  );
+  // ===== מצב מסך: בחירת אזורים → תוצאות =====
+  showAreas = true;
+  showResults = false;
 
-  @ViewChild('detailsDrawer') drawer?: MatDrawer;
-
-  selectedItem: AreaFilterItem | null = null;
+  // ===== הפריט שנבחר להצגה בסיידר האמיתי =====
+  selectedHotel: Accommodation | null = null;
+  selectedAttraction: Attraction | null = null;
+  selectedGuide: Guides | null = null;
+  selectedTrail: Trail | null = null;
 
   private readonly regions = inject(Regions);
   areaList: string[] = [];
@@ -538,16 +539,78 @@ export class AreaFilter implements OnInit, OnDestroy {
     return total > 0 ? `${total} פריטים` : '';
   }
 
-  showDetails(item: AreaFilterItem): void {
-    this.selectedItem = item;
+  // ===== מעברים בין מצבי המסך =====
+  showResultsView(): void {
+    if (this.selectedAreas.length === 0) return;
+    this.showAreas = false;
+    this.showResults = true;
     this.cdr.markForCheck();
-    this.drawer?.open();
   }
 
-  closeDrawer(): void {
-    this.drawer?.close();
-    this.selectedItem = null;
+  backToAreas(): void {
+    this.showResults = false;
+    this.showAreas = true;
     this.cdr.markForCheck();
+  }
+
+  goBackHome(): void {
+    this.router.navigate(['/home-page']);
+  }
+
+  // ===== סימון אזור בלחיצה על כרטיס (ללא checkbox) =====
+  toggleAreaCard(name: string): void {
+    if (this.isAreaSelected(name)) {
+      this.selectedAreas = this.selectedAreas.filter((a) => a !== name);
+    } else {
+      this.selectedAreas = [...this.selectedAreas, name];
+    }
+    // בחירה חוזרת לשלב התוצאות — לכן מאפסים את הסיידרים הפתוחים
+    this.closeAllSidebars();
+    this.cdr.markForCheck();
+  }
+
+  // ===== פתיחת הסיידר האמיתי לפי סוג הפריט =====
+  openSidebar(item: AreaFilterItem): void {
+    switch (item.type) {
+      case 'accommodation':
+        this.selectedHotel = item.payload as Accommodation;
+        break;
+      case 'attraction':
+        this.selectedAttraction = item.payload as Attraction;
+        break;
+      case 'guide':
+        this.selectedGuide = item.payload as Guides;
+        break;
+      case 'trail':
+        this.selectedTrail = item.payload as Trail;
+        break;
+    }
+    this.cdr.markForCheck();
+  }
+
+  closeSidebar(type: FilterEntityType): void {
+    switch (type) {
+      case 'accommodation':
+        this.selectedHotel = null;
+        break;
+      case 'attraction':
+        this.selectedAttraction = null;
+        break;
+      case 'guide':
+        this.selectedGuide = null;
+        break;
+      case 'trail':
+        this.selectedTrail = null;
+        break;
+    }
+    this.cdr.markForCheck();
+  }
+
+  private closeAllSidebars(): void {
+    this.selectedHotel = null;
+    this.selectedAttraction = null;
+    this.selectedGuide = null;
+    this.selectedTrail = null;
   }
 
   private buildItem(type: FilterEntityType, typeLabel: string, id: number, name: string, regions: string[], detail: string, payload: any): AreaFilterItem {

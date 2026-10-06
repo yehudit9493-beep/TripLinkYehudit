@@ -36,6 +36,7 @@ export class ExperienceUpdate {
   forumSubtitle: string = '';
   canPost: boolean = false;
   canReply: boolean = false;
+  canDelete: boolean = false;
 
   likesCount: number = 0;
   isLiked: boolean = false;
@@ -58,8 +59,12 @@ export class ExperienceUpdate {
     if (config) {
       this.forumTitle = config.title;
       this.forumSubtitle = config.subtitle;
-      this.canPost = config.canPost.some(p => userPermissions.includes(p));
-      this.canReply = config.canReply.some(p => userPermissions.includes(p));
+      // רשימה ריקה של הרשאות = כולם רשאים; אחרת רק בעלי אחת מההרשאות
+      const hasAnyPermission = (required: number[]) =>
+        required.length === 0 || required.some(p => userPermissions.includes(p));
+      this.canPost = hasAnyPermission(config.canPost);
+      this.canReply = hasAnyPermission(config.canReply);
+      this.canDelete = hasAnyPermission(config.canDelete);
     }
 
     this.loadMessages();

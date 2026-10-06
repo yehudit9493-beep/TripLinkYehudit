@@ -202,6 +202,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AddTrail } from '../add-trail/add-trail';
 import { RatingService } from '../../../../Service/rating-service';
+import { Auth } from '../../../../Service/auth';
 
 @Component({
   selector: 'app-routes',
@@ -227,13 +228,18 @@ export class Trails implements OnInit, OnDestroy {
 
   dataSource = new MatTableDataSource<Trail>([]);
 
+  canManageTrail: boolean = false;
+
   constructor(private trailsService: TrailsService,
     private favoritesService: FavoriteService,
     private regions: Regions,
     private router: Router,
     private route: ActivatedRoute,
-    private ratingService: RatingService) {
+    private ratingService: RatingService,
+    private auth: Auth) {
     this.loadAreaList();
+    // הרשאת "ניהול מסלולים" = 3 (מנהלים כללים/משניים נכללים בה לפי שיקול הדעת של המערכת)
+    this.canManageTrail = this.auth.getCurrentUserPermission().includes(3);
   }
 
   ngOnDestroy(): void {

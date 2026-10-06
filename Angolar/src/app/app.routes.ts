@@ -5,6 +5,7 @@ import { Entry } from './Components/entry/entry';
 import { LoginToGuide } from './Components/login-to-guide/login-to-guide';
 import { LoginToCoordinator } from './Components/login-to-coordinator/login-to-coordinator';
 import { HomePage } from './Components/home-page/home-page';
+import { AreaFilter } from './Components/area-filter/area-filter';
 import { ResetPassword } from './Components/reset-password/reset-password';
 import { authGuard } from './Guard/auth-guard';
 import { Guide } from './Components/Entities/guides/guide/guide';
@@ -26,6 +27,7 @@ export const routes: Routes = [
     { path: 'login-to-coordinator', component: LoginToCoordinator },
     { path: 'home-page', component: HomePage, canActivate: [authGuard] },
     { path: 'reset-password', component: ResetPassword },
+    { path: 'area-filter', component: AreaFilter },
     { path: 'guide', component: Guide },
     { path: 'hotels', component: Hotels },
     { path: 'attractions', component: Attractions },

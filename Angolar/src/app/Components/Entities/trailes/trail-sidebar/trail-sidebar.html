@@ -128,7 +128,7 @@
             </div>
         </div>
 
-        @if (!alreadyRated()) {
+        @if (canRate && !alreadyRated()) {
         <div class="rating-form">
             <h4>דרגי את המסלול</h4>
 
@@ -147,13 +147,15 @@
 
             <button class="btn-submit-rating" (click)="submitRating()">שמור דירוג</button>
         </div>
-        } @else {
+        } @else if (canRate && alreadyRated()) {
         <p class="already-rated">✓ כבר דירגת מסלול זה</p>
         }
+        @if (canManageTrail) {
         <div class="action-buttons">
             <button class="btn-edit" (click)="showEdit = true">✏️ עריכה</button>
             <button class="btn-delete" (click)="deleteTrail()">🗑️ מחיקה</button>
         </div>
+        }
     </div>
     }
 

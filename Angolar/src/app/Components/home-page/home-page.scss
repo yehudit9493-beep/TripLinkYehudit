@@ -274,3 +274,77 @@
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
+// ==================
+// באנר חיפוש לפי אזור
+// ==================
+.area-search-banner {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 28px 32px;
+    border-radius: 16px;
+    cursor: pointer;
+    background: linear-gradient(135deg, #0a3d62 0%, #2c6fb3 100%);
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(10, 61, 98, 0.35);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 14px 40px rgba(10, 61, 98, 0.45);
+
+        .asb-arrow {
+            transform: translateX(-6px);
+        }
+    }
+
+    .asb-icon {
+        font-size: 3.2rem;
+        flex-shrink: 0;
+    }
+
+    .asb-text {
+        flex: 1;
+
+        h2 {
+            margin: 0 0 6px;
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        p {
+            margin: 0 0 8px;
+            font-size: 1rem;
+            opacity: 0.92;
+        }
+
+        .asb-cta {
+            display: inline-block;
+            font-size: 0.95rem;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.18);
+            padding: 6px 16px;
+            border-radius: 999px;
+        }
+    }
+
+    .asb-arrow {
+        font-size: 2rem;
+        font-weight: 700;
+        flex-shrink: 0;
+        transition: transform 0.25s ease;
+    }
+}
+
+@media (max-width: 640px) {
+    .area-search-banner {
+        flex-direction: column;
+        text-align: center;
+        padding: 24px 20px;
+
+        .asb-arrow {
+            transform: rotate(90deg);
+        }
+    }
+}

@@ -30,7 +30,9 @@
             </div>
         </div>
 
+        @if (canManageTrail) {
         <button class="add-trail-btn" (click)="onAddTrail()">הוסף מסלול חדש</button>
+        }
     </div>
 
     <div class="trails-table-wrapper">

@@ -35,7 +35,13 @@ export class GuideSidebar implements OnInit, OnChanges, OnDestroy {
     private ratingService: RatingService,
     private auth: Auth,
     private cdr: ChangeDetectorRef,
-    private enrollment: Enrollment) { }
+    private enrollment: Enrollment) {
+    // ניהול מדריכות פתוח רק למנהלים (הרשאת "מנהל כללי" = 1 או "מנהל משני" = 2)
+    const perms = this.auth.getCurrentUserPermission();
+    this.canManageGuide = perms.includes(1) || perms.includes(2);
+    // דירוג פתוח רק למאשרות דירוג (הרשאת "מרכזת בסיסית" = 9)
+    this.canRate = perms.includes(9);
+  }
 
   // בסיס ה-URL לגישה לקבצים (זהה לרישום/עריכת פרופיל)
   readonly fileBaseUrl = 'https://localhost:7216';
@@ -59,6 +65,12 @@ export class GuideSidebar implements OnInit, OnChanges, OnDestroy {
   @Output() guideUpdated = new EventEmitter<Guides>();
 
   showEdit: boolean = false;
+
+  // האם המשתמש רשאי לנהל מדריכות (מנהל כללי = 1 או מנהל משני = 2)
+  canManageGuide: boolean = false;
+
+  // דירוג פתוח רק למאשרות דירוג (הרשאת "מרכזת בסיסית" = 9)
+  canRate: boolean = false;
 
   userRating: number = 0;
   userComment: string = '';

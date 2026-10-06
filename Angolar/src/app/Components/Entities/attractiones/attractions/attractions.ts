@@ -13,6 +13,7 @@ import { MatSelect, MatSelectTrigger, MatOption } from "@angular/material/select
 import { CommonModule } from '@angular/common';
 import { AddAttraction } from "../add-attraction/add-attraction";
 import { RatingService } from '../../../../Service/rating-service';
+import { Auth } from '../../../../Service/auth';
 
 @Component({
   selector: 'app-attractions',
@@ -34,6 +35,9 @@ export class Attractions implements OnInit, OnDestroy {
 
   isAddAttractionOpen = false;
 
+  // האם המשתמש רשאי להוסיף אטרקציות (הרשאת "ניהול אטרקציות" = 4)
+  canManageAttraction: boolean = false;
+
   @ViewChild(MatSort) sort!: MatSort;
 
   selectedAttraction: Attraction | null = null;
@@ -48,7 +52,11 @@ export class Attractions implements OnInit, OnDestroy {
   constructor(private attractionsService: AttractionService,
     private favoritesService: FavoriteService,
     private regions: Regions,
-    private ratingService: RatingService) { this.loadAreaList(); }
+    private ratingService: RatingService,
+    private auth: Auth) {
+    this.loadAreaList();
+    this.canManageAttraction = this.auth.getCurrentUserPermission().includes(4);
+  }
 
   selectedAreas = new FormControl<string[]>([]);
 

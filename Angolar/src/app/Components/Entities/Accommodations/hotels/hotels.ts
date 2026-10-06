@@ -12,6 +12,7 @@ import { Regions } from '../../../../Service/regions';
 import { AddHotel } from "../add-hotel/add-hotel";
 import { MatSelect, MatSelectTrigger, MatOption } from "@angular/material/select";
 import { RatingService } from '../../../../Service/rating-service';
+import { Auth } from '../../../../Service/auth';
 
 @Component({
   selector: 'app-hotels',
@@ -28,6 +29,9 @@ export class Hotels implements OnInit, OnDestroy {
   @ViewChild(MatSort) sort!: MatSort;
 
   isAddHotelOpen = false;
+
+  // האם המשתמש רשאי להוסיף מקומות לינה (הרשאת "ניהול מקומות לינה" = 5)
+  canManageLodging: boolean = false;
 
   searchText = '';
 
@@ -53,7 +57,11 @@ export class Hotels implements OnInit, OnDestroy {
   constructor(private hotelService: HotelService,
     private favoritesService: FavoriteService,
     private regions: Regions,
-    private ratingService: RatingService) { this.loadAreaList(); }
+    private ratingService: RatingService,
+    private auth: Auth) {
+    this.loadAreaList();
+    this.canManageLodging = this.auth.getCurrentUserPermission().includes(5);
+  }
 
   loadAreaList() {
     const allAreas = this.regions.getAllAreas();

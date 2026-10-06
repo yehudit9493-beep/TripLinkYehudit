@@ -4,11 +4,10 @@ import { User } from '../../Interfacess/user';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterLink } from '@angular/router';
-import { AreaFilter } from '../area-filter/area-filter';
 
 @Component({
   selector: 'app-home-page',
-  imports: [MatCardModule, MatButtonModule, RouterLink, AreaFilter],
+  imports: [MatCardModule, MatButtonModule, RouterLink],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss',
   standalone: true

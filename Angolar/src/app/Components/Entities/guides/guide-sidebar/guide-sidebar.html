@@ -122,7 +122,7 @@
             </button>
         </div>
 
-        @if (!alreadyRated()) {
+        @if (canRate && !alreadyRated()) {
         <div class="rating-form">
             <h4>דרגי את המדריכה</h4>
             <div class="rating-stars-input">
@@ -137,14 +137,16 @@
             }
             <button class="btn-submit-rating" (click)="submitRating()">שמור דירוג</button>
         </div>
-        } @else {
+        } @else if (canRate && alreadyRated()) {
         <p class="already-rated">✓ כבר דירגת מדריכה זו</p>
         }
 
+        @if (canManageGuide) {
         <div class="action-buttons">
             <button class="btn-edit" (click)="showEdit = true">✏️ עריכה</button>
             <button class="btn-delete" (click)="deleteGuide()">🗑️ מחיקה</button>
         </div>
+        }
     </div>
 </div>
 }

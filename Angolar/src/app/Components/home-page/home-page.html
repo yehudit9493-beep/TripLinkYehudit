@@ -52,7 +52,16 @@
 
   </div>
 
-  <!-- שורה תחתונה: חיפוש לפי אזורי אימון -->
-  <app-area-filter></app-area-filter>
+  <!-- שורה תחתונה: כפתור חיפוש לפי אזור -->
+  <div class="area-search-banner" (click)="navigateTo('/area-filter')" role="button" tabindex="0"
+    (keydown.enter)="navigateTo('/area-filter')">
+    <div class="asb-icon">🗺️</div>
+    <div class="asb-text">
+      <h2>חיפוש לפי אזור</h2>
+      <p>לחיפוש מסלולים, אטרקציות, מקומות לינה ומדריכות מתמחות באזור מסוים</p>
+      <span class="asb-cta">— לחצו כאן —</span>
+    </div>
+    <div class="asb-arrow">←</div>
+  </div>
 
 </div>

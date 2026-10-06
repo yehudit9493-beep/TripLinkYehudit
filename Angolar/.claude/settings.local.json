@@ -83,7 +83,8 @@
       "Bash(curl -sk https://localhost:7216/api/UserAdmin/coordinators -w \"\\\\nHTTP:%{http_code}\\\\n\")",
       "Bash(curl -sk -H \"Origin: http://localhost:4200\" https://localhost:7216/api/UserAdmin/guides -D - -o /dev/null)",
       "Bash(ls -R \"c:/פרויקט גמר/Server/project/src\" 2>/dev/null | head -100 || ls -R \"c:/פרויקט גמר/Server/project\" 2>/dev/null | head -150)",
-      "Bash(grep -rn \"PermissionId\\\\|UserPermissions\\\\|permission\" \"c:/פרויקט גמר/Server/project/project/Repository/CoordinatorRepository.cs\" \"c:/פרויקט גמר/Server/project/project/Repository/GuideRepository.cs\" \"c:/פרויקט גמר/Server/project/project/Service/CoordinatorService.cs\" \"c:/פרויקט גמר/Server/project/project/Service/GuideService.cs\" 2>/dev/null)"
+      "Bash(grep -rn \"PermissionId\\\\|UserPermissions\\\\|permission\" \"c:/פרויקט גמר/Server/project/project/Repository/CoordinatorRepository.cs\" \"c:/פרויקט גמר/Server/project/project/Repository/GuideRepository.cs\" \"c:/פרויקט גמר/Server/project/project/Service/CoordinatorService.cs\" \"c:/פרויקט גמר/Server/project/project/Service/GuideService.cs\" 2>/dev/null)",
+      "Read(//c//**)"
     ],
     "additionalDirectories": [
       "C:\\פרויקט גמר\\Server\\project\\project\\DTOs",
