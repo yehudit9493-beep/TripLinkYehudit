@@ -34,7 +34,6 @@ export class Auth {
 
         tap((user: User) => {
 
-          console.log('✅ תשובה מהשרת:', user);
 
           if (user && user.userId) {
 
@@ -122,6 +121,7 @@ export class Auth {
     const saved =
       localStorage.getItem('currentUser');
 
+
     return saved
       ? JSON.parse(saved)
       : null;
@@ -134,7 +134,7 @@ export class Auth {
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('currentUser');
 
-    this.router.navigate(['/entry']);
+    this.router.navigate(['/']);
 
   }
 

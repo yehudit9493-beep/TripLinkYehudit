@@ -84,7 +84,12 @@
       "Bash(curl -sk -H \"Origin: http://localhost:4200\" https://localhost:7216/api/UserAdmin/guides -D - -o /dev/null)",
       "Bash(ls -R \"c:/פרויקט גמר/Server/project/src\" 2>/dev/null | head -100 || ls -R \"c:/פרויקט גמר/Server/project\" 2>/dev/null | head -150)",
       "Bash(grep -rn \"PermissionId\\\\|UserPermissions\\\\|permission\" \"c:/פרויקט גמר/Server/project/project/Repository/CoordinatorRepository.cs\" \"c:/פרויקט גמר/Server/project/project/Repository/GuideRepository.cs\" \"c:/פרויקט גמר/Server/project/project/Service/CoordinatorService.cs\" \"c:/פרויקט גמר/Server/project/project/Service/GuideService.cs\" 2>/dev/null)",
-      "Read(//c//**)"
+      "Read(//c//**)",
+      "Bash(find \"/c/פרויקט גמר/Server/project/project\" -name \"*.cs\" | grep -i controller)",
+      "Bash(cd \"/c/פרויקט גמר/Server/project/project/Controllers\" && grep -n \"Permission\\\\|Authorize\\\\|HasPermission\\\\|permission\" AttractionsController.cs HotelsController.cs RoutesController.cs )",
+      "Bash(cd \"/c/פרויקט גמר/Server/project/project/Controllers\" && grep -rn \"Permission\\\\|Authorize\\\\|HasPermission\\\\|permission\" GuideController.cs CoordinatorController.cs ForumController.cs RatingsController.cs LoginController.cs UserAdminController.cs)",
+      "Bash(cd \"/c/פרויקט גמר/Server/project/project\" && grep -n \"Policy\\\\|AddPolicy\\\\|AddAuthorization\\\\|RequireClaim\\\\|HasPermission\\\\|claim\\\\|Claim\" Program.cs)",
+      "Bash(grep -oE \"\\\\\"[^\\\\\"]*$\")"
     ],
     "additionalDirectories": [
       "C:\\פרויקט גמר\\Server\\project\\project\\DTOs",

@@ -26,7 +26,11 @@ export class Header {
 
   loggedInUser: User | null = null;
 
+  isLoggingOut = false;
+
   isAdmin: boolean = false;
+
+
 
   constructor(private authService: Auth,
     private favoritesService: FavoriteService,
@@ -76,6 +80,16 @@ export class Header {
     this.showFavorites = !this.showFavorites;
   }
 
+  // התנתקות: ניקוי ה-localStorage, ניקוי המועדפים וחזרה לדף הראשי
+  logout() {
+    this.isLoggingOut = true;
+    this.authService.logout();
+    this.favoritesService.getFavorites().length = 0;
+    this.loggedInUser = null;
+    this.router.navigate(['/']);
+    this.isLoggingOut = false;
+  }
+
   // הפנייה לעריכת הפרופיל לפי סוג המשתמש (רכזת / מדריכה)
   goToEditProfile() {
     const userId = this.authService.getCurrentUserId();
@@ -101,4 +115,5 @@ export class Header {
     });
   }
 
+ 
 }

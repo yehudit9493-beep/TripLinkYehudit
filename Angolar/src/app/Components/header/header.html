@@ -19,7 +19,10 @@
       <span class="user-greeting">👋 {{message }}, <strong>{{ loggedInUser.firstName }}</strong></span>
       <span class="hebrew-date">{{ hebrewDate }}</span>
       <button (click)="goToEditProfile()" class="btn-update">עריכת פרופיל</button>
-      
+      <button (click)="logout()" class="btn-logout" [disabled]="isLoggingOut">
+        {{ isLoggingOut ? 'מתנתק...' : 'התנתקות' }}
+      </button>
+
       @if (isAdmin) {
       <button routerLink="/user-management" class="btn-admin">ניהול</button>
       }

@@ -129,6 +129,28 @@
   }
 }
 
+.btn-logout {
+  background: transparent;
+  color: #fca5a5;
+  border: 1px solid #f87171;
+  border-radius: 8px;
+  padding: 5px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover:not(:disabled) {
+    background: #f87171;
+    color: #1e3a5f;
+    font-weight: 600;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
 .navbar-actions {
   display: flex;
   align-items: center;
