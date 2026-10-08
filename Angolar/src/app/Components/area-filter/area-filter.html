@@ -6,7 +6,7 @@
 
     <div class="af-header">
       <div>
-        <h2>🔍 חיפוש לפי אזור</h2>
+        <h2><i class="bi bi-search"></i> חיפוש לפי אזור</h2>
         <p>בחרו את האזורים הרצויים והציגו את כל פריטי התיירות השייכים אליהם</p>
       </div>
       <button class="af-back-home" (click)="goBackHome()">⌂ חזרה לדף הבית</button>
@@ -57,7 +57,7 @@
     <div class="af-results-header">
       <button class="af-back-btn" (click)="backToAreas()">→ בחירת אזורים</button>
       <div class="af-results-title">
-        <h2>📋 תוצאות החיפוש</h2>
+        <h2><i class="bi bi-clipboard-data"></i> תוצאות החיפוש</h2>
         <span class="af-selected-info">נבחרו {{ selectedAreas.length }} אזורים • {{ totalVisible }} פריטים</span>
       </div>
     </div>
@@ -67,7 +67,7 @@
       <!-- אטרקציות -->
       <div class="af-list-card" *ngIf="filteredAttractions.length > 0">
         <div class="af-list-head">
-          <h3>🏛️ אטרקציות <span class="af-count">{{ filteredAttractions.length }}</span></h3>
+          <h3><i class="bi bi-bank"></i> אטרקציות <span class="af-count">{{ filteredAttractions.length }}</span></h3>
         </div>
         <ul class="af-items">
           @for (a of filteredAttractions; track a.attractionId) {
@@ -83,7 +83,7 @@
       <!-- מקומות אירוח -->
       <div class="af-list-card" *ngIf="filteredAccommodations.length > 0">
         <div class="af-list-head">
-          <h3>🏨 מקומות אירוח <span class="af-count">{{ filteredAccommodations.length }}</span></h3>
+          <h3><i class="bi bi-building"></i> מקומות אירוח <span class="af-count">{{ filteredAccommodations.length }}</span></h3>
         </div>
         <ul class="af-items">
           @for (h of filteredAccommodations; track h.id) {
@@ -99,7 +99,7 @@
       <!-- מדריכות -->
       <div class="af-list-card" *ngIf="filteredGuides.length > 0">
         <div class="af-list-head">
-          <h3>🧭 מדריכות <span class="af-count">{{ filteredGuides.length }}</span></h3>
+          <h3><i class="bi bi-compass"></i> מדריכות <span class="af-count">{{ filteredGuides.length }}</span></h3>
         </div>
         <ul class="af-items">
           @for (g of filteredGuides; track g.id) {
@@ -115,7 +115,7 @@
       <!-- מסלולים -->
       <div class="af-list-card" *ngIf="filteredTrails.length > 0">
         <div class="af-list-head">
-          <h3>🥾 מסלולים <span class="af-count">{{ filteredTrails.length }}</span></h3>
+          <h3><i class="bi bi-signpost-split"></i> מסלולים <span class="af-count">{{ filteredTrails.length }}</span></h3>
         </div>
         <ul class="af-items">
           @for (t of filteredTrails; track t.id) {
@@ -130,7 +130,7 @@
 
       <!-- אין תוצאות -->
       @if (totalVisible === 0) {
-      <div class="af-empty">😕 לא נמצאו פריטים באזורים שנבחרו</div>
+      <div class="af-empty"><i class="bi bi-emoji-frown"></i> לא נמצאו פריטים באזורים שנבחרו</div>
       }
 
     </div>

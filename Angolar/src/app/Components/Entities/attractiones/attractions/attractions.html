@@ -1,13 +1,13 @@
 <div dir="rtl">
   <div class="page-header">
-    <h1>🏛️ אטרקציות</h1>
+    <h1><i class="bi bi-bank"></i> אטרקציות</h1>
     <p>אטרקציות מומלצות ברחבי הארץ</p>
   </div>
 
   <div class="filters-row">
     <div class="filters-group">
       <div class="filter-wrapper">
-        <span class="search-icon">🔍</span>
+        <span class="search-icon"><i class="bi bi-search"></i></span>
         <input (keyup)="applyFilter($event)" placeholder="סנן לפי שם, אזור, סוג..." #input>
       </div>
 
@@ -91,7 +91,7 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       <tr class="no-data-row" *matNoDataRow>
-        <td colspan="4">😕 לא נמצאו תוצאות עבור "{{input.value}}"</td>
+        <td colspan="4"><i class="bi bi-emoji-frown"></i> לא נמצאו תוצאות עבור "{{input.value}}"</td>
       </tr>
     </table>
   </div>

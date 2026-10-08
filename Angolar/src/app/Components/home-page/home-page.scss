@@ -120,6 +120,11 @@ $bg: #eef6fd;
         border: 1px solid rgba(255, 255, 255, 0.22);
         font-weight: 600;
         font-size: 0.92rem;
+
+        .hf-icon {
+            font-size: 1.15rem;
+            line-height: 1;
+        }
     }
 }
 
@@ -190,6 +195,8 @@ $bg: #eef6fd;
     .as-icon {
         font-size: 2.8rem;
         flex-shrink: 0;
+        line-height: 1;
+        color: $brand;
     }
 
     .as-body {
@@ -241,92 +248,158 @@ $bg: #eef6fd;
 // ============================================================
 .content-layout {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1.7fr 1fr;
     gap: 28px;
-    align-items: start;
+    align-items: stretch;
 }
 
-// ----- כרטיסיות הישויות -----
+// ----- כרטיסיות הישויות (bento מגוון, יקרתי ונקי) -----
 .bento-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 250px 250px;
+    grid-template-areas:
+        "trail trail attract"
+        "stay  guide guide";
+    gap: 22px;
 }
 
 .bento-card {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 220px;
-    padding: 24px;
-    border-radius: 22px;
+    padding: 26px;
+    border-radius: 26px;
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    transition: transform 0.28s ease, box-shadow 0.28s ease;
-    box-shadow: 0 12px 30px rgba(13, 27, 46, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.6);
+    isolation: isolate;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 18px 42px rgba(20, 40, 70, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+
+    &.card-trail {
+        grid-area: trail;
+    }
+
+    &.card-attraction {
+        grid-area: attract;
+    }
+
+    &.card-stay {
+        grid-area: stay;
+    }
+
+    &.card-guide {
+        grid-area: guide;
+    }
+
+    // זוהר עדין שמחליק בעת מעבר
+    .card-glow {
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background: radial-gradient(560px 300px at 100% 0%, rgba(255, 255, 255, 0.28) 0%, transparent 55%);
+        opacity: 0;
+        transition: opacity 0.35s ease;
+        pointer-events: none;
+    }
 
     &:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 22px 50px rgba(13, 27, 46, 0.18);
+        transform: translateY(-7px);
+        box-shadow: 0 30px 60px rgba(20, 40, 70, 0.24);
+
+        .card-glow {
+            opacity: 1;
+        }
 
         .card-arrow {
-            transform: translateX(-4px);
+            transform: translateX(-5px);
             opacity: 1;
         }
     }
 
     .card-top {
         display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
     }
 
     .card-emoji {
-        font-size: 2.6rem;
+        font-size: 1.9rem;
         line-height: 1;
+        color: #fff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 54px;
+        height: 54px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.18);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    }
+
+    .card-pill {
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.32);
+        padding: 5px 14px;
+        border-radius: 999px;
+        letter-spacing: 0.2px;
+    }
+
+    .card-top .card-arrow {
+        margin-inline-start: auto;
     }
 
     .card-arrow {
-        font-size: 1.3rem;
+        font-size: 1.25rem;
         font-weight: 700;
-        opacity: 0.75;
+        opacity: 0.85;
         transition: transform 0.25s ease, opacity 0.25s ease;
     }
 
     .card-bottom {
-        margin-top: 20px;
+        margin-top: 22px;
 
         h3 {
             margin: 0 0 6px;
-            font-size: 1.4rem;
+            font-size: 1.55rem;
             font-weight: 800;
             color: #fff;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            text-shadow: 0 3px 14px rgba(0, 0, 0, 0.22);
         }
 
         p {
             margin: 0;
-            font-size: 0.95rem;
-            color: rgba(255, 255, 255, 0.92);
+            font-size: 0.96rem;
+            color: rgba(255, 255, 255, 0.94);
+            max-width: 42ch;
         }
     }
 
-    &.tall {
-        background: linear-gradient(135deg, #1b8fbf 0%, #5cc4e8 100%);
+    // ------ פלטת צבעים רכה, מאוחדת וענוגה (גווני תכלת-כחול) ------
+    &.card-trail {
+        // תכלת רך החלש
+        background: linear-gradient(135deg, #57a6d8 0%, #8ec8ec 100%);
     }
 
-    &.attractions {
-        background: linear-gradient(135deg, #0f7fb0 0%, #46badd 100%);
+    &.card-attraction {
+        // תכלת-טורקיז רך
+        background: linear-gradient(135deg, #4db8d6 0%, #8cdbf0 100%);
     }
 
-    &.accommodation {
-        background: linear-gradient(135deg, #14837f 0%, #42b9a8 100%);
+    &.card-stay {
+        // כחול-ירקרק עדין
+        background: linear-gradient(135deg, #5cb8a8 0%, #92d8c9 100%);
     }
 
-    &.wide {
-        background: linear-gradient(135deg, #0a5f9e 0%, #2f9fd8 100%);
+    &.card-guide {
+        // כחול עמוק-רך
+        background: linear-gradient(135deg, #4778b3 0%, #83a9d6 100%);
     }
 }
 
@@ -339,6 +412,10 @@ $bg: #eef6fd;
     box-shadow: 0 12px 30px rgba(13, 27, 46, 0.07);
     position: sticky;
     top: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    box-sizing: border-box;
 
     .forums-head {
         display: flex;
@@ -352,6 +429,15 @@ $bg: #eef6fd;
             font-size: 1.25rem;
             font-weight: 800;
             color: $ink;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            i {
+                font-size: 1.35rem;
+                color: $brand;
+                line-height: 1;
+            }
         }
 
         .forums-tag {
@@ -367,46 +453,129 @@ $bg: #eef6fd;
     .forums-list {
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        flex: 1;
+        gap: 16px;
+        justify-content: space-evenly;
+
+        .hk-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}
+
+// ----- כפתורי הפורומים עם אפקט מילוי צבע במעבר (חזרה לסגנון המקורי) -----
+.hk-btn {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 13px 20px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    overflow: hidden;
+    transition: color 0.25s ease;
+    box-sizing: border-box;
+    text-align: center;
+
+    i {
+        margin-inline-end: 8px;
+        font-size: 1.05rem;
+    }
+}
+
+.btn-fill-left {
+    border: 2px solid $brand;
+    color: $brand;
+    background: transparent;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 0;
+        height: 100%;
+        background: $brand;
+        transition: width 0.25s ease;
+        z-index: 0;
     }
 
-    .forum-row {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 13px 14px;
-        border-radius: 14px;
-        background: #f6faff;
-        border: 1px solid rgba(9, 144, 212, 0.12);
-        text-decoration: none;
-        color: $ink;
-        transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    span {
+        position: relative;
+        z-index: 1;
+    }
 
-        &:hover {
-            background: #fff;
-            transform: translateX(-4px);
-            box-shadow: 0 8px 22px rgba(9, 144, 212, 0.16);
+    &:hover {
+        color: #fff;
 
-            .forum-arrow {
-                transform: translateX(-4px);
-            }
+        &::before {
+            width: 100%;
         }
+    }
+}
 
-        .forum-emoji {
-            font-size: 1.4rem;
-            flex-shrink: 0;
+.btn-fill-right {
+    border: 2px solid $brand;
+    color: $brand;
+    background: transparent;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 100%;
+        background: $brand;
+        transition: width 0.25s ease;
+        z-index: 0;
+    }
+
+    span {
+        position: relative;
+        z-index: 1;
+    }
+
+    &:hover {
+        color: #fff;
+
+        &::before {
+            width: 100%;
         }
+    }
+}
 
-        .forum-name {
-            flex: 1;
-            font-weight: 600;
-            font-size: 0.98rem;
-        }
+.btn-fill-bottom {
+    border: 2px solid $brand;
+    color: $brand;
+    background: transparent;
 
-        .forum-arrow {
-            color: $brand;
-            font-weight: 700;
-            transition: transform 0.2s ease;
+    &::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 0;
+        background: $brand;
+        transition: height 0.25s ease;
+        z-index: 0;
+    }
+
+    span {
+        position: relative;
+        z-index: 1;
+    }
+
+    &:hover {
+        color: #fff;
+
+        &::before {
+            height: 100%;
         }
     }
 }
@@ -424,6 +593,16 @@ $bg: #eef6fd;
     }
 }
 
+@media (max-width: 860px) {
+    .bento-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto auto;
+        grid-template-areas:
+            "trail  attract"
+            "guide  stay";
+    }
+}
+
 @media (max-width: 640px) {
     .home-page {
         padding: 16px 16px 48px;
@@ -431,6 +610,12 @@ $bg: #eef6fd;
 
     .bento-grid {
         grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        grid-template-areas:
+            "trail"
+            "attract"
+            "stay"
+            "guide";
     }
 
     .area-search {

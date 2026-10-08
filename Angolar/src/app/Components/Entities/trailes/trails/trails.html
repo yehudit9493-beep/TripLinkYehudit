@@ -1,14 +1,14 @@
 <div dir="rtl">
 
     <div class="page-header">
-        <h1>🥾 מסלולי טיול</h1>
+        <h1><i class="bi bi-signpost-split"></i> מסלולי טיול</h1>
         <p>גלה את המסלולים הטובים ביותר ברחבי הארץ</p>
     </div>
 
     <div class="filters-row">
         <div class="filters-group">
             <div class="filter-wrapper">
-                <span class="search-icon">🔍</span>
+                <span class="search-icon"><i class="bi bi-search"></i></span>
                 <input (keyup)="applyFilter($event)" placeholder="חפש לפי שם, אורך, עונה..." #input>
             </div>
 
@@ -69,7 +69,7 @@
             <ng-container matColumnDef="RouteDuration">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>משך</th>
                 <td mat-cell *matCellDef="let e">
-                    <span class="duration-cell">🕐 {{e.RouteDuration}}</span>
+                    <span class="duration-cell"><i class="bi bi-clock"></i> {{e.RouteDuration}}</span>
                 </td>
             </ng-container>
 
@@ -95,7 +95,7 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
             <tr class="no-data-row" *matNoDataRow>
-                <td colspan="4">😕 לא נמצאו תוצאות עבור "{{input.value}}"</td>
+                <td colspan="4"><i class="bi bi-emoji-frown"></i> לא נמצאו תוצאות עבור "{{input.value}}"</td>
             </tr>
 
         </table>

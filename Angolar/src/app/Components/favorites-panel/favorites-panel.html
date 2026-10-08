@@ -5,7 +5,7 @@
     <header class="sidebar-header">
       <button class="close-btn" (click)="closed.emit()" title="סגירה">✕</button>
       <div class="header-title-row">
-        <h2>המועדפים שלי ❤️</h2>
+        <h2>המועדפים שלי <i class="bi bi-heart-fill"></i></h2>
       </div>
       <p class="subtitle">הפריטים ששמרת לטיול הבא</p>
     </header>
@@ -14,7 +14,7 @@
 
       @if (favorites.length === 0) {
         <div class="empty-state">
-          <span class="empty-icon">😕</span>
+          <span class="empty-icon"><i class="bi bi-emoji-frown"></i></span>
           <p>אין פריטים במועדפים עדיין</p>
           <small>לחצו על הלב בפריט שתמצאו מעניין כדי לשמור אותו כאן</small>
         </div>

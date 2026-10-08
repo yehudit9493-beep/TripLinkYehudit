@@ -8,6 +8,8 @@ import { HomePage } from './Components/home-page/home-page';
 import { AreaFilter } from './Components/area-filter/area-filter';
 import { ResetPassword } from './Components/reset-password/reset-password';
 import { authGuard } from './Guard/auth-guard';
+import { forumGuard } from './Guard/forum-guard';
+import { adminGuard } from './Guard/admin-guard';
 import { Guide } from './Components/Entities/guides/guide/guide';
 import { Hotels } from './Components/Entities/Accommodations/hotels/hotels';
 import { Attractions } from './Components/Entities/attractiones/attractions/attractions';
@@ -34,10 +36,10 @@ export const routes: Routes = [
     { path: 'trails', component: Trails },
     { path: 'editTrail', component: EditTrail },
     { path: 'forum/:forumId', component: ExperienceUpdate },
-    { path: 'addbForum/:forumId', component: Forum },
+    { path: 'addbForum/:forumId', component: Forum, canActivate: [forumGuard] },
     {path: 'availability', component :Availability},
     { path: 'ratings/:type/:id', component: RatingsList },
-    { path: 'user-management', component: UserManagement },
+    { path: 'user-management', component: UserManagement, canActivate: [adminGuard, authGuard] },
 
 
 ];

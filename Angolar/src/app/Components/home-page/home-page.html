@@ -7,7 +7,7 @@
     <div class="hero-inner">
 
       <div class="hero-eyebrow">
-        <span class="eyebrow-badge">🌿 על האתר</span>
+        <span class="eyebrow-badge"><i class="bi bi-globe2"></i> על האתר</span>
       </div>
 
       <h1 class="hero-title">טקסט לדוגמה על הגולש באתר</h1>
@@ -19,19 +19,19 @@
 
       <div class="hero-features">
         <div class="hero-feature">
-          <span class="hf-icon">🥾</span>
+          <i class="bi bi-signpost-split hf-icon"></i>
           <span class="hf-label">מסלולים</span>
         </div>
         <div class="hero-feature">
-          <span class="hf-icon">🏛️</span>
+          <i class="bi bi-bank hf-icon"></i>
           <span class="hf-label">אטרקציות</span>
         </div>
         <div class="hero-feature">
-          <span class="hf-icon">🏨</span>
+          <i class="bi bi-house-heart hf-icon"></i>
           <span class="hf-label">לינה</span>
         </div>
         <div class="hero-feature">
-          <span class="hf-icon">🧭</span>
+          <i class="bi bi-person-walking hf-icon"></i>
           <span class="hf-label">מדריכות</span>
         </div>
       </div>
@@ -50,7 +50,7 @@
        ============================================================ -->
   <section class="area-search" (click)="navigateTo('/area-filter')" role="button" tabindex="0"
     (keydown.enter)="navigateTo('/area-filter')">
-    <div class="as-icon">🗺️</div>
+    <div class="as-icon"><i class="bi bi-geo-alt-fill"></i></div>
     <div class="as-body">
       <h2>חיפוש לפי אזור</h2>
       <p>בחרו אזור וגלו את כל המסלולים, האטרקציות, מקומות הלינה והמדריכות שבאותו מקום</p>
@@ -66,79 +66,84 @@
        ============================================================ -->
   <section class="content-layout">
 
-    <!-- ימין: כרטיסיות הישויות -->
+    <!-- ימין: כרטיסיות הישויות (bento מגוון ומרשים) -->
     <div class="bento-grid">
-      <div class="bento-card tall" (click)="navigateTo('/trails')" role="button" tabindex="0"
+
+      <!-- מסלולים — כרטיס גדול רחב -->
+      <div class="bento-card card-trail" (click)="navigateTo('/trails')" role="button" tabindex="0"
         (keydown.enter)="navigateTo('/trails')">
+        <div class="card-glow"></div>
         <div class="card-top">
-          <span class="card-emoji">🥾</span>
+          <span class="card-emoji"><i class="bi bi-signpost-split"></i></span>
+          <span class="card-pill">מסלולים</span>
           <span class="card-arrow">←</span>
         </div>
         <div class="card-bottom">
-          <h3>מסלולים</h3>
-          <p>גלו את המסלולים הטובים ביותר</p>
+          <h3>מסלולי טיול</h3>
+          <p>מסלולים נבחרים לכל המשפחה באווירה ייחודית</p>
         </div>
       </div>
 
-      <div class="bento-card attractions" (click)="navigateTo('/attractions')" role="button" tabindex="0"
+      <!-- אטרקציות -->
+      <div class="bento-card card-attraction" (click)="navigateTo('/attractions')" role="button" tabindex="0"
         (keydown.enter)="navigateTo('/attractions')">
+        <div class="card-glow"></div>
         <div class="card-top">
-          <span class="card-emoji">🏛️</span>
+          <span class="card-emoji"><i class="bi bi-bank"></i></span>
           <span class="card-arrow">←</span>
         </div>
         <div class="card-bottom">
           <h3>אטרקציות</h3>
-          <p>אטרקציות שלא כדאי לפספס</p>
+          <p>בילויים שלא כדאי לפספס</p>
         </div>
       </div>
 
-      <div class="bento-card accommodation" (click)="navigateTo('/hotels')" role="button" tabindex="0"
+      <!-- מקומות לינה -->
+      <div class="bento-card card-stay" (click)="navigateTo('/hotels')" role="button" tabindex="0"
         (keydown.enter)="navigateTo('/hotels')">
+        <div class="card-glow"></div>
         <div class="card-top">
-          <span class="card-emoji">🏨</span>
+          <span class="card-emoji"><i class="bi bi-house-heart"></i></span>
           <span class="card-arrow">←</span>
         </div>
         <div class="card-bottom">
           <h3>מקומות לינה</h3>
-          <p>לינה נוחה ובמחיר משתלם</p>
+          <p>אירוח נוח ומפנק</p>
         </div>
       </div>
 
-      <div class="bento-card wide" (click)="navigateTo('/guide')" role="button" tabindex="0"
+      <!-- מדריכות — כרטיס רחב בתחתית -->
+      <div class="bento-card card-guide" (click)="navigateTo('/guide')" role="button" tabindex="0"
         (keydown.enter)="navigateTo('/guide')">
+        <div class="card-glow"></div>
         <div class="card-top">
-          <span class="card-emoji">🧭</span>
+          <span class="card-emoji"><i class="bi bi-person-walking"></i></span>
           <span class="card-arrow">←</span>
         </div>
         <div class="card-bottom">
           <h3>מדריכות</h3>
-          <p>מדריכות טיולים מנוסות ומקצועיות</p>
+          <p>מדריכות מנוסות ומקצועיות שילוו אתכם לאורך הדרך</p>
         </div>
       </div>
+
     </div>
 
     <!-- שמאל: פורומים -->
     <aside class="forums-panel">
       <header class="forums-head">
-        <span class="forums-title">💬 פורומים</span>
+        <span class="forums-title"><i class="bi bi-chat-square-dots"></i> פורומים</span>
         <span class="forums-tag">שיתוף הקהילה</span>
       </header>
 
       <nav class="forums-list">
-        <a routerLink="/forum/1" class="forum-row">
-          <span class="forum-emoji">💬</span>
-          <span class="forum-name">חוויות והמלצות</span>
-          <span class="forum-arrow">←</span>
+        <a routerLink="/forum/1" class="hk-btn btn-fill-left">
+          <span><i class="bi bi-chat-heart"></i> חוויות והמלצות</span>
         </a>
-        <a routerLink="/forum/3" class="forum-row">
-          <span class="forum-emoji">⚠️</span>
-          <span class="forum-name">פורום בטיחות</span>
-          <span class="forum-arrow">←</span>
+        <a routerLink="/forum/3" class="hk-btn btn-fill-right">
+          <span><i class="bi bi-shield-check"></i> פורום בטיחות</span>
         </a>
-        <a routerLink="/forum/2" class="forum-row">
-          <span class="forum-emoji">❓</span>
-          <span class="forum-name">שאלות ותשובות</span>
-          <span class="forum-arrow">←</span>
+        <a routerLink="/forum/2" class="hk-btn btn-fill-bottom">
+          <span><i class="bi bi-question-circle"></i> שאלות ותשובות</span>
         </a>
       </nav>
     </aside>

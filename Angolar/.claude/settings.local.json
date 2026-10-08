@@ -99,7 +99,9 @@
       "Bash(cd \"C:\\\\פרויקט גמר\\\\Server\\\\project\" && ls -la 2>/dev/null && echo \"---\" && find . -maxdepth 3 -type d 2>/dev/null | head -100)",
       "Bash(cd \"C:\\\\פרויקט גמר\\\\Server\\\\project\\\\project\" && find . -iname \"RouteDTO.cs\" -o -iname \"*Route*DTO*\" 2>/dev/null | grep -v obj | grep -v bin)",
       "Bash(cd \"C:\\\\פרויקט גמר\\\\Server\\\\project\\\\project\" && grep -rln \"class RouteDTO\\\\|record RouteDTO\" . 2>/dev/null | grep -v obj | grep -v bin)",
-      "Bash(cd \"C:\\\\פרויקט גמר\\\\Server\\\\project\\\\project\" && grep -n \"class RouteDTO\\\\|record RouteDTO\" DTOs/DTOs.cs)"
+      "Bash(cd \"C:\\\\פרויקט גמר\\\\Server\\\\project\\\\project\" && grep -n \"class RouteDTO\\\\|record RouteDTO\" DTOs/DTOs.cs)",
+      "Bash(python -c ' *)",
+      "Bash(PYTHONIOENCODING=utf-8 python -c ' *)"
     ],
     "additionalDirectories": [
       "C:\\פרויקט גמר\\Server\\project\\project\\DTOs",

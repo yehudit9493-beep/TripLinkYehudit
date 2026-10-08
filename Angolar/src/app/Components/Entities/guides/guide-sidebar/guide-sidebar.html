@@ -30,7 +30,7 @@
     </div>
 
     <button class="btn-availability" routerLink="/availability">
-        📅 צפה בזמינות
+        <i class="bi bi-calendar"></i> צפה בזמינות
     </button>
 
     <div class="sidebar-body">
@@ -85,7 +85,7 @@
                 <div class="file-list">
                     @for (file of certFiles; track file.fileId) {
                     <button type="button" class="file-chip" (click)="openLarge(file)">
-                        <span class="file-chip-icon">📄</span>
+                        <span class="file-chip-icon"><i class="bi bi-file-text"></i></span>
                         <span class="file-chip-name">{{ file.fileName }}</span>
                         <span class="file-chip-open">בגדול</span>
                     </button>
@@ -100,7 +100,7 @@
                 <div class="file-list">
                     @for (file of cvFiles; track file.fileId) {
                     <button type="button" class="file-chip" (click)="openLarge(file)">
-                        <span class="file-chip-icon">📄</span>
+                        <span class="file-chip-icon"><i class="bi bi-file-text"></i></span>
                         <span class="file-chip-name">{{ file.fileName }}</span>
                         <span class="file-chip-open">בגדול</span>
                     </button>
@@ -144,7 +144,7 @@
         @if (canManageGuide) {
         <div class="action-buttons">
             <button class="btn-edit" (click)="showEdit = true">✏️ עריכה</button>
-            <button class="btn-delete" (click)="deleteGuide()">🗑️ מחיקה</button>
+            <button class="btn-delete" (click)="deleteGuide()"><i class="bi bi-trash"></i> מחיקה</button>
         </div>
         }
     </div>
