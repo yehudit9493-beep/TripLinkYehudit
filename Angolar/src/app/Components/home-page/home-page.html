@@ -1,67 +1,148 @@
-
 <div class="home-page" dir="rtl">
 
-  <!-- שורה עליונה: כרטיסיות + פורומים -->
-  <div class="top-layout">
+  <!-- ============================================================
+       כותרת עליונה (Hero) — מלל מרשים על האתר
+       ============================================================ -->
+  <section class="hero">
+    <div class="hero-inner">
 
-    <!-- ימין: כרטיסיות בגודל אחיד -->
+      <div class="hero-eyebrow">
+        <span class="eyebrow-badge">🌿 על האתר</span>
+      </div>
+
+      <h1 class="hero-title">טקסט לדוגמה על הגולש באתר</h1>
+
+      <p class="hero-subtitle">
+        לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית. אטום לצאץ צבעים ומרגשים —
+        גלו מסלולים, אטרקציות, מקומות לינה ומדריכות באזורים הנבחרים לכם.
+      </p>
+
+      <div class="hero-features">
+        <div class="hero-feature">
+          <span class="hf-icon">🥾</span>
+          <span class="hf-label">מסלולים</span>
+        </div>
+        <div class="hero-feature">
+          <span class="hf-icon">🏛️</span>
+          <span class="hf-label">אטרקציות</span>
+        </div>
+        <div class="hero-feature">
+          <span class="hf-icon">🏨</span>
+          <span class="hf-label">לינה</span>
+        </div>
+        <div class="hero-feature">
+          <span class="hf-icon">🧭</span>
+          <span class="hf-label">מדריכות</span>
+        </div>
+      </div>
+
+      <a class="hero-scroll" (click)="navigateTo('/area-filter')" role="button" tabindex="0"
+        (keydown.enter)="navigateTo('/area-filter')">
+        <span>התחילו לגלות</span>
+        <span class="hero-scroll-arrow">↓</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       שורת חיפוש לפי אזור
+       ============================================================ -->
+  <section class="area-search" (click)="navigateTo('/area-filter')" role="button" tabindex="0"
+    (keydown.enter)="navigateTo('/area-filter')">
+    <div class="as-icon">🗺️</div>
+    <div class="as-body">
+      <h2>חיפוש לפי אזור</h2>
+      <p>בחרו אזור וגלו את כל המסלולים, האטרקציות, מקומות הלינה והמדריכות שבאותו מקום</p>
+    </div>
+    <div class="as-action">
+      <span class="as-cta">חיפוש לפי אזור</span>
+      <span class="as-arrow">←</span>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       שורה: כרטיסיות הישויות + פורומים לצידם
+       ============================================================ -->
+  <section class="content-layout">
+
+    <!-- ימין: כרטיסיות הישויות -->
     <div class="bento-grid">
-      <div class="bento-card tall" (click)="navigateTo('/trails')">
-        <div class="card-emoji">🥾</div>
-        <h3>מסלולים</h3>
-        <p>גלו את המסלולים הטובים ביותר</p>
+      <div class="bento-card tall" (click)="navigateTo('/trails')" role="button" tabindex="0"
+        (keydown.enter)="navigateTo('/trails')">
+        <div class="card-top">
+          <span class="card-emoji">🥾</span>
+          <span class="card-arrow">←</span>
+        </div>
+        <div class="card-bottom">
+          <h3>מסלולים</h3>
+          <p>גלו את המסלולים הטובים ביותר</p>
+        </div>
       </div>
-      <div class="bento-card attractions" (click)="navigateTo('/attractions')">
-        <div class="card-emoji">🏛️</div>
-        <h3>אטרקציות</h3>
-        <p>אטרקציות לא לפספס</p>
+
+      <div class="bento-card attractions" (click)="navigateTo('/attractions')" role="button" tabindex="0"
+        (keydown.enter)="navigateTo('/attractions')">
+        <div class="card-top">
+          <span class="card-emoji">🏛️</span>
+          <span class="card-arrow">←</span>
+        </div>
+        <div class="card-bottom">
+          <h3>אטרקציות</h3>
+          <p>אטרקציות שלא כדאי לפספס</p>
+        </div>
       </div>
-      <div class="bento-card accommodation" (click)="navigateTo('/hotels')">
-        <div class="card-emoji">🏨</div>
-        <h3>מקומות לינה</h3>
-        <p>לינה נוחה ובמחיר משתלם</p>
+
+      <div class="bento-card accommodation" (click)="navigateTo('/hotels')" role="button" tabindex="0"
+        (keydown.enter)="navigateTo('/hotels')">
+        <div class="card-top">
+          <span class="card-emoji">🏨</span>
+          <span class="card-arrow">←</span>
+        </div>
+        <div class="card-bottom">
+          <h3>מקומות לינה</h3>
+          <p>לינה נוחה ובמחיר משתלם</p>
+        </div>
       </div>
-      <div class="bento-card wide" (click)="navigateTo('/guide')">
-        <div class="card-emoji">🧭</div>
-        <h3>מדריכות</h3>
-        <p>מדריכות טיולים מנוסות ומקצועיות</p>
+
+      <div class="bento-card wide" (click)="navigateTo('/guide')" role="button" tabindex="0"
+        (keydown.enter)="navigateTo('/guide')">
+        <div class="card-top">
+          <span class="card-emoji">🧭</span>
+          <span class="card-arrow">←</span>
+        </div>
+        <div class="card-bottom">
+          <h3>מדריכות</h3>
+          <p>מדריכות טיולים מנוסות ומקצועיות</p>
+        </div>
       </div>
     </div>
 
     <!-- שמאל: פורומים -->
-    <div class="forums-section">
-      <h2>פורומים</h2>
-      <ul>
-        <li>
-          <a routerLink="/forum/1" class="hk-btn btn-fill-left">
-            <span>💬 חוויות והמלצות</span>
-          </a>
-        </li>
-        <li>
-          <a routerLink="/forum/3" class="hk-btn btn-fill-right">
-            <span>⚠️ פורום בטיחות</span>
-          </a>
-        </li>
-        <li>
-          <a routerLink="/forum/2" class="hk-btn btn-fill-bottom">
-            <span>❓ שאלות ותשובות</span>
-          </a>
-        </li>
-      </ul>
-    </div>
+    <aside class="forums-panel">
+      <header class="forums-head">
+        <span class="forums-title">💬 פורומים</span>
+        <span class="forums-tag">שיתוף הקהילה</span>
+      </header>
 
-  </div>
+      <nav class="forums-list">
+        <a routerLink="/forum/1" class="forum-row">
+          <span class="forum-emoji">💬</span>
+          <span class="forum-name">חוויות והמלצות</span>
+          <span class="forum-arrow">←</span>
+        </a>
+        <a routerLink="/forum/3" class="forum-row">
+          <span class="forum-emoji">⚠️</span>
+          <span class="forum-name">פורום בטיחות</span>
+          <span class="forum-arrow">←</span>
+        </a>
+        <a routerLink="/forum/2" class="forum-row">
+          <span class="forum-emoji">❓</span>
+          <span class="forum-name">שאלות ותשובות</span>
+          <span class="forum-arrow">←</span>
+        </a>
+      </nav>
+    </aside>
 
-  <!-- שורה תחתונה: כפתור חיפוש לפי אזור -->
-  <div class="area-search-banner" (click)="navigateTo('/area-filter')" role="button" tabindex="0"
-    (keydown.enter)="navigateTo('/area-filter')">
-    <div class="asb-icon">🗺️</div>
-    <div class="asb-text">
-      <h2>חיפוש לפי אזור</h2>
-      <p>לחיפוש מסלולים, אטרקציות, מקומות לינה ומדריכות מתמחות באזור מסוים</p>
-      <span class="asb-cta">— לחצו כאן —</span>
-    </div>
-    <div class="asb-arrow">←</div>
-  </div>
+  </section>
 
 </div>

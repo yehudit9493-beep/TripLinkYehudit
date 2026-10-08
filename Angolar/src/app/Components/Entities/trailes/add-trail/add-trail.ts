@@ -36,13 +36,13 @@ export class AddTrail {
   addTrailForm = new FormGroup({
     name: new FormControl('', Validators.required),
     describshain: new FormControl(''),
-    regionId: new FormControl(0, Validators.required),
+    regionId: new FormControl('', Validators.required),
     directions: new FormControl(''),
-    RouteLengthInKM: new FormControl(0, Validators.required),
+    RouteLengthInKM: new FormControl('', [Validators.required, Validators.min(0.1)]),
     RouteDuration: new FormControl('', Validators.required),
     DifficultyLevel: new FormControl('', Validators.required),
-    minimumAge: new FormControl(0, Validators.required),
-    MaximumAge: new FormControl(0, Validators.required),
+    minimumAge: new FormControl('', [Validators.required, Validators.min(0)]),
+    MaximumAge: new FormControl('', [Validators.required, Validators.min(0)]),
     WetDryTrack: new FormControl('', Validators.required),
     season: new FormControl<string[]>([], Validators.required),
   });
@@ -161,7 +161,30 @@ export class AddTrail {
   //     this.cdr.detectChanges();
   //   }
 
+  // בונה את אובייקט המסלול מתוך הטופס, תוך המרה של השדות המספריים
+  private buildTrailPayload(extra?: any): TrailWithoutId {
+    const v = this.addTrailForm.value;
+    return {
+      name: v.name ?? '',
+      describshain: v.describshain ?? '',
+      regionId: Number(v.regionId),
+      directions: v.directions ?? '',
+      RouteLengthInKM: Number(v.RouteLengthInKM),
+      RouteDuration: v.RouteDuration ?? '',
+      DifficultyLevel: v.DifficultyLevel ?? '',
+      minimumAge: Number(v.minimumAge),
+      MaximumAge: Number(v.MaximumAge),
+      WetDryTrack: v.WetDryTrack ?? '',
+      season: v.season ?? [],
+      images: extra?.images,
+      ...(extra ?? {})
+    };
+  }
+
   onSubmit() {
+    // מסמנים את כל השדות כ"נגעו" כדי שכל הודעות השגיאה יופיעו
+    this.addTrailForm.markAllAsTouched();
+
     if (this.addTrailForm.valid) {
       if (this.newImageFiles.length > 0) {
         this.uploadNewImages();
@@ -169,7 +192,7 @@ export class AddTrail {
         this.saveTrail();
       }
     } else {
-      console.warn('הטופס אינו תקין; אנא בדוק את השדות');
+      console.warn('טופס אינו תקין; ממויינים השדות החסרים בצבע אדום');
     }
   }
 
@@ -183,10 +206,7 @@ export class AddTrail {
 
     this.trailService.uploadImages(formData).subscribe({
       next: (response: any) => {
-        const trailData = {
-          ...this.addTrailForm.value as TrailWithoutId,
-          images: response.imagePaths ?? []
-        };
+        const trailData = this.buildTrailPayload({ images: response.imagePaths ?? [] });
         this.saveTrailWithImages(trailData);
       },
       error: (error) => {
@@ -197,10 +217,7 @@ export class AddTrail {
   }
 
   saveTrailWithImages(trailData: any): void {
-    const trail = {
-      ...this.addTrailForm.value as TrailWithoutId,
-      images: trailData?.images ?? this.previewUrls
-    };
+    const trail = this.buildTrailPayload({ images: trailData?.images ?? this.previewUrls });
     this.trailService.addTrail(trail).subscribe({
       next: (response) => {
         console.log('מסלול נוסף בהצלחה עם תמונות');
@@ -220,7 +237,7 @@ export class AddTrail {
 
   saveTrail(): void {
     this.isSaving = true;
-    this.trailService.addTrail(this.addTrailForm.value as TrailWithoutId).subscribe({
+    this.trailService.addTrail(this.buildTrailPayload()).subscribe({
       next: (response) => {
         console.log('מסלול נוסף בהצלחה');
         this.addTrailForm.reset();
@@ -228,8 +245,9 @@ export class AddTrail {
         this.updated.emit(response);
         this.closed.emit();
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('שגיאה בהוספת המסלול:', error);
+        console.error('💥 הודעת השרת המלאה:', error?.error?.message ?? error?.message ?? error?.statusText);
         this.isSaving = false;
       }
     });
@@ -262,6 +280,9 @@ export class AddTrail {
   onSeasonChange(event: Event) {
     const checkbox = event.target as HTMLInputElement;
     const currentSeasons: string[] = this.addTrailForm.get('season')?.value || [];
+
+    // מסמנים שדה העונה כ"נגע" כדי שההודעה 'יש לבחור עונה' תופיע אם אין בחירה
+    this.addTrailForm.get('season')?.markAsTouched();
 
     if (checkbox.value === 'כל השנה' && checkbox.checked) {
       // בחרו כל השנה — מנקים הכל ושמים רק כל השנה

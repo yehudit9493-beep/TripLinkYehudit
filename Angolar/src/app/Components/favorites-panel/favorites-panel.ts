@@ -35,6 +35,10 @@ export class FavoritesPanel {
     this.favoritesService.removeFavorite(item);
   }
 
+  clearFavorites() {
+    this.favoritesService.clearFavorites();
+  }
+
   getTypeLabel(type: string): string {
     const labels: any = {
       guides: 'מדריכה',

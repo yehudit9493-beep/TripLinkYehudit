@@ -6,6 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Auth } from '../../../Service/auth';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogDelete } from '../../Entities/dialog-delete/dialog-delete';
 import { HebrewDateConverterPipe } from '../../../pipe/hebrewDateConverter.pipe';
 
 @Component({
@@ -45,15 +47,18 @@ export class ExperienceUpdate {
     private router: Router,
     private route: ActivatedRoute, private auth: Auth,
     private snackBar: MatSnackBar,
+    private dialog: MatDialog,
    private cdr: ChangeDetectorRef ) { }
 
   ngOnInit() {
     this.currentUserId = this.auth.getCurrentUserId();
     this.currentUserName = this.auth.getCurrentUserName();
     const userPermissions = this.auth.getCurrentUserPermission();
+    console.log('🔑 userPermissions =', userPermissions);
 
     const forumId = this.route.snapshot.paramMap.get('forumId');
     this.currentForumId = forumId ? +forumId : 1;
+    console.log('📋 currentForumId =', this.currentForumId);
 
     const config = this.forums.forumConfig[this.currentForumId];
     if (config) {
@@ -65,6 +70,9 @@ export class ExperienceUpdate {
       this.canPost = hasAnyPermission(config.canPost);
       this.canReply = hasAnyPermission(config.canReply);
       this.canDelete = hasAnyPermission(config.canDelete);
+      console.log('⚙️ canPost =', this.canPost, 'canReply =', this.canReply, 'canDelete =', this.canDelete, 'config.canPost =', config.canPost, 'config.canReply =', config.canReply);
+    } else {
+      console.warn('⚠️ לא נמצא config לפורום', this.currentForumId);
     }
 
     this.loadMessages();
@@ -172,10 +180,20 @@ private loadMessages() {
   }
 
   deleteMessage(messageId: number) {
-    if (!confirm('האם למחוק את ההודעה ואת כל התגובות שלה?')) {
-      return;
-    }
+    const dialogRef = this.dialog.open(DialogDelete, {
+      data: { itemName: 'ההודעה ואת כל התגובות שלה?' }
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        return;
+      }
+
+      this.deleteMessageConfirm(messageId);
+    });
+  }
+
+  private deleteMessageConfirm(messageId: number) {
     this.forums.deleteMessage(messageId).subscribe({
       next: () => {
         this.snackBar.open('ההודעה נמחקה 🗑️', '', {

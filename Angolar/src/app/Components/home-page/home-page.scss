@@ -1,350 +1,449 @@
+// ============================================================
+// משתנים — ערכת צבעים אחידה לכל דף הבית
+// ============================================================
+$brand: #0990d4;          // כחול ראשי
+$brand-dark: #0773a8;
+$ink: #0d1b2e;            // טקסט כהה
+$muted: rgba(13, 27, 46, 0.68);
+$bg: #eef6fd;
 
 :host {
     display: block;
     min-height: 100vh;
-    background: linear-gradient(135deg, #e8f4fd 0%, #f0f7ff 100%);
+    background: linear-gradient(180deg, #f4faff 0%, #eaf2fa 100%);
 }
 
 .home-page {
-    padding: 32px;
-    min-height: 100vh;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 32px 32px 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
     box-sizing: border-box;
+}
+
+// ============================================================
+// 1) Hero — מלל מרשים על האתר
+// ============================================================
+.hero {
+    position: relative;
+    border-radius: 28px;
+    padding: clamp(40px, 6vw, 72px) clamp(24px, 5vw, 64px);
+    background:
+        radial-gradient(1200px 480px at 85% -10%, rgba(255, 255, 255, 0.35) 0%, transparent 55%),
+        linear-gradient(135deg, #0a3d62 0%, #1275b3 55%, #19a3d6 100%);
+    color: #fff;
+    box-shadow: 0 24px 60px rgba(10, 61, 98, 0.28);
+    overflow: hidden;
+    text-align: center;
+
+    // עיטור תפאורה עדין ברקע
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.08);
+        pointer-events: none;
+    }
+
+    &::before {
+        width: 380px;
+        height: 380px;
+        top: -140px;
+        right: -120px;
+    }
+
+    &::after {
+        width: 280px;
+        height: 280px;
+        bottom: -120px;
+        left: -80px;
+    }
+}
+
+.hero-inner {
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    align-items: center;
+    gap: 20px;
+    max-width: 760px;
+    margin: 0 auto;
 }
 
-// ==================
-// שורה עליונה
-// ==================
-.top-layout {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 32px;
-    align-items: start;
+.hero-eyebrow {
+    .eyebrow-badge {
+        display: inline-block;
+        padding: 6px 18px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.16);
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+    }
 }
 
-// ==================
-// כרטיסיות
-// ==================
-.bento-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
+.hero-title {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.2;
+    text-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
 }
 
-.bento-card {
-    border-radius: 12px;
-    padding: 24px;
+.hero-subtitle {
+    margin: 0;
+    max-width: 640px;
+    font-size: clamp(1rem, 2vw, 1.18rem);
+    line-height: 1.75;
+    opacity: 0.94;
+}
+
+.hero-features {
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 6px;
+
+    .hero-feature {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        font-weight: 600;
+        font-size: 0.92rem;
+    }
+}
+
+.hero-scroll {
+    margin-top: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 28px;
+    border-radius: 999px;
+    background: #fff;
+    color: $brand-dark;
+    font-weight: 700;
+    font-size: 1rem;
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    text-decoration: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+    .hero-scroll-arrow {
+        transition: transform 0.25s ease;
+    }
+
+    &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
+
+        .hero-scroll-arrow {
+            transform: translateY(3px);
+        }
+    }
+}
+
+// ============================================================
+// 2) שורת חיפוש לפי אזור
+// ============================================================
+.area-search {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding: 22px 28px;
+    border-radius: 20px;
+    background: #fff;
+    border: 1px solid rgba(9, 144, 212, 0.18);
+    box-shadow: 0 10px 30px rgba(9, 144, 212, 0.1);
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
     position: relative;
     overflow: hidden;
-    min-height: 280px;
 
     &::before {
         content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.15);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        z-index: 0;
+        inset: 0;
+        background: linear-gradient(100deg, rgba(9, 144, 212, 0.06) 0%, transparent 45%);
+        pointer-events: none;
     }
 
     &:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+        transform: translateY(-3px);
+        box-shadow: 0 16px 44px rgba(9, 144, 212, 0.2);
 
-        &::before {
+        .as-arrow {
+            transform: translateX(-5px);
+        }
+    }
+
+    .as-icon {
+        font-size: 2.8rem;
+        flex-shrink: 0;
+    }
+
+    .as-body {
+        flex: 1;
+        position: relative;
+
+        h2 {
+            margin: 0 0 4px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: $ink;
+        }
+
+        p {
+            margin: 0;
+            font-size: 1rem;
+            color: $muted;
+        }
+    }
+
+    .as-action {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-shrink: 0;
+    }
+
+    .as-cta {
+        padding: 12px 26px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, $brand 0%, #19a3d6 100%);
+        color: #fff;
+        font-weight: 700;
+        font-size: 0.98rem;
+        box-shadow: 0 8px 22px rgba(9, 144, 212, 0.35);
+        white-space: nowrap;
+    }
+
+    .as-arrow {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: $brand;
+        transition: transform 0.25s ease;
+    }
+}
+
+// ============================================================
+// 3) שורת תוכן — כרטיסיות + פורומים
+// ============================================================
+.content-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 28px;
+    align-items: start;
+}
+
+// ----- כרטיסיות הישויות -----
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.bento-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 220px;
+    padding: 24px;
+    border-radius: 22px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.28s ease, box-shadow 0.28s ease;
+    box-shadow: 0 12px 30px rgba(13, 27, 46, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+
+    &:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 22px 50px rgba(13, 27, 46, 0.18);
+
+        .card-arrow {
+            transform: translateX(-4px);
             opacity: 1;
         }
     }
 
+    .card-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+    }
+
     .card-emoji {
-        font-size: 2.2rem;
-        margin-bottom: 12px;
-        z-index: 1;
-        position: relative;
+        font-size: 2.6rem;
+        line-height: 1;
     }
 
-    h3 {
-        font-size: 1.4rem;
+    .card-arrow {
+        font-size: 1.3rem;
         font-weight: 700;
-        color: #0d1b2e;
-        margin: 0 0 4px;
-        z-index: 1;
-        position: relative;
-        text-shadow: none;
+        opacity: 0.75;
+        transition: transform 0.25s ease, opacity 0.25s ease;
     }
 
-    p {
-        font-size: 0.92rem;
-        color: rgba(13, 27, 46, 0.7);
-        margin: 0;
-        z-index: 1;
-        position: relative;
+    .card-bottom {
+        margin-top: 20px;
+
+        h3 {
+            margin: 0 0 6px;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.92);
+        }
     }
 
     &.tall {
-        // מסלולים — ורוד
-        background: linear-gradient(160deg, #4db8ff 0%, #a8deff 100%);
+        background: linear-gradient(135deg, #1b8fbf 0%, #5cc4e8 100%);
     }
 
     &.attractions {
-        // אטרקציות — כתום
-        background: linear-gradient(135deg, #4db8ff 0%, #a8deff 100%);
+        background: linear-gradient(135deg, #0f7fb0 0%, #46badd 100%);
     }
 
     &.accommodation {
-        // לינה — תכלת-ירוק
-        background: linear-gradient(135deg, #4db8ff 0%, #a8deff 100%);
+        background: linear-gradient(135deg, #14837f 0%, #42b9a8 100%);
     }
 
     &.wide {
-        // מדריכות — תכלת כחול
-        background: linear-gradient(135deg, #4db8ff 0%, #a8deff 100%);
+        background: linear-gradient(135deg, #0a5f9e 0%, #2f9fd8 100%);
     }
-
 }
 
-// ==================
-// פורומים
-// ==================
-.forums-section {
-    background: white;
-    padding: 28px 24px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    border-radius: 12px;
+// ----- פאנל הפורומים -----
+.forums-panel {
+    background: #fff;
+    border-radius: 22px;
+    padding: 26px 22px;
+    border: 1px solid rgba(13, 27, 46, 0.07);
+    box-shadow: 0 12px 30px rgba(13, 27, 46, 0.07);
+    position: sticky;
+    top: 20px;
 
-    h2 {
-        font-size: 1.3rem;
-        font-weight: 700;
-        color: #1a1a2e;
-        margin: 0;
-        text-align: center;
+    .forums-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 18px;
+        padding-bottom: 16px;
+        border-bottom: 2px solid #f0f6fb;
+
+        .forums-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: $ink;
+        }
+
+        .forums-tag {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: $brand;
+            background: rgba(9, 144, 212, 0.1);
+            padding: 4px 12px;
+            border-radius: 999px;
+        }
     }
 
-    ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
+    .forums-list {
         display: flex;
         flex-direction: column;
+        gap: 10px;
+    }
+
+    .forum-row {
+        display: flex;
+        align-items: center;
         gap: 12px;
-    }
-}
+        padding: 13px 14px;
+        border-radius: 14px;
+        background: #f6faff;
+        border: 1px solid rgba(9, 144, 212, 0.12);
+        text-decoration: none;
+        color: $ink;
+        transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 
-.hk-btn {
-    position: relative;
-    display: block;
-    width: 100%;
-    padding: 13px 20px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.88rem;
-    overflow: hidden;
-    transition: color 0.25s ease;
-    box-sizing: border-box;
-    text-align: center;
-}
+        &:hover {
+            background: #fff;
+            transform: translateX(-4px);
+            box-shadow: 0 8px 22px rgba(9, 144, 212, 0.16);
 
-.btn-fill-left {
-    border: 2px solid #0990d4;
-    color: #0990d4;
-    background: transparent;
+            .forum-arrow {
+                transform: translateX(-4px);
+            }
+        }
 
-    &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 0;
-        height: 100%;
-        background: #0990d4;
-        transition: width 0.25s ease;
-        z-index: 0;
-    }
+        .forum-emoji {
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
 
-    span {
-        position: relative;
-        z-index: 1;
-    }
+        .forum-name {
+            flex: 1;
+            font-weight: 600;
+            font-size: 0.98rem;
+        }
 
-    &:hover {
-        color: #fff;
-
-        &::before {
-            width: 100%;
+        .forum-arrow {
+            color: $brand;
+            font-weight: 700;
+            transition: transform 0.2s ease;
         }
     }
 }
 
-.btn-fill-right {
-    border: 2px solid #0990d4;
-    color: #0990d4;
-    background: transparent;
-
-    &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 0;
-        height: 100%;
-        background: #0990d4;
-        transition: width 0.25s ease;
-        z-index: 0;
-    }
-
-    span {
-        position: relative;
-        z-index: 1;
-    }
-
-    &:hover {
-        color: #fff;
-
-        &::before {
-            width: 100%;
-        }
-    }
-}
-
-.btn-fill-bottom {
-    border: 2px solid #0990d4;
-    color: #0990d4;
-    background: transparent;
-
-    &::before {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 0;
-        background: #0990d4;
-        transition: height 0.25s ease;
-        z-index: 0;
-    }
-
-    span {
-        position: relative;
-        z-index: 1;
-    }
-
-    &:hover {
-        color: #fff;
-
-        &::before {
-            height: 100%;
-        }
-    }
-}
-
-// ==================
+// ============================================================
 // רספונסיבי
-// ==================
+// ============================================================
 @media (max-width: 1024px) {
-    .top-layout {
+    .content-layout {
         grid-template-columns: 1fr;
     }
 
-    .bento-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .forums-panel {
+        position: static;
     }
 }
 
 @media (max-width: 640px) {
     .home-page {
-        padding: 16px;
+        padding: 16px 16px 48px;
     }
 
     .bento-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-// ==================
-// באנר חיפוש לפי אזור
-// ==================
-.area-search-banner {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    padding: 28px 32px;
-    border-radius: 16px;
-    cursor: pointer;
-    background: linear-gradient(135deg, #0a3d62 0%, #2c6fb3 100%);
-    color: #fff;
-    box-shadow: 0 8px 24px rgba(10, 61, 98, 0.35);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-
-    &:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 14px 40px rgba(10, 61, 98, 0.45);
-
-        .asb-arrow {
-            transform: translateX(-6px);
-        }
+        grid-template-columns: 1fr;
     }
 
-    .asb-icon {
-        font-size: 3.2rem;
-        flex-shrink: 0;
-    }
-
-    .asb-text {
-        flex: 1;
-
-        h2 {
-            margin: 0 0 6px;
-            font-size: 1.6rem;
-            font-weight: 700;
-        }
-
-        p {
-            margin: 0 0 8px;
-            font-size: 1rem;
-            opacity: 0.92;
-        }
-
-        .asb-cta {
-            display: inline-block;
-            font-size: 0.95rem;
-            font-weight: 700;
-            background: rgba(255, 255, 255, 0.18);
-            padding: 6px 16px;
-            border-radius: 999px;
-        }
-    }
-
-    .asb-arrow {
-        font-size: 2rem;
-        font-weight: 700;
-        flex-shrink: 0;
-        transition: transform 0.25s ease;
-    }
-}
-
-@media (max-width: 640px) {
-    .area-search-banner {
+    .area-search {
         flex-direction: column;
         text-align: center;
-        padding: 24px 20px;
 
-        .asb-arrow {
-            transform: rotate(90deg);
+        .as-action {
+            flex-direction: column;
+            gap: 6px;
+
+            .as-arrow {
+                transform: rotate(90deg);
+            }
         }
     }
 }

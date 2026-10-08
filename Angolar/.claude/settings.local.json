@@ -89,7 +89,17 @@
       "Bash(cd \"/c/פרויקט גמר/Server/project/project/Controllers\" && grep -n \"Permission\\\\|Authorize\\\\|HasPermission\\\\|permission\" AttractionsController.cs HotelsController.cs RoutesController.cs )",
       "Bash(cd \"/c/פרויקט גמר/Server/project/project/Controllers\" && grep -rn \"Permission\\\\|Authorize\\\\|HasPermission\\\\|permission\" GuideController.cs CoordinatorController.cs ForumController.cs RatingsController.cs LoginController.cs UserAdminController.cs)",
       "Bash(cd \"/c/פרויקט גמר/Server/project/project\" && grep -n \"Policy\\\\|AddPolicy\\\\|AddAuthorization\\\\|RequireClaim\\\\|HasPermission\\\\|claim\\\\|Claim\" Program.cs)",
-      "Bash(grep -oE \"\\\\\"[^\\\\\"]*$\")"
+      "Bash(grep -oE \"\\\\\"[^\\\\\"]*$\")",
+      "Bash(cd \"/c/פרויקט גמר/Server/project/project\" && grep -n \"LoginResponseDTO\\\\|permissionIds\\\\|PermissionIds\\\\|token\\\\|Token\" DTOs/DTOs.cs | head -30)",
+      "Bash(cd \"C:\\\\פרויקט גמר\\\\Server\\\\project\" && find . -iname \"*route*\" -o -iname \"*trail*\" 2>/dev/null | grep -v node_modules | grep -v obj | grep -v bin)",
+      "Bash(cd \"C:\\\\פרויקט גמר\\\\Server\\\\project\\\\project\" && find . -iname \"RouteDTO.cs\" -o -iname \"Season.cs\" 2>/dev/null | grep -v obj | grep -v bin)",
+      "Bash(xargs grep -l \"SaveChanges\\\\|DbContext\\\\|OnModelCreating\")",
+      "Bash(cd \"C:\\\\פרויקט גמר\\\\Server\\\\project\\\\project\" && grep -n \"modelBuilder.Entity<Season>\\\\|ToTable\\(\\\\|Season\\\\b\" Entities/YehuditTripsContext.cs | head -40)",
+      "Bash(cd \"C:\\\\פרויקט גמר\\\\Server\\\\project\\\\project\" && grep -n \"modelBuilder.Entity<Route>\\(\" Entities/YehuditTripsContext.cs)",
+      "Bash(cd \"C:\\\\פרויקט גמר\\\\Server\\\\project\" && ls -la 2>/dev/null && echo \"---\" && find . -maxdepth 3 -type d 2>/dev/null | head -100)",
+      "Bash(cd \"C:\\\\פרויקט גמר\\\\Server\\\\project\\\\project\" && find . -iname \"RouteDTO.cs\" -o -iname \"*Route*DTO*\" 2>/dev/null | grep -v obj | grep -v bin)",
+      "Bash(cd \"C:\\\\פרויקט גמר\\\\Server\\\\project\\\\project\" && grep -rln \"class RouteDTO\\\\|record RouteDTO\" . 2>/dev/null | grep -v obj | grep -v bin)",
+      "Bash(cd \"C:\\\\פרויקט גמר\\\\Server\\\\project\\\\project\" && grep -n \"class RouteDTO\\\\|record RouteDTO\" DTOs/DTOs.cs)"
     ],
     "additionalDirectories": [
       "C:\\פרויקט גמר\\Server\\project\\project\\DTOs",

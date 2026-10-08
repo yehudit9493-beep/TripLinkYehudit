@@ -58,6 +58,33 @@
             </div>
 
             <div class="form-field">
+                <label>עיר</label>
+
+                @if (cities().length > 0) {
+                <div class="selected-city">
+                    {{ addAttractionForm.get('city')?.value || 'לא נבחרה עיר' }}
+                </div>
+
+                <div class="city-autocomplete-container">
+                    <input type="text" placeholder="חפש עיר..." [value]="citySearchText()"
+                        (input)="onCitySearchChange($event)" class="form-control" autocomplete="off" />
+
+                    @if (citySearchText()) {
+                    <div class="city-dropdown-list">
+                        @for (city of filteredCities(); track city) {
+                        <button type="button" class="city-option" (click)="selectCity(city)">
+                            {{ city }}
+                        </button>
+                        }
+                    </div>
+                    }
+                </div>
+                } @else {
+                <input type="text" disabled placeholder="טוען ערים..." />
+                }
+            </div>
+
+            <div class="form-field">
                 <label>כתובת</label>
                 <input formControlName="address" />
             </div>

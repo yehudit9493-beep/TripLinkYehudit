@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, DatePipe, AsyncPipe } from '@angular/common';
 import { Rating, RatingService } from '../../Service/rating-service';
 import { Location } from '@angular/common';
+import { HebrewDateConverterPipe } from '../../pipe/hebrewDateConverter.pipe';
 
 @Component({
   selector: 'app-ratings-list',
   standalone: true,
-  imports: [CommonModule, DatePipe],
+  imports: [CommonModule, DatePipe, HebrewDateConverterPipe, AsyncPipe],
   templateUrl: './ratings-list.html',
   styleUrl: './ratings-list.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

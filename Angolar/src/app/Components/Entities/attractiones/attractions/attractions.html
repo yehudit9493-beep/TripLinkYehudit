@@ -58,7 +58,9 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header>סוג</th>
         <td mat-cell *matCellDef="let e">
           <span class="badge" [class.nature]="e.typeName === 'טבע'" [class.culture]="e.typeName === 'תרבות'"
-            [class.history]="e.typeName === 'היסטוריה'">
+            [class.history]="e.typeName === 'היסטוריה'" [class.marine]="e.typeName === 'ימית'"
+            [class.sport]="e.typeName === 'ספורט'" [class.tech]="e.typeName === 'טכנולוגית'"
+            [class.escape-room]="e.typeName === 'חדר בריחה'">
             {{e.typeName}}
           </span>
         </td>

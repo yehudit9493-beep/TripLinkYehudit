@@ -1,30 +1,47 @@
 <div class="favorites-panel">
-  <div class="panel-header">
-    <h3>המועדפים שלי ❤️</h3>
-    <button class="close-btn" (click)="closed.emit()">✕</button>
-  </div>
+  <div class="overlay" (click)="closed.emit()"></div>
 
-  <div class="panel-body">
-
-    @if (favorites.length === 0) {
-      <div class="empty-state">
-        <span>😕</span>
-        <p>אין פריטים במועדפים עדיין</p>
+  <aside class="sidebar">
+    <header class="sidebar-header">
+      <button class="close-btn" (click)="closed.emit()" title="סגירה">✕</button>
+      <div class="header-title-row">
+        <h2>המועדפים שלי ❤️</h2>
       </div>
-    }
+      <p class="subtitle">הפריטים ששמרת לטיול הבא</p>
+    </header>
 
-    @for (item of favorites; track item.data.id) {
-      <div class="favorite-item">
-        <div class="item-icon">{{ getTypeIcon(item.type) }}</div>
-        
-        <div class="item-info" (click)="onItemClick(item)">
-          <span class="item-name">{{ getName(item) }}</span>
-          <span class="item-type">{{ getTypeLabel(item.type) }}</span>
+    <div class="sidebar-body">
+
+      @if (favorites.length === 0) {
+        <div class="empty-state">
+          <span class="empty-icon">😕</span>
+          <p>אין פריטים במועדפים עדיין</p>
+          <small>לחצו על הלב בפריט שתמצאו מעניין כדי לשמור אותו כאן</small>
         </div>
-        
-        <button class="remove-btn" (click)="removeFavorite(item)" title="הסר מהמועדפים">✕</button>
-      </div>
-    }
+      } @else {
+        <div class="favorites-list">
+          @for (item of favorites; track item.data.id) {
+            <div class="favorite-card">
+              <div class="item-icon">{{ getTypeIcon(item.type) }}</div>
 
-  </div>
+              <div class="item-info" (click)="onItemClick(item)">
+                <span class="item-name">{{ getName(item) }}</span>
+                <span class="item-type">
+                  <span class="type-badge">{{ getTypeLabel(item.type) }}</span>
+                </span>
+              </div>
+
+              <button class="remove-btn" (click)="removeFavorite(item)" title="הסר מהמועדפים">✕</button>
+            </div>
+          }
+        </div>
+      }
+
+    </div>
+
+    <footer class="sidebar-footer" *ngIf="favorites.length > 0">
+      <span class="footer-count">{{ favorites.length }} פריטים נשמרים</span>
+      <button class="btn-clear" (click)="clearFavorites()" title="ניקוי כל המועדפים">נקה הכל</button>
+    </footer>
+  </aside>
 </div>

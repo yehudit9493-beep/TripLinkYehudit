@@ -1,4 +1,4 @@
-import { CommonModule, Time } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { Auth } from '../../Service/auth';
@@ -80,11 +80,15 @@ export class Header {
     this.showFavorites = !this.showFavorites;
   }
 
+  closeFavorites() {
+    this.showFavorites = false;
+  }
+
   // התנתקות: ניקוי ה-localStorage, ניקוי המועדפים וחזרה לדף הראשי
   logout() {
     this.isLoggingOut = true;
     this.authService.logout();
-    this.favoritesService.getFavorites().length = 0;
+    this.favoritesService.clearFavorites();
     this.loggedInUser = null;
     this.router.navigate(['/']);
     this.isLoggingOut = false;

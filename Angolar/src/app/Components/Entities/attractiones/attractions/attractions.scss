@@ -150,6 +150,30 @@ table.mat-table {
         background: #fef3c7;
         color: #92400e;
     }
+
+    &.marine {
+        background: #cffafe;
+        color: #155e75;
+    }
+
+    &.sport {
+        background: #ffedd5;
+        color: #c2410c;
+    }
+
+    &.tech {
+        background: #dbeafe;
+        color: #1e40af;
+    }
+
+    &.escape-room {
+        background: #fce7f3;
+        color: #9d174d;
+    }
+
+    // עיצוב ברירת מחדל לכל סוג שלא מופיע ברשימה
+    background: #e5e7eb;
+    color: #374151;
 }
 
 .details-btn {

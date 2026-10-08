@@ -10,6 +10,9 @@
             <div class="form-field">
                 <label>שם המסלול</label>
                 <input formControlName="name" />
+                @if (addTrailForm.get('name')?.touched && addTrailForm.get('name')?.invalid) {
+                <div class="field-error">שדה חובה</div>
+                }
             </div>
 
             <div class="form-field">
@@ -25,6 +28,9 @@
                     <option [value]="area.id">{{area.name}}</option>
                     }
                 </select>
+                @if (addTrailForm.get('regionId')?.touched && addTrailForm.get('regionId')?.invalid) {
+                <div class="field-error">שדה חובה</div>
+                }
             </div>
 
             <div class="form-field">
@@ -61,10 +67,21 @@
                 <div class="form-field">
                     <label>אורך (ק"מ)</label>
                     <input type="number" formControlName="RouteLengthInKM" />
+                    @if (addTrailForm.get('RouteLengthInKM')?.touched &&
+                    addTrailForm.get('RouteLengthInKM')?.errors?.['required']) {
+                    <div class="field-error">שדה חובה</div>
+                    }
+                    @if (addTrailForm.get('RouteLengthInKM')?.touched &&
+                    addTrailForm.get('RouteLengthInKM')?.errors?.['min']) {
+                    <div class="field-error">יש להזין אורך גדול מ-0</div>
+                    }
                 </div>
                 <div class="form-field">
                     <label>משך</label>
                     <input formControlName="RouteDuration" />
+                    @if (addTrailForm.get('RouteDuration')?.touched && addTrailForm.get('RouteDuration')?.invalid) {
+                    <div class="field-error">שדה חובה</div>
+                    }
                 </div>
             </div>
 
@@ -90,10 +107,26 @@
                 <div class="form-field">
                     <label>גיל מינימום</label>
                     <input type="number" formControlName="minimumAge" />
+                    @if (addTrailForm.get('minimumAge')?.touched &&
+                    addTrailForm.get('minimumAge')?.errors?.['required']) {
+                    <div class="field-error">שדה חובה</div>
+                    }
+                    @if (addTrailForm.get('minimumAge')?.touched &&
+                    addTrailForm.get('minimumAge')?.errors?.['min']) {
+                    <div class="field-error">הגיל חייב להיות לא שלילי</div>
+                    }
                 </div>
                 <div class="form-field">
                     <label>גיל מקסימום</label>
                     <input type="number" formControlName="MaximumAge" />
+                    @if (addTrailForm.get('MaximumAge')?.touched &&
+                    addTrailForm.get('MaximumAge')?.errors?.['required']) {
+                    <div class="field-error">שדה חובה</div>
+                    }
+                    @if (addTrailForm.get('MaximumAge')?.touched &&
+                    addTrailForm.get('MaximumAge')?.errors?.['min']) {
+                    <div class="field-error">הגיל חייב להיות לא שלילי</div>
+                    }
                 </div>
             </div>
 
@@ -126,6 +159,9 @@
                             (change)="onSeasonChange($event)"> כל השנה
                     </label>
                 </div>
+                @if (addTrailForm.get('season')?.touched && addTrailForm.get('season')?.invalid) {
+                <div class="field-error">יש לבחור לפחות עונה אחת</div>
+                }
             </div>
 
             <div class="action-buttons">

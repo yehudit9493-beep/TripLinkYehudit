@@ -1,8 +1,9 @@
-import { ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, computed, EventEmitter, inject, Output, signal } from '@angular/core';
 import { AttractionWithoutId } from '../../../../Interfacess/attraction';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AttractionService } from '../../../../Service/attraction-service';
 import { CommonModule } from '@angular/common';
+import { getCity } from '../../../../Service/city';
 
 @Component({
   selector: 'app-add-attraction',
@@ -15,6 +16,16 @@ export class AddAttraction {
 
   @Output() closed = new EventEmitter<void>();
   @Output() updated = new EventEmitter<AttractionWithoutId>();
+
+  private cityService = inject(getCity);
+  cities = signal<string[]>([]);
+  citySearchText = signal<string>('');
+
+  filteredCities = computed(() => {
+    const search = this.citySearchText().trim();
+    if (!search) return this.cities();
+    return this.cities().filter(city => city.includes(search));
+  });
 
   areaList: { id: number, name: string }[] = [];
   typeList: { id: number, name: string }[] = [];
@@ -44,6 +55,24 @@ export class AddAttraction {
       },
       error: (err) => { console.error('שגיאה בטעינת סוגי אטרקציות:', err); }
     });
+
+    this.cityService.getCities().subscribe(data => {
+      if (data.success && data.result && Array.isArray(data.result.records)) {
+        this.cities.set(data.result.records.map(record => record.שם_ישוב.trim()).sort());
+      } else {
+        console.error('No cities found or response is not in expected format:', data);
+      }
+    });
+  }
+
+  onCitySearchChange(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.citySearchText.set(value);
+  }
+
+  selectCity(city: string): void {
+    this.addAttractionForm.patchValue({ city });
+    this.citySearchText.set('');
   }
 
   addAttractionForm = new FormGroup({
@@ -57,6 +86,7 @@ export class AddAttraction {
     description: new FormControl(''),
     suitableForKids: new FormControl(false),
     SabbathKeeper : new FormControl(true),
+    city: new FormControl(''),
   });
 
   onSubmit() {
@@ -132,7 +162,7 @@ export class AddAttraction {
       phoneNumber: v.phoneNumber?.trim() || '',
       description: v.description?.trim() || '',
       suitableForKids: v.suitableForKids ?? false,
-      city: '',
+      city: v.city?.trim() || '',
       images: images,
     };
   }

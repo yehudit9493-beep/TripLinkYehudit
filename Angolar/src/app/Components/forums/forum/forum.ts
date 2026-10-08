@@ -19,14 +19,16 @@ export class Forum {
 
   newMessage: Message = {
     idMessage: 0,
-    idForum: 1, 
-    userId: 1, 
+    idForum: 1,
+    userId: 1,
     userName: '',
     content: '',
     title: '',
     date: new Date(),
     relatedLinks: []
   };
+
+  canPost: boolean = false;
 
   constructor(private forums: Forums, private auth: Auth,
      private route: ActivatedRoute, private router : Router) { }
@@ -40,6 +42,16 @@ export class Forum {
     this.newMessage.userName = this.auth.getCurrentUserName();
     this.newMessage.idForum = this.currentForumId;
 
+    // בדיקת הרשאת כתיבה בפורום זה (ריק = כולם רשאים; אחרת רק בעלי אחת מההרשאות)
+    const config = this.forums.forumConfig[this.currentForumId];
+    const userPermissions = this.auth.getCurrentUserPermission();
+    const required = config ? config.canPost : [];
+    this.canPost = required.length === 0 || required.some(p => userPermissions.includes(p));
+
+    // אם אין הרשאת כתיבה - אין טעם להציג את הטופס, מחזירים לפורום
+    if (!this.canPost) {
+      this.router.navigate([`/forum/${this.currentForumId}`]);
+    }
   }
 
   addMessage() {

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, computed, EventEmitter, Output, signal } from '@angular/core';
 import { HotelService } from '../../../../Service/hotel-service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AccommodationWithoutId } from '../../../../Interfacess/accommodation';
@@ -25,7 +25,15 @@ export class AddHotel {
   @Output() updated = new EventEmitter<AccommodationWithoutId>();
 
   areaList: { id: number, name: string }[] = [];
-  cities: string[] = [];
+  cities = signal<string[]>([]);
+  citySearchText = signal<string>('');
+
+  filteredCities = computed(() => {
+    const search = this.citySearchText().trim();
+    if (!search) return this.cities();
+    return this.cities().filter(city => city.includes(search));
+  });
+
   newImageFiles: File[] = [];
   previewUrls: string[] = [];
   isSaving: boolean = false;
@@ -44,6 +52,9 @@ export class AddHotel {
     numberOfBeds: new FormControl(0, [Validators.required, Validators.min(1)]),
     pricePerNight: new FormControl(0, [Validators.required, Validators.min(1)]),
     phoneNumber: new FormControl(''),
+    city: new FormControl(''),
+    Auditorium: new FormControl(false),
+    Kashrut: new FormControl(''),
   });
 
   onSubmit() {
@@ -128,12 +139,21 @@ export class AddHotel {
   ngOnInit() {
     this.cityService.getCities().subscribe(data => {
       if (data.success && data.result && Array.isArray(data.result.records)) {
-        this.cities = data.result.records.map(record => record.שם_ישוב.trim()).sort();
+        this.cities.set(data.result.records.map(record => record.שם_ישוב.trim()).sort());
       } else {
         console.error('No cities found or response is not in expected format:', data);
       }
-      console.log(this.cities)
     });
+  }
+
+  onCitySearchChange(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.citySearchText.set(value);
+  }
+
+  selectCity(city: string): void {
+    this.addAccommodationForm.patchValue({ city });
+    this.citySearchText.set('');
   }
 
 }
