@@ -1,9 +1,7 @@
 <div class="coordinator-register-page" dir="rtl">
 
-    <!-- שכבת רקע -->
     <div class="page-overlay"></div>
 
-    <!-- כפתור חזרה (במצב עריכה - חזרה לדף הבית) -->
     <button [routerLink]="isEditMode ? '/home-page' : '/'" class="back-button">
         <span class="back-arrow">→</span>
         חזרה
@@ -11,10 +9,6 @@
 
 
     <div class="register-container">
-
-        <!-- ========================= -->
-        <!-- כותרת -->
-        <!-- ========================= -->
 
         <div class="register-header">
 
@@ -46,16 +40,7 @@
         </div>
 
 
-        <!-- ========================= -->
-        <!-- הטופס -->
-        <!-- ========================= -->
-
         <form [formGroup]="CoordinatorForm" class="coordinator-form" (ngSubmit)="submitCoordinatorForm()">
-
-
-            <!-- ========================= -->
-            <!-- 01 פרטים אישיים -->
-            <!-- ========================= -->
 
             <div class="form-section">
 
@@ -82,7 +67,6 @@
 
                 <div class="fields-grid">
 
-                    <!-- שם פרטי -->
                     <div class="form-group">
 
                         <label>
@@ -103,7 +87,6 @@
                     </div>
 
 
-                    <!-- שם משפחה -->
                     <div class="form-group">
 
                         <label>
@@ -124,7 +107,6 @@
                     </div>
 
 
-                    <!-- תפקיד -->
                     <div class="form-group">
 
                         <label>
@@ -167,7 +149,6 @@
                     </div>
 
 
-                    <!-- טלפון -->
                     <div class="form-group">
 
                         <label>
@@ -188,7 +169,6 @@
                     </div>
 
 
-                    <!-- אימייל -->
                     <div class="form-group full-width">
 
                         <label>
@@ -213,10 +193,7 @@
             </div>
 
 
-            <!-- ========================= -->
             <!-- 02 פרטי התחברות -->
-            <!-- ========================= -->
-
             <div class="form-section">
 
                 <div class="section-title">
@@ -242,7 +219,6 @@
 
                 <div class="fields-grid">
 
-                    <!-- שם משתמש -->
                     <div class="form-group">
 
                         <label>
@@ -263,7 +239,6 @@
                     </div>
 
 
-                    <!-- סיסמה -->
                     <div class="form-group">
 
                         <label>
@@ -296,10 +271,7 @@
 
 
 
-            <!-- ========================= -->
             <!-- 03 פרטי המוסד -->
-            <!-- ========================= -->
-
             <div class="form-section">
 
                 <div class="section-title">
@@ -325,7 +297,6 @@
 
                 <div class="fields-grid">
 
-                    <!-- שם מוסד -->
                     <div class="form-group full-width">
 
                         <label>
@@ -346,7 +317,6 @@
                     </div>
 
 
-                    <!-- עיר - כתיבה + בחירה מרשימה נפתחת -->
                     <div class="form-group">
 
                         <label>
@@ -381,7 +351,6 @@
                     </div>
 
 
-                    <!-- טלפון מזכירות -->
                     <div class="form-group">
 
                         <label>
@@ -402,7 +371,6 @@
                     </div>
 
 
-                    <!-- מנהל -->
                     <div class="form-group">
 
                         <label>
@@ -423,7 +391,6 @@
                     </div>
 
 
-                    <!-- סוג מוסד -->
                     <div class="form-group">
 
                         <label>
@@ -508,8 +475,6 @@
 
                     </div>
 
-
-                    <!-- מגדר -->
                     <div class="form-group">
 
                         <label>
@@ -552,10 +517,7 @@
             </div>
 
 
-            <!-- ========================= -->
             <!-- שליחה -->
-            <!-- ========================= -->
-
             <div class="submit-area">
 
                 <p class="submit-info">

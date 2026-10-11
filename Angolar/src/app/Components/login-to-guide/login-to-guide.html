@@ -1,9 +1,7 @@
 <div class="guide-register-page" dir="rtl">
 
-    <!-- רקע -->
     <div class="page-overlay"></div>
 
-    <!-- כפתור חזרה - בזמני עריכה חוזר לעמוד הבית -->
     <button [routerLink]="isEditMode ? '/home-page' : '/'" class="back-button">
         <span class="back-arrow">→</span>
         חזרה
@@ -11,7 +9,6 @@
 
     <div class="register-container">
 
-        <!-- כותרת -->
         <div class="register-header">
 
             <div class="header-icon">
@@ -36,7 +33,6 @@
         </div>
 
 
-        <!-- הטופס -->
         <form [formGroup]="GuideForm" (ngSubmit)="submitGuideForm()" class="guide-form">
 
             <!-- פרטים אישיים -->

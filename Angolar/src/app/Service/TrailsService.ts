@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Trail, TrailWithoutId } from '../Interfacess/Trail';
 import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators'; // חובה לוודא שהשורה הזו קיימת בייבוא
+import { map } from 'rxjs/operators';
 
 export interface DeleteTrailResponse {
   isSuccess: boolean;
@@ -46,7 +46,7 @@ export class TrailsService {
     );
   }
 
-  // ✅ מחיקת מסלול
+  //  מחיקת מסלול
   
    DeleteTrail(trailId: number): Observable<DeleteTrailResponse> {
     return this.httpClient.delete<DeleteTrailResponse>(
@@ -54,7 +54,7 @@ export class TrailsService {
     );
   }
 
-  // ✅ הוספת מסלול חדש - מתרגם לפני השליחה לשרת
+  //  הוספת מסלול חדש - מתרגם לפני השליחה לשרת
   addTrail(trailData: TrailWithoutId): Observable<Trail> {
     const body = this.mapToSever(trailData);
     return this.httpClient.post<any>(`${this.API_URL}/Routes`, body).pipe(
@@ -62,12 +62,12 @@ export class TrailsService {
     );
   }
 
-  // ✅ העלאת תמונות למסלול
+  // העלאת תמונות למסלול
   uploadImages(formData: FormData): Observable<any> {
     return this.httpClient.post<any>(`${this.API_URL}/Routes/upload-images`, formData);
   }
 
-  // ✅ חישוב דירוג ממוצע 
+  //  חישוב דירוג ממוצע 
   getAverageRating(ratings: number[]): number {
     if (!ratings || ratings.length === 0) return 0;
     const sum = ratings.reduce((acc, r) => acc + r, 0);

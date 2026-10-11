@@ -21,11 +21,7 @@ export class Entry {
   constructor(private authService: Auth, private router: Router){}
 
   ngOnInit() : void {
-    // this.authService.GetUser().subscribe({
-    //   next: (data) => {
-    //     this.UserList = data;
-    //   }
-    // });
+    
   }
 
   UserForm = new FormGroup({
@@ -51,12 +47,12 @@ export class Entry {
 
     this.authService.login(emailInput, passwordInput).subscribe({
       next: (user) => {
-        // אם הגענו לכאן, השרת החזיר סטטוס 200 (הצלחה) והמשתמש קיים
+      
         this.errorMessage = ''; 
         this.router.navigate(['/home-page']); 
       },
       error: (err) => {
-        // אם הגענו לכאן, השרת החזיר שגיאה (למשל סטטוס 401 Unauthorized או 400)
+        
         console.error('Login error:', err);
         this.errorMessage = 'שם המשתמש או הסיסמה אינם נכונים. נסי שוב!';
       }

@@ -3,10 +3,6 @@ import { CanActivateFn, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Auth } from '../Service/auth';
 import { Forums } from '../Service/forums';
 
-/**
- * גווארד לדף כתיבת הודעה חדשה בפורום (addbForum/:forumId).
- * אם למשתמש אין הרשאת כתיבה בפורום זה - מונע את הניתוב ומחזיר לפורום עצמו.
- */
 export const forumGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
   const auth = inject(Auth);
   const forums = inject(Forums);

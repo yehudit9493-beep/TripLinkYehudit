@@ -8,7 +8,7 @@ import { HebrewDateConverterPipe } from '../../pipe/hebrewDateConverter.pipe';
 @Component({
   selector: 'app-ratings-list',
   standalone: true,
-  imports: [CommonModule, DatePipe, HebrewDateConverterPipe, AsyncPipe],
+  imports: [CommonModule, HebrewDateConverterPipe, AsyncPipe],
   templateUrl: './ratings-list.html',
   styleUrl: './ratings-list.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

@@ -59,7 +59,7 @@ export class TrailSidebar implements OnChanges, OnDestroy {
   }
 
 
-  // ✅ ריענון הדירוגים כשהמסלול משתנה
+  //  ריענון הדירוגים כשהמסלול משתנה
   ngOnChanges(changes: SimpleChanges) {
     if (changes['trail'] && this.trail) {
       this.currentImageIndex = 0;

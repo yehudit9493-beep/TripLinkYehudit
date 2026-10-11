@@ -32,7 +32,7 @@ export class LoginToCoordinator implements OnInit {
   // האם הגענו דרך "עריכת פרופיל" בהדר (לעומת הרשמה חדשה)
   isEditMode = false;
 
-  // רשימת הערים למילוי שדה העיר (נטען מהשרת)
+  // רשימת הערים למילוי שדה העיר
   citiesList: string[] = [];
 
   toastMessage: string = '';
@@ -72,9 +72,7 @@ export class LoginToCoordinator implements OnInit {
     }
   }
 
-  // =========================================
   // טעינת פרופיל הרכזת ומילוי הטופס (מצב עריכה)
-  // =========================================
   private loadProfile(): void {
     const userId = this.authService.getCurrentUserId();
 
@@ -178,10 +176,7 @@ export class LoginToCoordinator implements OnInit {
   });
 
 
-  // =========================================
   // הצגת / הסתרת סיסמה
-  // =========================================
-
   togglePasswordVisibility() {
 
     this.showPassword =
@@ -190,19 +185,13 @@ export class LoginToCoordinator implements OnInit {
   }
 
 
-  // =========================================
   // בניית FormData מערכי הטופס
-  // =========================================
-
   private buildFormData(): FormData {
 
     const formData = new FormData();
 
 
-    // =========================================
     // פרטים אישיים
-    // =========================================
-
     formData.append(
       'FirsName',
       this.CoordinatorForm.controls.FirsName.value ?? ''
@@ -229,10 +218,7 @@ export class LoginToCoordinator implements OnInit {
     );
 
 
-    // =========================================
     // פרטי התחברות
-    // =========================================
-
     formData.append(
       'UserName',
       this.CoordinatorForm.controls.UserName.value ?? ''
@@ -244,10 +230,7 @@ export class LoginToCoordinator implements OnInit {
     );
 
 
-    // =========================================
     // פרטי מוסד
-    // =========================================
-
     formData.append(
       'InstitutionName',
       this.CoordinatorForm.controls.InstitutionName.value ?? ''
@@ -287,11 +270,7 @@ export class LoginToCoordinator implements OnInit {
   }
 
 
-  // =========================================
   // שליחת הטופס (הרשמה חדשה או עריכה)
-  // =========================================
-
-  // תוויות עבריות לשדות - להצגת הודעות תקינות ברורות
   private readonly fieldLabels: Record<string, string> = {
     FirsName: 'שם פרטי',
     LastName: 'שם משפחה',
@@ -338,10 +317,7 @@ export class LoginToCoordinator implements OnInit {
       ? this.coordinatorService.updateProfile(userId, formData)
       : this.coordinatorService.registerCoordinator(formData);
 
-    // =========================================
     // שליחה לשרת
-    // =========================================
-
     request.subscribe({
 
       next: response => {

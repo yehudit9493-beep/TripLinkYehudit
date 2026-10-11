@@ -65,15 +65,9 @@ getMessagesByForumId(forumId: number): Observable<Message[]> {
       })
     );
 }
-
-
-
-
   
   addMessage(msg: { userId: number; forumTypeId: number; title: string; content: string;  routeId?: number; 
-  attractionId?: number;
-  lodgingId?: number;
-  guideUserId?: number; }): Observable<Message> {
+  attractionId?: number; lodgingId?: number; guideUserId?: number; }): Observable<Message> {
     return this.httpClient.post<any>(`${this.API_URL}/forum/messages`, msg).pipe(
       map(item => this.mapToMessage(item))
     );
@@ -97,10 +91,7 @@ getMessagesByForumId(forumId: number): Observable<Message[]> {
     return this.httpClient.delete<any>(`${this.API_URL}/forum/${messageId}`);
   }
 
-  // --------------------------------------------------------------------------
   // מיפוי מהשרת לאנגולר
-  // --------------------------------------------------------------------------
-
  private mapToMessage(server: any): Message {
     return {
         idMessage: server.messageId,

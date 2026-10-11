@@ -64,7 +64,7 @@ export class HotelSidebar implements OnChanges, OnDestroy {
     this.currentImageIndex = index;
   }
 
-  // ✅ ריענון הדירוגים כשמקום הלינה משתנה
+  // ריענון הדירוגים כשמקום הלינה משתנה
   ngOnChanges(changes: SimpleChanges) {
     if (changes['hotel'] && this.hotel) {
       this.currentImageIndex = 0;

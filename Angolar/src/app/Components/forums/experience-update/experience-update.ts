@@ -54,11 +54,9 @@ export class ExperienceUpdate {
     this.currentUserId = this.auth.getCurrentUserId();
     this.currentUserName = this.auth.getCurrentUserName();
     const userPermissions = this.auth.getCurrentUserPermission();
-    console.log('🔑 userPermissions =', userPermissions);
 
     const forumId = this.route.snapshot.paramMap.get('forumId');
     this.currentForumId = forumId ? +forumId : 1;
-    console.log('📋 currentForumId =', this.currentForumId);
 
     const config = this.forums.forumConfig[this.currentForumId];
     if (config) {
@@ -70,7 +68,7 @@ export class ExperienceUpdate {
       this.canPost = hasAnyPermission(config.canPost);
       this.canReply = hasAnyPermission(config.canReply);
       this.canDelete = hasAnyPermission(config.canDelete);
-      console.log('⚙️ canPost =', this.canPost, 'canReply =', this.canReply, 'canDelete =', this.canDelete, 'config.canPost =', config.canPost, 'config.canReply =', config.canReply);
+      
     } else {
       console.warn('⚠️ לא נמצא config לפורום', this.currentForumId);
     }
@@ -80,7 +78,6 @@ export class ExperienceUpdate {
 
 private loadMessages() {
   this.forums.getMessagesByForumId(this.currentForumId).subscribe(messages => {
-    console.log('🔵 נתונים שהגיעו מהשרת:', messages); 
     
     if (this.currentForumId === 3) {
       messages.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());

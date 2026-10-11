@@ -27,10 +27,8 @@ export class LoginToGuide implements OnInit {
   existingCvFiles: { fileId: number; fileName: string; filePath: string }[] = [];
   existingCertFiles: { fileId: number; fileName: string; filePath: string }[] = [];
 
-  // בסיס ה-URL לגישה לקבצים (ללא "/api/Guide")
   fileBaseUrl = 'https://localhost:7216';
 
-  // נתוני ה-selectים שנטען מהשרת (השרת מחזיר camelCase)
   religiousList: { religiousId: number; religiousName: string }[] = [];
   areasList: { areaId: number; areaName: string }[] = [];
   citiesList: string[] = [];
@@ -69,9 +67,7 @@ export class LoginToGuide implements OnInit {
     }
   }
 
-  // =====================
   // מצב עריכה - מילוי הטופס בפרטי הפרופיל הקיימים
-  // =====================
   private loadProfileForEdit(guideId: number): void {
     this.enrollmentService.getGuideProfile(guideId).subscribe({
       next: (profile) => {
@@ -140,7 +136,6 @@ export class LoginToGuide implements OnInit {
     ]),
     PCountryOfOriginhon: new FormControl('', [Validators.required]),
 
-    // שיוך דתי - select יחיד (ערך = ReligiousId)
     ReligiousAffiliation: new FormControl('', [Validators.required]),
 
     UserName: new FormControl('', [Validators.required]),
@@ -149,25 +144,20 @@ export class LoginToGuide implements OnInit {
       Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
     ]),
 
-    // עיר - select יחיד (ערך = שם העיר)
     City: new FormControl('', [Validators.required]),
 
-    // אזורי הכשרה - select מרובה (ערך = מערך של AreaId, נשלח מופרד בפסיקים)
     TrainingAreas: new FormControl<number[]>([], [Validators.required]),
 
-    // טלפון
     Phone: new FormControl('', [
       Validators.required,
       Validators.pattern(/^[0-9+\-\s]{9,15}$/)
     ]),
 
-    // אימייל
     Email: new FormControl('', [
       Validators.required,
       Validators.email
     ]),
 
-    // שנות ניסיון
     YearsOfExperience: new FormControl<number | null>(null, [
       Validators.required,
       Validators.min(0)
@@ -182,9 +172,6 @@ export class LoginToGuide implements OnInit {
     this.showPassword = !this.showPassword;
   }
 
-  // =========================
-  // הודעות (טוסט) - מוחלפות במקום alert
-  // =========================
   toastMessage: string = '';
   toastType: 'success' | 'error' | 'info' = 'info';
   toastVisible = false;
@@ -200,27 +187,21 @@ export class LoginToGuide implements OnInit {
     this.toastTimer = setTimeout(() => (this.toastVisible = false), duration);
   }
 
-  // =========================
-  // חיפוש ערים - מסנן לפי הטקסט שהוקלד
-  // =========================
   get filteredCities(): string[] {
     const query = this.citySearch.trim().toLowerCase();
     if (!query) return this.citiesList;
     return this.citiesList.filter((c) => c.toLowerCase().includes(query));
   }
 
-  // =========================
-  // בחירת אזורי הכשרה - הוספה/הסרה לפי לחיצה
-  // =========================
   toggleArea(areaId: number) {
     const selected = this.GuideForm.controls.TrainingAreas.value ?? [];
     const index = selected.indexOf(areaId);
 
     if (index >= 0) {
-      // מסירים את האזור שנבחר
+      
       selected.splice(index, 1);
     } else {
-      // מוסיפים את האזור
+      
       selected.push(areaId);
     }
 
@@ -298,9 +279,7 @@ export class LoginToGuide implements OnInit {
 
     const formData = new FormData();
 
-    // =========================
     // פרטים אישיים
-    // =========================
     formData.append('FirstName', this.GuideForm.controls.FirsName.value ?? '');
     formData.append('LastName', this.GuideForm.controls.LastName.value ?? '');
     formData.append('Id', this.GuideForm.controls.Id.value ?? '');
@@ -309,42 +288,30 @@ export class LoginToGuide implements OnInit {
     // שיוך דתי - נשלח ה-ID המספרי
     formData.append('ReligiousAffiliation', this.GuideForm.controls.ReligiousAffiliation.value ?? '');
 
-    // =========================
     // פרטי התחברות
-    // =========================
     formData.append('UserName', this.GuideForm.controls.UserName.value ?? '');
     formData.append('Password', this.GuideForm.controls.Password.value ?? '');
 
-    // =========================
     // פרטים נוספים
-    // =========================
     formData.append('City', this.GuideForm.controls.City.value ?? '');
 
     // אזורי הכשרה - נשלחים כ-IDs מופרדים בפסיקים
     formData.append('TrainingAreas', trainingAreaIds.join(','));
 
-    // =========================
     // פרטי קשר וניסיון
-    // =========================
     formData.append('Phone', this.GuideForm.controls.Phone.value ?? '');
     formData.append('Email', this.GuideForm.controls.Email.value ?? '');
     formData.append('YearsOfExperience', String(this.GuideForm.controls.YearsOfExperience.value ?? 0));
 
-    // =========================
     // קורות חיים
-    // =========================
     formData.append('CvFile', cvFile);
 
-    // =========================
     // תעודות
-    // =========================
     certificates.forEach((file) => {
       formData.append('Certificates', file);
     });
 
-    // =========================
     // שליחה לשרת
-    // =========================
     this.enrollmentService.registerGuide(formData).subscribe({
       next: (response) => {
         console.log('המדריכה נרשמה בהצלחה', response);
@@ -354,7 +321,7 @@ export class LoginToGuide implements OnInit {
       },
       error: (error) => {
         console.error('שגיאה בהרשמת המדריכה', error);
-        // השרת מחזיר { message: "...", errors: [...] } - מציגים את הודעת השגיאה האמיתית
+
         const serverMessage = error?.error?.message;
         const detail = Array.isArray(error?.error?.errors)
           ? error.error.errors[0]
@@ -369,9 +336,7 @@ export class LoginToGuide implements OnInit {
     });
   }
 
-  // =========================
   // שליחת עדכון הפרופיל (מצב עריכה)
-  // =========================
   private submitProfileUpdate() {
     if (this.guideId == null) {
       this.showToast('מזהה המדריכה חסר', 'error');

@@ -17,10 +17,7 @@ export class Auth {
   ) { }
 
 
-  // =========================
   // התחברות
-  // =========================
-
   login(userName: string, password: string): Observable<User> {
 
     const loginData = {
@@ -50,7 +47,7 @@ export class Auth {
           } else {
 
             throw new Error(
-              'Invalid user response from server'
+              'תגובת משתמש לא חוקית מהשרת'
             );
 
           }
@@ -70,10 +67,7 @@ export class Auth {
   }
 
 
-  // =========================
   // בדיקת משתמש לצורך איפוס סיסמה
-  // =========================
-
   verifyResetDetails(data: {
     UserName: string;
     Email: string;
@@ -88,10 +82,7 @@ export class Auth {
   }
 
 
-  // =========================
   // שינוי סיסמה
-  // =========================
-
   resetPassword(data: {
     UserName: string;
     Password: string;
@@ -105,10 +96,7 @@ export class Auth {
   }
 
 
-  // =========================
   // משתמש מחובר
-  // =========================
-
   isUserAuthenticated(): boolean {
 
     return localStorage.getItem('isLoggedIn') === 'true';
@@ -149,7 +137,7 @@ export class Auth {
   }
 
 
-  // קבל את שם המשתמש
+  // קבלת את שם המשתמש
   getCurrentUserName(): string {
 
     const user = this.getCurrentUser() as any;
@@ -157,14 +145,11 @@ export class Auth {
     if (!user)
       return 'משתמש';
 
-    return user.firstName ||
-      user.FirstName ||
-      'משתמש';
-
+    return user.firstName || user.FirstName || 'משתמש';
   }
 
 
-  // קבל ID
+  // קבלת ID
   getCurrentUserId(): number {
 
     const user = this.getCurrentUser();
@@ -174,7 +159,7 @@ export class Auth {
   }
 
 
-  // קבל אימייל
+  // קבלת אימייל
   getCurrentUserEmail(): string {
 
     const user = this.getCurrentUser();
@@ -184,7 +169,7 @@ export class Auth {
   }
 
 
-  // קבל הרשאות (כל ההרשאות של המשתמש)
+  // קבלת הרשאות (כל ההרשאות של המשתמש)
   getCurrentUserPermission(): number[] {
 
     const user = this.getCurrentUser();
