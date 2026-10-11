@@ -1,9 +1,7 @@
-
-
 <nav class="navbar">
   <div class="navbar-container">
 
-
+    <!-- לוגו - צד ימין -->
     <a routerLink="/home-page" class="logo-wrapper">
       <div class="logo-icon">
         <div class="link-chain"></div>
@@ -13,30 +11,51 @@
       </div>
     </a>
 
-
     @if (loggedInUser) {
     <div class="user-info">
-      <span class="user-greeting">👋 {{message }}, <strong>{{ loggedInUser.firstName }}</strong></span>
+      <span class="user-greeting">
+        <i class="bi bi-emoji-smile"></i>
+        <span>{{ message }}</span>
+        <strong class="user-name">{{ loggedInUser.firstName }}</strong>
+      </span>
       <span class="hebrew-date">{{ hebrewDate }}</span>
-      <button (click)="goToEditProfile()" class="btn-update">עריכת פרופיל</button>
-      <button (click)="logout()" class="btn-logout" [disabled]="isLoggingOut">
-        {{ isLoggingOut ? 'מתנתק...' : 'התנתקות' }}
-      </button>
-
-      @if (isAdmin) {
-      <button routerLink="/user-management" class="btn-admin">ניהול</button>
-      }
     </div>
     }
 
+    <!-- כל הפעולות - צד שמאל -->
+    <div class="nav-actions-group">
+      @if (loggedInUser) {
+      <div class="action-buttons">
+        <button (click)="goToEditProfile()" class="btn-action btn-primary">
+          <i class="bi bi-pencil-square"></i> עריכת פרופיל
+        </button>
 
-    <div class="navbar-actions">
-      <button class="favorites-btn" (click)="toggleFavorites()">
-        ❤️
+        @if (isAdmin) {
+        <button routerLink="/user-management" class="btn-action btn-admin">
+          <i class="bi bi-people"></i> ניהול
+        </button>
+        }
+
+        <button (click)="logout()" class="btn-action btn-logout" [disabled]="isLoggingOut">
+          <i class="bi bi-box-arrow-right"></i>
+          {{ isLoggingOut ? 'מתנתק...' : 'התנתקות' }}
+        </button>
+      </div>
+      } @else {
+      <div class="auth-buttons">
+        <button routerLink="/login-to-coordinator" class="btn-action btn-primary">
+          <i class="bi bi-person-plus"></i> כניסה
+        </button>
+      </div>
+      }
+
+      <button class="favorites-btn" (click)="toggleFavorites()" title="מועדפים">
+        <i class="bi bi-heart-fill"></i>
         @if (favoritesCount > 0) {
         <span class="favorites-count">{{ favoritesCount }}</span>
         }
       </button>
+
     </div>
 
   </div>

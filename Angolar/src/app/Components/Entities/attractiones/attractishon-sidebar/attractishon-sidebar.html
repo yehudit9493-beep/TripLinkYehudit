@@ -1,4 +1,5 @@
 @if (attraction) {
+@if (attraction.sabbathKeeper) {
 <div class="overlay" (click)="close()"></div>
 
 @if (!showEdit) {
@@ -166,4 +167,15 @@
 </app-edit-attractions>
 }
 
+} @else {
+<div class="shabbat-overlay" (click)="close()">
+    <section class="shabbat-notice" role="alertdialog" aria-modal="true" aria-labelledby="shabbat-notice-title"
+        (click)="$event.stopPropagation()">
+        <div class="shabbat-notice-icon" aria-hidden="true"><i class="bi bi-calendar2-x"></i></div>
+        <h2 id="shabbat-notice-title">לא ניתן להציג פרטים נוספים</h2>
+        <p><strong>{{attraction.attractionName}}</strong> אינה שומרת שבת, לא ניתן להציג פרטים נוספים.</p>
+        <button class="shabbat-notice-close" type="button" (click)="close()">הבנתי</button>
+    </section>
+</div>
+}
 }

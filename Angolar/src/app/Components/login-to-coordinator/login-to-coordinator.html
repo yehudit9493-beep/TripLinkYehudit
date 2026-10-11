@@ -13,7 +13,7 @@
         <div class="register-header">
 
             <div class="header-icon">
-                🧭
+                <i class="bi bi-compass"></i>
             </div>
 
             <div>
@@ -77,7 +77,7 @@
                         <div class="input-wrapper">
 
                             <span class="input-icon">
-                                👤
+                                <i class="bi bi-person"></i>
                             </span>
 
                             <input type="text" formControlName="FirsName" placeholder="הכניסי שם פרטי">
@@ -97,7 +97,7 @@
                         <div class="input-wrapper">
 
                             <span class="input-icon">
-                                👤
+                                <i class="bi bi-person"></i>
                             </span>
 
                             <input type="text" formControlName="LastName" placeholder="הכניסי שם משפחה">
@@ -117,7 +117,7 @@
                         <div class="input-wrapper select-wrapper">
 
                             <span class="input-icon">
-                                💼
+                                <i class="bi bi-briefcase"></i>
                             </span>
 
                             <select formControlName="Title">
@@ -159,7 +159,7 @@
                         <div class="input-wrapper">
 
                             <span class="input-icon">
-                                📱
+                                <i class="bi bi-phone"></i>
                             </span>
 
                             <input type="text" formControlName="Phone" placeholder="הכניסי מספר טלפון">
@@ -179,7 +179,7 @@
                         <div class="input-wrapper">
 
                             <span class="input-icon">
-                                ✉️
+                                <i class="bi bi-envelope"></i>
                             </span>
 
                             <input type="email" formControlName="Email" placeholder="הכניסי כתובת אימייל">
@@ -229,7 +229,7 @@
                         <div class="input-wrapper">
 
                             <span class="input-icon">
-                                🔑
+                                <i class="bi bi-key"></i>
                             </span>
 
                             <input type="text" formControlName="UserName" placeholder="בחרי שם משתמש">
@@ -249,7 +249,7 @@
                         <div class="input-wrapper password-wrapper">
 
                             <span class="input-icon">
-                                🔒
+                                <i class="bi bi-lock"></i>
                             </span>
 
                             <input [type]="showPassword ? 'text' : 'password'" formControlName="Password"
@@ -258,7 +258,7 @@
                             <button type="button" class="password-toggle" (click)="togglePasswordVisibility()"
                                 [attr.aria-label]="showPassword ? 'הסתר סיסמה' : 'הצג סיסמה'">
 
-                                {{ showPassword ? '🙈' : '👁️' }}
+                                <i [class]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
 
                             </button>
 
@@ -307,7 +307,7 @@
                         <div class="input-wrapper">
 
                             <span class="input-icon">
-                                🏫
+                                <i class="bi bi-mortarboard"></i>
                             </span>
 
                             <input type="text" formControlName="InstitutionName" placeholder="הכניסי את שם המוסד">
@@ -327,7 +327,7 @@
                         <div class="input-wrapper">
 
                             <span class="input-icon">
-                                📍
+                                <i class="bi bi-geo-alt"></i>
                             </span>
 
                             <input
@@ -361,7 +361,7 @@
                         <div class="input-wrapper">
 
                             <span class="input-icon">
-                                ☎️
+                                <i class="bi bi-telephone"></i>
                             </span>
 
                             <input type="text" formControlName="InstitutionPhon" placeholder="הכניסי טלפון מזכירות">
@@ -381,7 +381,7 @@
                         <div class="input-wrapper">
 
                             <span class="input-icon">
-                                👔
+                                <i class="bi bi-person-badge"></i>
                             </span>
 
                             <input type="text" formControlName="PrincipalName" placeholder="הכניסי שם מנהל/ת">
@@ -401,7 +401,7 @@
                         <div class="input-wrapper select-wrapper">
 
                             <span class="input-icon">
-                                🏢
+                                <i class="bi bi-building"></i>
                             </span>
 
                             <select formControlName="InstitutionType">
@@ -444,7 +444,7 @@
                         <div class="input-wrapper select-wrapper">
 
                             <span class="input-icon">
-                                🎒
+                                <i class="bi bi-backpack"></i>
                             </span>
 
                             <select formControlName="AgeGroup">
@@ -485,7 +485,7 @@
                         <div class="input-wrapper select-wrapper">
 
                             <span class="input-icon">
-                                👥
+                                <i class="bi bi-people"></i>
                             </span>
 
                             <select formControlName="Gender">

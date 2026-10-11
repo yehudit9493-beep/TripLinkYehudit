@@ -2,17 +2,17 @@
 
     <div class="sticky-header">
         <div class="forum-header">
-            <h1>{{ forumTitle }}</h1>
+            <h1><i class="bi {{ forumIcon }}"></i> {{ forumTitle }}</h1>
             <p class="forum-subtitle">{{ forumSubtitle }}</p>
         </div>
 
         @if (canPost) {
         <div class="new-message-prompt" (click)="goToAdd()">
-            <div class="prompt-avatar">👤</div>
+            <div class="prompt-avatar"><i class="bi bi-person"></i></div>
             <div class="prompt-text">
                 <p>מה תרצה לשתף?</p>
             </div>
-            <button class="prompt-btn">✏️ כתוב הודעה</button>
+            <button class="prompt-btn"><i class="bi bi-pencil-square"></i> כתוב הודעה</button>
         </div>
         }
     </div>
@@ -83,7 +83,7 @@
 
                 @if (replyIndex === i) {
                 <div class="reply-form">
-                    <h3>📝 הוסף תגובה</h3>
+                    <h3><i class="bi bi-pencil"></i> הוסף תגובה</h3>
 
                     <div class="form-field">
                         <label for="reply-content-{{ i }}">תגובה</label>

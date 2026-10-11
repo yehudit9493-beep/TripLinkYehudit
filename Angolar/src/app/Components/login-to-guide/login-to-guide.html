@@ -12,7 +12,7 @@
         <div class="register-header">
 
             <div class="header-icon">
-                🥾
+                <i class="bi bi-signpost-split"></i>
             </div>
 
             <div>
@@ -51,7 +51,7 @@
     <div class="form-group">
       <label>שם פרטי <span>*</span></label>
       <div class="input-wrapper">
-        <span class="input-icon">👤</span>
+        <span class="input-icon"><i class="bi bi-person"></i></span>
         <input type="text" formControlName="FirsName" placeholder="הכניסי שם פרטי">
       </div>
     </div>
@@ -60,7 +60,7 @@
     <div class="form-group">
       <label>שם משפחה <span>*</span></label>
       <div class="input-wrapper">
-        <span class="input-icon">👤</span>
+        <span class="input-icon"><i class="bi bi-person"></i></span>
         <input type="text" formControlName="LastName" placeholder="הכניסי שם משפחה">
       </div>
     </div>
@@ -69,7 +69,7 @@
     <div class="form-group">
       <label>תעודת זהות <span>*</span></label>
       <div class="input-wrapper">
-        <span class="input-icon">🪪</span>
+        <span class="input-icon"><i class="bi bi-person-vcard"></i></span>
         <input type="text" formControlName="Id" placeholder="הכניסי מספר תעודת זהות">
       </div>
     </div>
@@ -78,7 +78,7 @@
     <div class="form-group">
       <label>מוצא</label>
       <div class="input-wrapper">
-        <span class="input-icon">🌍</span>
+        <span class="input-icon"><i class="bi bi-globe2"></i></span>
         <input type="text" formControlName="PCountryOfOriginhon" placeholder="הכניסי מוצא">
       </div>
     </div>
@@ -87,7 +87,7 @@
     <div class="form-group">
       <label>השתייכות דתית <span>*</span></label>
       <div class="input-wrapper">
-        <span class="input-icon">🕍</span>
+        <span class="input-icon"><i class="bi bi-star-fill"></i></span>
         <select formControlName="ReligiousAffiliation">
           <option value="" disabled>בחרי השתייכות דתית</option>
           @for (r of religiousList; track r.religiousId) {
@@ -101,7 +101,7 @@
     <div class="form-group">
       <label>עיר <span>*</span></label>
       <div class="input-wrapper">
-        <span class="input-icon">🏙️</span>
+        <span class="input-icon"><i class="bi bi-geo-alt"></i></span>
         <input
           type="text"
           formControlName="City"
@@ -121,7 +121,7 @@
     <div class="form-group">
       <label>טלפון <span>*</span></label>
       <div class="input-wrapper">
-        <span class="input-icon">📞</span>
+        <span class="input-icon"><i class="bi bi-telephone"></i></span>
         <input type="tel" formControlName="Phone" placeholder="הכניסי מספר טלפון">
       </div>
     </div>
@@ -130,7 +130,7 @@
     <div class="form-group">
       <label>אימייל <span>*</span></label>
       <div class="input-wrapper">
-        <span class="input-icon">✉️</span>
+        <span class="input-icon"><i class="bi bi-envelope"></i></span>
         <input type="email" formControlName="Email" placeholder="הכניסי כתובת אימייל">
       </div>
     </div>
@@ -139,7 +139,7 @@
     <div class="form-group">
       <label>שנות ניסיון <span>*</span></label>
       <div class="input-wrapper">
-        <span class="input-icon">⏳</span>
+        <span class="input-icon"><i class="bi bi-hourglass-split"></i></span>
         <input type="number" min="0" formControlName="YearsOfExperience" placeholder="כמה שנות ניסיון">
       </div>
     </div>
@@ -188,7 +188,7 @@
                         </label>
 
                         <div class="input-wrapper">
-                            <span class="input-icon">🔑</span>
+                            <span class="input-icon"><i class="bi bi-key"></i></span>
 
                             <input type="text" formControlName="UserName" placeholder="בחרי שם משתמש">
                         </div>
@@ -205,7 +205,7 @@
 
                         <div class="input-wrapper password-wrapper">
 
-                            <span class="input-icon">🔒</span>
+                            <span class="input-icon"><i class="bi bi-lock"></i></span>
 
                             <input [type]="showPassword ? 'text' : 'password'" formControlName="Password"
                                 placeholder="בחרי סיסמה">
@@ -213,7 +213,7 @@
                             <button type="button" class="password-toggle" (click)="togglePasswordVisibility()"
                                 [attr.aria-label]="showPassword ? 'הסתר סיסמה' : 'הצג סיסמה'">
 
-                                {{ showPassword ? '🙈' : '👁️' }}
+                                <i [class]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
 
                             </button>
 
@@ -244,7 +244,7 @@
                     <div class="upload-box">
 
                         <div class="upload-icon">
-                            📄
+                            <i class="bi bi-file-text"></i>
                         </div>
 
                         <div class="upload-content">
@@ -264,7 +264,7 @@
                             <!-- קורות חיים קיימים (בעריכה) -->
                             @if (isEditMode && existingCvFiles.length > 0) {
                             <div class="selected-file">
-                                <span class="file-icon">📄</span>
+                                <span class="file-icon"><i class="bi bi-file-text"></i></span>
                                 <a class="file-name file-link" [href]="fileBaseUrl + '/' + existingCvFiles[0].filePath"
                                     target="_blank">
                                     {{ existingCvFiles[0].fileName }}
@@ -276,7 +276,7 @@
                             @if (selectedCvName) {
                             <div class="selected-file">
 
-                                <span class="file-icon">📎</span>
+                                <span class="file-icon"><i class="bi bi-paperclip"></i></span>
 
                                 <span class="file-name">
                                     {{ selectedCvName }}
@@ -307,7 +307,7 @@
                     <div class="upload-box">
 
                         <div class="upload-icon">
-                            🎓
+                            <i class="bi bi-mortarboard"></i>
                         </div>
 
                         <div class="upload-content">
@@ -331,7 +331,7 @@
                             <div class="selected-files">
                                 @for (file of existingCertFiles; track file.fileId) {
                                 <div class="selected-file">
-                                    <span class="file-icon">🎓</span>
+                                    <span class="file-icon"><i class="bi bi-mortarboard"></i></span>
                                     <a class="file-name file-link" [href]="fileBaseUrl + '/' + file.filePath"
                                         target="_blank">
                                         {{ file.fileName }}
@@ -348,7 +348,7 @@
                                 @for (fileName of selectedCertificateNames; track fileName) {
                                 <div class="selected-file">
 
-                                    <span class="file-icon">📎</span>
+                                    <span class="file-icon"><i class="bi bi-paperclip"></i></span>
 
                                     <span class="file-name">
                                         {{ fileName }}

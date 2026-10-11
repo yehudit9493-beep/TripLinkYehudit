@@ -101,7 +101,15 @@
       "Bash(cd \"C:\\\\פרויקט גמר\\\\Server\\\\project\\\\project\" && grep -rln \"class RouteDTO\\\\|record RouteDTO\" . 2>/dev/null | grep -v obj | grep -v bin)",
       "Bash(cd \"C:\\\\פרויקט גמר\\\\Server\\\\project\\\\project\" && grep -n \"class RouteDTO\\\\|record RouteDTO\" DTOs/DTOs.cs)",
       "Bash(python -c ' *)",
-      "Bash(PYTHONIOENCODING=utf-8 python -c ' *)"
+      "Bash(PYTHONIOENCODING=utf-8 python -c ' *)",
+      "Bash(ls -la \"C:/פרויקט גמר/Server/project\")",
+      "Bash(find \"C:/פרויקט גמר/Server/project\" -type f \\\\\\( -name \"*.sql\" -o -name \"*.cs\" -o -name \"*.json\" \\\\\\) 2>/dev/null | head -200)",
+      "Bash(find \"C:/פרויקט גמר/Server\" -type f -name \"*.sql\" 2>/dev/null)",
+      "Bash(iconv -f UTF-16LE -t UTF-8 \"script.sql\")",
+      "Read(//c/פרויקט גמר/SQL/**)",
+      "Bash(ls -la \"C:\\\\פרויקט גמר\\\\SQL\\\\\" 2>/dev/null || echo \"not found\")",
+      "Read(//c/פרויקט גמר/SQL\" 2>/dev/**)",
+      "Read(//c/פרויקט_גמר/**)"
     ],
     "additionalDirectories": [
       "C:\\פרויקט גמר\\Server\\project\\project\\DTOs",
@@ -115,7 +123,8 @@
       "c:\\פרויקט גמר\\Server\\project\\project\\Controllers",
       "C:\\פרויקט גמר\\Server\\project\\project\\Entities",
       "c:\\פרויקט גמר\\Server\\project\\project\\Entities",
-      "c:\\פרויקט גמר\\Server\\project\\project"
+      "c:\\פרויקט גמר\\Server\\project\\project",
+      "C:\\פרויקט גמר\\SQL"
     ]
   }
 }

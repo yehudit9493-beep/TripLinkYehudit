@@ -51,16 +51,17 @@ export class FavoritesPanel {
 
   getTypeIcon(type: string): string {
     const icons: any = {
-      guides: '🧭',
-      Trail: '🥾',
-      attraction: '🏛️',
-      accommodation: '🏨'
+      guides: 'bi-person-walking',
+      Trail: 'bi-signpost-split',
+      attraction: 'bi-bank',
+      accommodation: 'bi-house-heart'
     };
-    return icons[type] || '⭐';
+    return icons[type] || 'bi-star';
   }
 
   getName(item: FavoriteItem): string {
-    return item.data.name || item.data.title || 'ללא שם';
+    const d = item.data ?? {};
+    return d.name || d.title || d.attractionName || 'ללא שם';
   }
 
   onItemClick(item: FavoriteItem) {

@@ -102,7 +102,9 @@ export class AttractishonSidebar implements OnInit, OnChanges, OnDestroy {
       this.userRating = 0;
       this.userComment = '';
       this.ratingError = '';
-      this.loadRating();
+      if (this.attraction.sabbathKeeper) {
+        this.loadRating();
+      }
     }
   }
 

@@ -21,7 +21,7 @@ export class Forums {
     sortDesc: boolean;
   }> = {
       1: {
-        title: '💬 חוויות והמלצות',
+        title: 'חוויות והמלצות',
         subtitle: 'שתפו חוויות, המלצות ורשמים מהטיולים שלכם',
         canPost: [],          // כולם
         canReply: [],         // כולם
@@ -29,7 +29,7 @@ export class Forums {
         sortDesc: false       // מהישן לחדש
       },
       2: {
-        title: '❓ שאלות ותשובות',
+        title: 'שאלות ותשובות',
         subtitle: 'שאלות שחוזרות על עצמן',
         canPost: [],          // כולם יכולים לשאול
         canReply: [1, 2, 6],  // מנהלים + בעלי הרשאת מענה בשאלות
@@ -37,7 +37,7 @@ export class Forums {
         sortDesc: false
       },
       3: {
-        title: '⚠️ פורום בטיחות',
+        title: 'פורום בטיחות',
         subtitle: 'שאלות ומידע בנושאי בטיחות',
         canPost: [1, 2, 7],   // מנהלים + בעלי הרשאת מענה בבטיחות
         canReply: [1, 2, 7],

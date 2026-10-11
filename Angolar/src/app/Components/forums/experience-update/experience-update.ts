@@ -35,6 +35,7 @@ export class ExperienceUpdate {
   currentUserName: string = 'משתמש';
 
   forumTitle: string = '';
+  forumIcon: string = 'bi-chat-heart';
   forumSubtitle: string = '';
   canPost: boolean = false;
   canReply: boolean = false;
@@ -61,6 +62,7 @@ export class ExperienceUpdate {
     const config = this.forums.forumConfig[this.currentForumId];
     if (config) {
       this.forumTitle = config.title;
+      this.forumIcon = this.getForumIcon(this.currentForumId);
       this.forumSubtitle = config.subtitle;
       // רשימה ריקה של הרשאות = כולם רשאים; אחרת רק בעלי אחת מההרשאות
       const hasAnyPermission = (required: number[]) =>
@@ -74,6 +76,15 @@ export class ExperienceUpdate {
     }
 
     this.loadMessages();
+  }
+
+  getForumIcon(forumId: number): string {
+    const icons: Record<number, string> = {
+      1: 'bi-chat-heart',
+      2: 'bi-question-circle',
+      3: 'bi-shield-check'
+    };
+    return icons[forumId] || 'bi-chat-heart';
   }
 
 private loadMessages() {

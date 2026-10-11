@@ -21,6 +21,14 @@
         margin: 0 0 6px;
         border-right: 4px solid #0990d4;
         padding-right: 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        i {
+            font-size: 1.6rem;
+            color: #0990d4;
+        }
     }
 
     .forum-subtitle {

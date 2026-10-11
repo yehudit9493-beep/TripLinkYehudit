@@ -22,7 +22,7 @@
         <div class="favorites-list">
           @for (item of favorites; track item.data.id) {
             <div class="favorite-card">
-              <div class="item-icon">{{ getTypeIcon(item.type) }}</div>
+              <div class="item-icon"><i class="bi {{ getTypeIcon(item.type) }}"></i></div>
 
               <div class="item-info" (click)="onItemClick(item)">
                 <span class="item-name">{{ getName(item) }}</span>

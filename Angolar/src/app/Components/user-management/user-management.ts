@@ -183,6 +183,7 @@ export class UserManagement implements OnInit {
         // נשאר במצב נוכחי
       },
     });
+    
   }
 
   // סנכרון שינוי (חסימה/הרשאות) גם בטבלאות האחרות
